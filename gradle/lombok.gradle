@@ -1,0 +1,6 @@
+apply from: "../gradle/libs.gradle"
+
+dependencies {
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+}

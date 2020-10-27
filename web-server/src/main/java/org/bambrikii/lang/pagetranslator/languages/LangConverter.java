@@ -10,7 +10,7 @@ public class LangConverter {
     private LangRepository langRepository;
 
     public LangClient toClient(Language lang) {
-        return new LangClient(lang.getId(), lang.getCode(), "");
+        return new LangClient(lang.getId(), lang.getCode(), lang.getName());
     }
 
     public Language toPersistent(LangClient langClient) {

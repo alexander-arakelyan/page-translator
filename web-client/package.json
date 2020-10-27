@@ -1,15 +1,6 @@
 {
   "name": "trabslator-web-client",
   "dependencies": {
-    "@ag-grid-community/client-side-row-model": "^23.1.0",
-    "@ag-grid-community/react": "^23.1.0",
-    "@ag-grid-enterprise/column-tool-panel": "^23.1.0",
-    "@ag-grid-enterprise/filter-tool-panel": "^23.1.0",
-    "@ag-grid-enterprise/menu": "^23.1.0",
-    "@ag-grid-enterprise/row-grouping": "^23.1.0",
-    "@ag-grid-enterprise/set-filter": "^23.1.0",
-    "ag-grid-community": "^23.0.2",
-    "ag-grid-react": "^23.0.3",
     "babel-plugin-transform-styles": "0.0.3",
     "bootstrap": "^4.4.1",
     "jquery": "^3.5.0",

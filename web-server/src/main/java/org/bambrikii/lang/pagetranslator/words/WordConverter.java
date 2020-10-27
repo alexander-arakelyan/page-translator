@@ -1,6 +1,7 @@
 package org.bambrikii.lang.pagetranslator.words;
 
 import org.bambrikii.lang.pagetranslator.languages.LangRepository;
+import org.bambrikii.lang.pagetranslator.model.Language;
 import org.bambrikii.lang.pagetranslator.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ public class WordConverter {
     private LangRepository langRepository;
 
     public WordClient toClient(Word word) {
-        return new WordClient(word.getId(), word.getContent(), word.getLang().getCode());
+        Language lang = word.getLang();
+        return new WordClient(word.getId(), word.getContent(), lang.getCode(), lang.getName());
     }
 
     public Word toPersistent(WordClient wordClient) {
@@ -22,7 +24,7 @@ public class WordConverter {
                 ? wordRepository.findById(id).get()
                 : new Word();
         word.setContent(wordClient.getContent());
-        word.setLang(langRepository.findByCode(wordClient.getLang()));
+        word.setLang(langRepository.findByCode(wordClient.getLangCode()));
         return word;
     }
 }

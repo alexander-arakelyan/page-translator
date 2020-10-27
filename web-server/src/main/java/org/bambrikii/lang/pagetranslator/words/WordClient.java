@@ -12,5 +12,6 @@ import lombok.Setter;
 public class WordClient {
     private Long id;
     private String content;
-    private String lang;
+    private String langCode;
+    private String langName;
 }

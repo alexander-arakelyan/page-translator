@@ -2,7 +2,8 @@ package org.bambrikii.lang.pagetranslator.languages;
 
 import org.bambrikii.lang.pagetranslator.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/languages")
+@RequestMapping("/langs")
 public class LangController {
     @Autowired
     private LangRepository langRepository;
@@ -20,9 +21,9 @@ public class LangController {
     @Autowired
     private LangConverter langConverter;
 
-    @GetMapping(value = "/{content}")
+    @GetMapping(value = "")
     @Transactional
-    public ResponseEntity<List<LangClient>> list() {
+    public Page<LangClient> list() {
 
         Iterable<Language> languages = langRepository
                 .findAll();
@@ -30,6 +31,6 @@ public class LangController {
         List<LangClient> langClients = new ArrayList<>();
         languages.forEach(language -> langClients.add(langConverter.toClient(language)));
 
-        return ResponseEntity.ok(langClients);
+        return new PageImpl<LangClient>(langClients);
     }
 }

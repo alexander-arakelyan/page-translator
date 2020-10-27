@@ -23,4 +23,5 @@ public class Language {
     private Long id;
     @Column(nullable = false)
     private String code;
+    private String name;
 }

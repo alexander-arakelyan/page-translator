@@ -4,6 +4,9 @@ import org.bambrikii.lang.pagetranslator.languages.LangRepository;
 import org.bambrikii.lang.pagetranslator.model.Language;
 import org.bambrikii.lang.pagetranslator.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alexander Arakelyan on 06/04/18 23:20.
@@ -35,15 +36,18 @@ public class WordController {
 
     @GetMapping
     @Transactional
-    public ResponseEntity<List<WordClient>> list(@RequestParam String content) {
+    public ResponseEntity<Page<WordClient>> list(
+            @RequestParam(required = false, defaultValue = "") String content,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "50") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
 
-        List<WordClient> wordsClient = wordRepository
-                .findByWordLike(content)
-                .stream()
-                .map(wordConverter::toClient)
-                .collect(Collectors.toList());
+        Page<WordClient> page = wordRepository
+                .findByWordLike(content, PageRequest.of(pageNo, pageSize, Sort.by(sortBy)))
+                .map(wordConverter::toClient);
 
-        return ResponseEntity.ok(wordsClient);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping(value = "")
@@ -63,7 +67,7 @@ public class WordController {
     public ResponseEntity<WordClient> update(@RequestParam Long id, @RequestBody WordClient wordClient) {
 
         Word word = wordRepository.findById(id).get();
-        Language lang = langRepository.findByCode(wordClient.getLang());
+        Language lang = langRepository.findByCode(wordClient.getLangCode());
         word.setContent(wordClient.getContent());
         word.setLang(lang);
         wordRepository.save(word);
@@ -79,5 +83,4 @@ public class WordController {
         wordRepository.delete(wordRepository.findById(id).get());
         return ResponseEntity.ok(Boolean.TRUE);
     }
-
 }

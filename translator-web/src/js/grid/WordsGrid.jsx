@@ -1,12 +1,14 @@
 import React, {Component} from "react"
 import {Pagination, Table} from "react-bootstrap"
 
-class MyGrid extends Component {
+class WordsGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
             columns: props.columns,
-            rows: props.rows
+            rows: props.rows,
+            page: props.page,
+            pageSize: props.pageSize
         }
     }
 
@@ -34,7 +36,15 @@ class MyGrid extends Component {
                 </Table>
                 <Pagination>{
                     pages.map((val, index) => {
-                        return (<Pagination.Item key={val.number} active={val.active}> {val.number}</Pagination.Item>);
+                        return (<Pagination.Item
+                            key={val.number}
+                            active={val.active}
+                            onClick={(event) => {
+                                let page = val.number - 1;
+                                let pageSize = this.props.pageSize;
+                                this.props.pageClicked(page, pageSize)
+                            }}
+                        > {val.number}</Pagination.Item>);
                     })
                 }</Pagination>
             </React.Fragment>
@@ -42,4 +52,4 @@ class MyGrid extends Component {
     }
 }
 
-export default MyGrid
+export default WordsGrid

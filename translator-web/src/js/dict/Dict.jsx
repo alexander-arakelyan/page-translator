@@ -1,19 +1,17 @@
 import React, {Component} from "react";
 
-import {Row, DropdownButton, Button, Dropdown, Form, ButtonGroup, Container} from "react-bootstrap"
+import Col, {Button, ButtonGroup, Container, Form} from "react-bootstrap"
 import {connect} from "react-redux";
 
-import MyGrid from "../grid/MyGrid";
+import WordsGrid from "../grid/WordsGrid";
 import {wordsActions} from "../words/WordsReducer";
-import Col from "react-bootstrap";
 import {langsActions} from "../langs/LangsReducer";
-import Card from "react-bootstrap";
 
 class Dict extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            wordContent: "",
+            word: "",
             langCode: ""
         }
         this.onWordsList = props.onWordsList.bind(this);
@@ -30,17 +28,17 @@ class Dict extends Component {
 
     onSelectLang(lang) {
         this.setState({lang})
-        this.onWordsList(this.state.wordContent, lang.code);
+        this.onWordsList(this.state.word, lang.code);
     }
 
     onContentChange(content) {
-        let wordContent = content.target.value;
-        this.setState({wordContent});
-        this.onWordsList(wordContent, this.state.langCode);
+        const word = content.target.value;
+        this.setState({word});
+        this.onWordsList(word, this.state.langCode);
     }
 
     onSearchClick(event) {
-        this.onWordsList(this.state.wordContent, this.state.langCode);
+        this.onWordsList(this.state.word, this.state.langCode);
     }
 
     render() {
@@ -56,7 +54,7 @@ class Dict extends Component {
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Content</Form.Label>
-                                <Form.Control type="text" placeholder="Enter word" value={this.state.wordContent}
+                                <Form.Control type="text" placeholder="Enter word" value={this.state.word}
                                               onChange={this.onContentChange}/>
                             </Form.Group>
                             <Form.Group as={Col}>
@@ -81,12 +79,12 @@ class Dict extends Component {
                         </Form.Row>
                         <Form.Row>
                             <Form.Group>
-                                Search for: {this.state.wordContent} ({this.state.lang?.name})
+                                Search for: {this.state.word} ({this.state.lang?.name})
                             </Form.Group>
                         </Form.Row>
                     </Form>
                 </Container>
-                <MyGrid
+                <WordsGrid
                     columns={[
                         {title: "ID", field: "id"},
                         {title: "Content", field: "content"},
@@ -94,8 +92,13 @@ class Dict extends Component {
                         {title: "Tags", field: "tags"}
                     ]}
                     rows={this.props.words}
+                    pageSize={this.props.pageSize}
                     totalPages={this.props.totalPages}
                     currentPage={this.props.currentPage}
+                    pageClicked={(page, pageSize) => {
+                        console.log(`${page} + ${pageSize}`);
+                        this.props.onWordsList(this.state.word, this.state.langCode, page, pageSize)
+                    }}
                 />
             </React.Fragment>
         )
@@ -107,15 +110,16 @@ export const WordsConnected = connect((state, props) => {
     let langsReducer = state.langsReducer;
     return {
         words: wordsReducer.pager?.content,
-        totalPages: wordsReducer.pager?.totalPages,
+        pageSize: wordsReducer.pager?.size,
         currentPage: wordsReducer.pager?.number,
+        totalPages: wordsReducer.pager?.totalPages,
         word: wordsReducer.word,
         langs: langsReducer.pager?.content,
     }
 }, (dispatch) => {
     return {
-        onWordsList: (wordContent, langCode) => {
-            wordsActions.list(wordContent, langCode)(dispatch);
+        onWordsList: (word, langCode, page = 0, pageSize = 2) => {
+            wordsActions.list(word, langCode, page, pageSize)(dispatch);
         },
         onWordAdd: (word) => {
             dispatch(wordsActions.add(word));

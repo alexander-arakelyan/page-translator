@@ -39,13 +39,13 @@ public class WordController {
     @Transactional
     public ResponseEntity<Page<WordClient>> list(
             @RequestParam(required = false, defaultValue = "") String content,
-            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy
     ) {
 
         Page<WordClient> page = wordRepository
-                .findByWordLike(content, PageRequest.of(pageNo, pageSize, Sort.by(sortBy)))
+                .findByWordLike(content, PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
                 .map(wordConverter::toClient);
 
         return ResponseEntity.ok(page);

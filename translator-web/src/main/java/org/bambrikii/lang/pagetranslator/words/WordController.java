@@ -41,11 +41,15 @@ public class WordController {
             @RequestParam(required = false, defaultValue = "") String content,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String langCode
     ) {
-
+        Language lang = langRepository.findByCode(langCode);
         Page<WordClient> page = wordRepository
-                .findByWordLike(content, PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
+                .findByWordLikeAndLang(
+                        content,
+                        lang,
+                        PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
                 .map(wordConverter::toClient);
 
         return ResponseEntity.ok(page);

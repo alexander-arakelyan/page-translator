@@ -26,29 +26,35 @@ class Dict extends Component {
         this.onLangsList();
     }
 
-    onSelectLang(lang) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.langs && prevProps.langs != this.props.langs) {
+            let lang = this.props.langs[0];
+            this.setState({lang});
+            this.onWordsList(this.state.word, lang.code, 0);
+        }
+    }
+
+    onSelectLang(langCode) {
+        const lang = this.props.langs.filter((lang) => lang.code === langCode)[0];
         this.setState({lang})
-        this.onWordsList(this.state.word, lang.code);
+        this.onWordsList(this.state.word, langCode, 0);
     }
 
     onContentChange(content) {
         const word = content.target.value;
         this.setState({word});
-        this.onWordsList(word, this.state.langCode);
+        this.onWordsList(word, this.state.lang.code);
     }
 
     onSearchClick(event) {
-        this.onWordsList(this.state.word, this.state.langCode);
+        this.onWordsList(this.state.word, this.state.lang.code, 0);
     }
 
     render() {
-        let langs = this.props?.langs;
-        if (!langs) {
-            langs = [];
-        }
-        let lang1 = this.state.lang;
+        const langs = this.props?.langs || [];
+        const currLang = this.state.lang;
         return (<React.Fragment>
-                <h5>Words...</h5>
+                <h5>Words:</h5>
                 <Container fluid={"md"}>
                     <Form>
                         <Form.Row>
@@ -59,15 +65,21 @@ class Dict extends Component {
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Language</Form.Label>
-                                {/*<Form.Control as="select" title={lang1 ? lang1.name : "Language"}>{*/}
-                                {/*    langs.map((lang, index) => {*/}
-                                {/*        return (<option*/}
-                                {/*            key={"lang-" + lang.code}*/}
-                                {/*            onClick={(e) => this.onSelectLang(lang)}*/}
-                                {/*            active={lang1?.code == lang.code ? "active" : ""}*/}
-                                {/*        >{lang.name}</option>)*/}
-                                {/*    })}*/}
-                                {/*</Form.Control>*/}
+                                <Form.Control
+                                    as="select"
+                                    title={currLang ? currLang.name : "Language"}
+                                    onChange={(e) => {
+                                        this.onSelectLang(e.target.value);
+                                    }}
+                                >{
+                                    langs.map((lang, index) => {
+                                        return (<option
+                                            key={lang.code}
+                                            value={lang.code}
+                                            active={currLang?.code == lang.code ? "active" : ""}
+                                        >{lang.name}</option>)
+                                    })}
+                                </Form.Control>
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Actions</Form.Label><br/>
@@ -96,7 +108,6 @@ class Dict extends Component {
                     totalPages={this.props.totalPages}
                     currentPage={this.props.currentPage}
                     pageClicked={(page, pageSize) => {
-                        console.log(`${page} + ${pageSize}`);
                         this.props.onWordsList(this.state.word, this.state.langCode, page, pageSize)
                     }}
                 />
@@ -108,6 +119,7 @@ class Dict extends Component {
 export const WordsConnected = connect((state, props) => {
     let wordsReducer = state.wordsReducer;
     let langsReducer = state.langsReducer;
+
     return {
         words: wordsReducer.pager?.content,
         pageSize: wordsReducer.pager?.size,

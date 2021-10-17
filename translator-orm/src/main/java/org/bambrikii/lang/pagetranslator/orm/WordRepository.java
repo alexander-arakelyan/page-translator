@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface WordRepository extends PagingAndSortingRepository<Word, Long> {
-    @Query("Select w from Word w where w.content like %:content%")
-    Page<Word> findByWordLike(@Param("content") String content, Pageable paging);
+    @Query("Select w from Word w join w.lang l where w.content like %:content% and l = :lang")
+    Page<Word> findByWordLikeAndLang(@Param("content") String content, @Param("lang") Language lang, Pageable paging);
 }

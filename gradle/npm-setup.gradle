@@ -1,0 +1,70 @@
+apply plugin: "com.github.node-gradle.node"
+
+// Login tasks
+task npmInstallCli(type: NpmTask) {
+  args = ["install", "--no-save", "npm-cli-login"]
+}
+
+task npmLogin(type: NodeTask) {
+  script = new File("${project.projectDir}/node_modules/npm-cli-login/bin/npm-cli-login.js")
+  args = [
+    "-u", "${npmUsername}",
+    "-p", "${npmPassword}",
+    "-e", "${npmEmail}",
+    "-s", "${npmScope}",
+    "-r", "${npmRepo}",
+    "--config-path", "${project.projectDir}/.npmrc"
+  ]
+}
+
+task npmLogin1(type: NodeTask) {
+  script = new File("${project.projectDir}/node_modules/npm-cli-login/bin/npm-cli-login.js")
+  args = [
+    "-u", "${npmUsername}",
+    "-p", "${npmPassword}",
+    "-e", "${npmEmail}",
+    "-s", "${npmScope}",
+    "-r", "${npmRepo}/",
+    "--config-path", "${project.projectDir}/.npmrc"
+  ]
+}
+npmLogin.dependsOn(npmLogin1)
+
+npmLogin.dependsOn(npmInstallCli)
+
+task npmPrint(type: Exec) {
+  commandLine "cat"
+  args "${project.projectDir}/.npmrc"
+}
+
+
+npm_update {
+  args = ["--production", "--loglevel", "verbose"]
+}
+
+tasks.npmSetup {
+  doFirst {
+    args = args + [
+      "-u", "${npmUsername}",
+      "-p", "${npmPassword}",
+      "-e", "${npmEmail}",
+      "-s", "${npmScope}",
+      "-r", "${npmRepo}",
+      "--config-path", "${project.projectDir}/.npmrc"
+    ]
+  }
+}
+
+node {
+  download = true
+  version = nodeVersion
+  npmVersion = ""
+  yarnVersion = ""
+  distBaseUrl = "https://nodejs.org/dist"
+  npmInstallCommand = "install"
+  workDir = file("${rootDir}/.gradle/nodejs")
+  npmWorkDir = file("${rootDir}/.gradle/npm")
+  yarnWorkDir = file("${rootDir}/.gradle/yarn")
+  nodeProjectDir = file("${project.projectDir}")
+  nodeProxySettings = ProxySettings.SMART
+}

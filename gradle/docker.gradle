@@ -1,0 +1,114 @@
+def dockerBuildDir = "${project.buildDir.path}/docker"
+def dockerSrcDir = "${projectDir.path}"
+def dockerFile = "${projectDir.path}/src/main/docker/Dockerfile";
+def dockerIidFile = "${dockerBuildDir}/docker.iid";
+
+def dockerTagLocalLatestUrl = "${dockerNamespace}/${project.name}:LATEST"
+def dockerTagLocalVersionUrl = "${dockerNamespace}/${project.name}:${project.version}"
+
+def dockerTagRemoteLatestUrl = "${dockerRepository}/${dockerTagLocalLatestUrl}"
+def dockerTagRemoteVersionUrl = "${dockerRepository}/${dockerTagLocalVersionUrl}"
+
+task dockerClean() {
+    group = "docker"
+    doLast {
+        delete(files(dockerBuildDir))
+    }
+}
+
+task dockerLogin() {
+    group = "docker"
+    doLast {
+        exec {
+            commandLine "docker", "login", "--username", dockerUsername, "--password", dockerPassword
+        }
+    }
+}
+
+task dockerBuild(dependsOn: [build]) {
+    group = "docker"
+    doFirst {
+        new File(dockerBuildDir).mkdirs()
+    }
+    doLast {
+        exec {
+            commandLine "docker", "build", dockerSrcDir, "--file", dockerFile, "--iidfile", dockerIidFile
+        }
+    }
+}
+
+task dockerTagLocalVersion(dependsOn: [dockerBuild]) {
+    group = "docker"
+    doLast {
+        def dockerIid = new File(dockerIidFile).text;
+        exec {
+            commandLine "docker", "image", "tag", dockerIid, dockerTagLocalVersionUrl
+        }
+    }
+}
+
+task dockerTagLocalLatest(dependsOn: [dockerBuild]) {
+    group = "docker"
+    doLast {
+        def dockerIid = new File(dockerIidFile).text;
+        exec {
+            commandLine "docker", "image", "tag", dockerIid, dockerTagLocalLatestUrl
+        }
+    }
+}
+
+task dockerTagLocal(dependsOn: [dockerTagLocalVersion, dockerTagLocalLatest]) {
+    group = "docker"
+}
+
+task dockerTagRemoteVersion(dependsOn: [dockerTagLocalVersion]) {
+    group = "docker"
+    doLast {
+        def dockerIid = new File(dockerIidFile).text;
+        exec {
+            commandLine "docker", "image", "tag", dockerIid, dockerTagRemoteVersionUrl
+        }
+    }
+}
+
+task dockerTagRemoteLatest(dependsOn: [dockerTagLocalLatest]) {
+    group = "docker"
+    doLast {
+        def dockerIid = new File(dockerIidFile).text;
+        exec {
+            commandLine "docker", "image", "tag", dockerIid, dockerTagRemoteLatestUrl
+        }
+    }
+}
+
+task dockerTagRemote(dependsOn: [dockerTagRemoteVersion, dockerTagRemoteLatest]) {
+    group = "docker"
+}
+
+task dockerTag(dependsOn: [dockerTagLocal, dockerTagRemote]) {
+    group = "docker"
+}
+
+task dockerPushVersion(dependsOn: [dockerTagRemoteVersion]) {
+    group = "docker"
+    doLast {
+        logger.lifecycle("Pushing ${dockerTagRemoteVersionUrl} to ${dockerRepository} as ${dockerUsername}")
+        exec {
+            commandLine "docker", "image", "push", dockerTagRemoteVersionUrl
+        }
+    }
+}
+
+task dockerPushLatest(dependsOn: [dockerTagRemoteLatest]) {
+    group = "docker"
+    doLast {
+        logger.lifecycle("Pushing ${dockerTagRemoteLatestUrl} to ${dockerRepository} as ${dockerUsername}")
+        exec {
+            commandLine "docker", "image", "push", dockerTagRemoteLatestUrl
+        }
+    }
+}
+
+task dockerPush(dependsOn: [dockerPushVersion, dockerPushLatest]) {
+    group = "docker"
+}

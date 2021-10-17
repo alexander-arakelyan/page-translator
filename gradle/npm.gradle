@@ -1,0 +1,33 @@
+apply plugin: "com.github.node-gradle.node"
+
+task npmRun(type: NpmTask, dependsOn: npmInstall) {
+  args = ["start"]
+}
+
+// Build tasks
+task npmBuildProd(type: NpmTask, dependsOn: npmInstall) {
+  args = ["run", "build:prod"]
+}
+
+task npmBuildDev(type: NpmTask, dependsOn: npmInstall) {
+  args = ["run", "build:dev"]
+}
+
+task npmClean(type: Delete) {
+  delete "dist", "node_modules"
+}
+clean.dependsOn(npmClean)
+
+task npmTest(type: NpmTask, dependsOn: npmInstall) {
+  args = ["run", "test:only"]
+}
+
+task npmTestWithWebPack(type: NpmTask, dependsOn: npmInstall) {
+  args = ["run", "test:with:webpack"]
+}
+
+npm_update {
+  args = ["--production", "--loglevel", "verbose"]
+}
+
+apply from: "${rootDir}/gradle/npm-setup.gradle"

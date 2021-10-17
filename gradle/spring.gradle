@@ -1,0 +1,7 @@
+apply from: "${rootDir}/gradle/java.gradle"
+
+dependencies {
+  testImplementation(libs.spring.boot.starter.test)
+
+  runtimeOnly(libs.spring.boot.devtools)
+}

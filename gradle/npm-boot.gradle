@@ -1,0 +1,26 @@
+jar {
+  doLast {
+    logger.lifecycle("Jar do last ")
+  }
+}
+
+task copyStaticFiles(type: Copy) {
+  from("dist/") {
+    include("*.*")
+  }
+  from("dist/static/images/") {
+    include("*.*")
+    into("static/images/")
+  }
+  from("dist/public/") {
+    include("*.*")
+    into("public/")
+  }
+  destinationDir = file("${buildDir}/resources/main/META-INF/resources/")
+}
+
+copyStaticFiles.dependsOn(npmBuildProd)
+
+bootJar.dependsOn(copyStaticFiles)
+jar.dependsOn(copyStaticFiles)
+build.dependsOn(copyStaticFiles)

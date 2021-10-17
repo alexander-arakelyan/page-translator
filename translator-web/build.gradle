@@ -1,0 +1,41 @@
+apply from: "${rootDir}/gradle/spring.gradle"
+apply from: "${rootDir}/gradle/docker.gradle"
+apply plugin: "org.springframework.boot"
+apply from: "${rootDir}/gradle/npm.gradle"
+apply from: "${rootDir}/gradle/npm-boot.gradle"
+
+bootJar {
+    mainClass = "org.bambrikii.lang.pagetranslator.PageTranslatorMain"
+    archiveFileName = "${project.name}.jar"
+}
+
+dependencies {
+    implementation(project(":translator-orm"))
+
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring.boot.starter.thymeleaf)
+
+//    implementation(platform(libs.spring.cloud.deps))
+//    implementation(libs.spring.cloud.commons)
+//    implementation(libs.eureka.client)
+    implementation(libs.gson)
+
+    implementation(libs.jaxb.api)
+
+    implementation(libs.itextpdf.itextpdf)
+    implementation(libs.itextpdf.itext)
+    implementation(libs.itextpdf.xmlworker)
+
+    implementation(libs.jsoup)
+    implementation(libs.postgresql)
+
+    implementation(libs.swagger.swagger2)
+    implementation(libs.swagger.ui)
+
+    testImplementation(libs.commons.io)
+
+    annotationProcessor(libs.spring.boot.config.processor)
+}
+
+test.dependsOn(npmTest)

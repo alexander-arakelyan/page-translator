@@ -1,0 +1,14 @@
+apply plugin: "java"
+apply plugin: "idea"
+
+apply from: "${rootDir}/gradle/repos.gradle"
+apply from: "${rootDir}/gradle/libs.gradle"
+apply from: "${rootDir}/gradle/test.gradle"
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+dependencies {
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+}

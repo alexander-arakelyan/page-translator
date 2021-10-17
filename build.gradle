@@ -1,10 +1,11 @@
-plugins {
-	id "org.sonarqube" version "2.7"
-}
-
-allprojects {
-	repositories {
-		mavenCentral()
-		jcenter()
-	}
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("com.github.node-gradle:gradle-node-plugin:${gradleNodePluginVersion}")
+        classpath("com.gorylenko.gradle-git-properties:gradle-git-properties:2.3.1")
+        classpath("com.github.davidmc24.gradle.plugin:gradle-avro-plugin:1.2.1")
+    }
 }

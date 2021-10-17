@@ -1,6 +1,6 @@
 rootProject.name = "page-translator"
 
 include("translator-model")
-include("web-server")
-include 'web-client'
+include("translator-orm")
+include("translator-web")
 

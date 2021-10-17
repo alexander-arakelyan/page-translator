@@ -1,44 +1,72 @@
 ext.libs = [
-        slf4j     : "org.slf4j:slf4j-log4j12:1.7.21",
-        junit5    : [
-                launcher: "org.junit.platform:junit-platform-launcher:1.7.0",
-                engine  : "org.junit.jupiter:junit-jupiter-engine:5.7.0",
-                params  : "org.junit.jupiter:junit-jupiter-params:5.7.0"
-        ],
-        assertj   : "org.assertj:assertj-core:3.11.1",
         spring    : [
-                core: "org.springframework:spring-core:5.2.9.RELEASE",
-                web : "org.springframework:spring-web:5.2.9.RELEASE",
-                boot: [
-                        starterWeb: "org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE",
-                        devtools  : "org.springframework.boot:spring-boot-devtools:2.3.4.RELEASE",
-                        dataRest  : "org.springframework.boot:spring-boot-starter-data-rest:2.3.4.RELEASE",
-                        dataJpa   : "org.springframework.boot:spring-boot-starter-data-jpa:2.3.4.RELEASE"
+                web  : "org.springframework:spring-web:${springVersion}",
+                cloud: [
+                        deps   : "org.springframework.cloud:spring-cloud-dependencies:2020.0.3",
+                        commons: "org.springframework.cloud:spring-cloud-commons:3.0.3"
+                ],
+                boot : [
+                        starter : [
+                                starter   : "org.springframework.boot:spring-boot-starter:${springBootVersion}",
+                                web       : "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
+                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
+                                actuator  : "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
+                                test      : "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
+                                security  : "org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
+                                mail      : "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}",
+                                validation: "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}",
+                                data      : [
+                                        jpa: "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+                                ],
+                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
+                                activemq  : "org.springframework.boot:spring-boot-starter-activemq:${springBootVersion}",
+                        ],
+                        config  : [
+                                processor: "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+                        ],
+                        devtools: "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+                ],
+                kafka: "org.springframework.kafka:spring-kafka:2.7.0"
+        ],
+        jackson   : [
+                databind: "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+        ],
+        json      : "org.json:json:20180813",
+        gson      : "com.google.code.gson:gson:2.8.6",
+        junit     : [
+                api   : "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+                engine: "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+        ],
+        swagger   : [
+                swagger2: "io.springfox:springfox-swagger2:${swaggerVersion}",
+                ui      : "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+        ],
+        h2        : "com.h2database:h2:1.4.200",
+        jaxb      : [
+                api: "javax.xml.bind:jaxb-api:2.3.1"
+        ],
+        commons   : [
+                io: "commons-io:commons-io:2.6"
+        ],
+        lombok    : "org.projectlombok:lombok:${lombokVersion}",
+        assertj   : [
+                core: "org.assertj:assertj-core:3.11.1"
+        ],
+        kafka     : [
+                avro: [
+                        serializer: "io.confluent:kafka-avro-serializer:5.5.3"
                 ]
         ],
-        postgresql: "org.postgresql:postgresql:42.2.1",
-        hibernate : [
-                core         : "org.hibernate:hibernate-core:5.4.22.Final",
-                entityManager: "org.hibernate:hibernate-entitymanager:5.4.22.Final",
-                validator    : "org.hibernate:hibernate-validator:6.1.6.Final"
+        avro      : "org.apache.avro:avro:${avroVersion}",
+        eureka    : [
+                server: "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server",
+                client: "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client",
         ],
-        webjars   : [
-                bootstrap: "org.webjars:bootstrap:3.3.7-1",
-                jquery   : "org.webjars:jquery:3.1.1",
-                locator  : "org.webjars:webjars-locator:0.30"
+        itextpdf  : [
+                itextpdf : "com.itextpdf:itextpdf:5.5.9",
+                itext    : "com.itextpdf:itext-asian:5.2.0",
+                xmlworker: "com.itextpdf.tool:xmlworker:5.5.9",
         ],
-        lombok    : "org.projectlombok:lombok:1.18.12",
-        swagger   : [
-                springfox     : "io.springfox:springfox-swagger2:3.0.0",
-                ui            : "io.springfox:springfox-swagger-ui:3.0.0",
-                beanValidation: "io.springfox:springfox-bean-validators:3.0.0"
-        ],
-        springDoc : [
-                ui        : "org.springdoc:springdoc-openapi-ui:1.4.8",
-                webMvcCore: "org.springdoc:springdoc-openapi-webmvc-core:1.4.8"
-        ]
+        jsoup     : "org.jsoup:jsoup:1.13.1",
+        postgresql: "org.postgresql:postgresql:42.2.23.jre7"
 ]
-
-test {
-    useJUnitPlatform()
-}

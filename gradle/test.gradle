@@ -1,0 +1,85 @@
+apply plugin: "jacoco"
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    executionData {
+        tasks.withType(Test).findAll {
+            it.jacoco.destinationFile.exists
+        }*.jacoco.destinationFile
+    }
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.destination(file("*${jacoco.reportsDir}/all-tests/html"))
+    }
+}
+
+ext.setupTestCoverageRules = {
+    def threshold = project.properties.get("testCoverageThreshold.default")
+    if (project.properties.containsKey("testCoverageThreshold." + project.name)) {
+        threshold = project.properties.get("testCoverageThreshold." + project.name)
+        logger.lifecycle("Expected test coverage level for \"${project.name}\" = ${threshold} (custom)")
+    } else {
+        logger.lifecycle("Expected test coverage level for \"${project.name}\" = ${threshold} (default)")
+    }
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    counter = "LINE"
+                    value = "COVEREDRATIO"
+                    minimum = new BigDecimal(threshold)
+                }
+            }
+        }
+    }
+    check.dependsOn(jacocoTestCoverageVerification)
+}
+
+configurations {
+    test
+    integrationTestCompile.extendsFrom(testCompile)
+    integrationTestRuntime.extendsFrom(testRuntime)
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDirs = [
+                "src/integrationTest/java"
+            ]
+        }
+    }
+}
+
+task integrationTest(type: Test) {
+    group = "verification"
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    jacoco {
+        destinationFile = file("${buildDir}/jacoco/jacocoTest.exec")
+    }
+}
+
+check.dependsOn(integrationTest)
+//integrationTest.mustRunAfter(test)
+
+dependencies {
+    testCompileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
+
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
+}
+
+test {
+    useJUnitPlatform()
+}
+
+setupTestCoverageRules()

@@ -1,6 +1,7 @@
 {
   "name": "translator-web-client",
   "dependencies": {
+    "@babel/runtime": "^7.15.4",
     "babel-plugin-transform-styles": "0.0.3",
     "bootstrap": "^4.4.1",
     "jquery": "^3.5.0",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "babel-jest": "^25.4.0",
@@ -35,6 +37,7 @@
     "less-loader": "^5.0.0",
     "less-plugin-clean-css": "^1.5.1",
     "react-test-renderer": "^16.13.1",
+    "regenerator-runtime": "^0.13.9",
     "style-loader": "^1.1.4",
     "webpack": "^4.19.1",
     "webpack-assets-manifest": "^3.0.2",

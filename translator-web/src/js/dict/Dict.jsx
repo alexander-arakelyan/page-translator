@@ -4,8 +4,8 @@ import Col, {Button, ButtonGroup, Container, Form} from "react-bootstrap"
 import {connect} from "react-redux";
 
 import WordsGrid from "../grid/WordsGrid";
-import {wordsActions} from "../words/WordsReducer";
-import {langsActions} from "../langs/LangsReducer";
+import {WordActions} from "../words/WordsReducer";
+import {LangActions} from "../langs/LangsReducer";
 
 class Dict extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class Dict extends Component {
         }
         this.onWordsList = props.onWordsList.bind(this);
         this.onLangsList = props.onLangsList.bind(this);
+        this.onWordAdd = props.onWordAdd.bind(this);
         this.onSelectLang = this.onSelectLang.bind(this);
         this.onContentChange = this.onContentChange.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
@@ -48,6 +49,10 @@ class Dict extends Component {
 
     onSearchClick(event) {
         this.onWordsList(this.state.word, this.state.lang.code, 0);
+    }
+
+    addNewWord(event) {
+        this.onWordAdd(this.state.word, this.state.lang.code, this.props.pageSize);
     }
 
     render() {
@@ -85,7 +90,9 @@ class Dict extends Component {
                                 <Form.Label>Actions</Form.Label><br/>
                                 <ButtonGroup>
                                     <Button variant="primary" type="button" onClick={this.onSearchClick}>Find</Button>
-                                    <Button variant="secondary">Add New</Button>
+                                    {this.state.word && this.state.lang &&
+                                    <Button variant="secondary" onClick={(event => this.addNewWord(event))}>Add
+                                        New</Button>}
                                 </ButtonGroup>
                             </Form.Group>
                         </Form.Row>
@@ -108,7 +115,7 @@ class Dict extends Component {
                     totalPages={this.props.totalPages}
                     currentPage={this.props.currentPage}
                     pageClicked={(page, pageSize) => {
-                        this.props.onWordsList(this.state.word, this.state.langCode, page, pageSize)
+                        this.onWordsList(this.state.word, this.state.lang.code, page, pageSize)
                     }}
                 />
             </React.Fragment>
@@ -131,16 +138,29 @@ export const WordsConnected = connect((state, props) => {
 }, (dispatch) => {
     return {
         onWordsList: (word, langCode, page = 0, pageSize = 2) => {
-            wordsActions.list(word, langCode, page, pageSize)(dispatch);
+            WordActions
+                .list(word, langCode, page, pageSize, dispatch)
+                .then(r => {
+                });
         },
-        onWordAdd: (word) => {
-            dispatch(wordsActions.add(word));
+        onWordAdd: (word, langCode, pageSize = 2) => {
+            WordActions
+                .add(word, langCode, dispatch)
+                .then(() => {
+                    WordActions
+                        .list(word, langCode, 0, pageSize, dispatch)
+                        .then(r => {
+                        });
+                });
         },
-        onWordUpdate: (id, word) => {
-            dispatch(wordsActions.update(id, word));
+        onWordUpdate: (id, wordContent) => {
+            WordActions
+                .update(id, wordContent, dispatch)
+                .then(r => {
+                });
         },
         onLangsList: (content) => {
-            langsActions.list()(dispatch);
+            LangActions.list()(dispatch);
         },
     }
 })(Dict);

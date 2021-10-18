@@ -2,20 +2,28 @@ const WORDS_REFRESH = "WORDS_REFRESH";
 const WORDS_ADDED = "WORDS_ADDED";
 const WORDS_UPDATED = "WORDS_UPDATED";
 
-export const wordsActions = {
-    list: function (wordContent, langCode, page, pageSize) {
-        return dispatch => {
-            fetch(`words?pageNum=${page}&pageSize=${pageSize}&content=${wordContent}&langCode=${langCode}`)
-                .then(res => res.json())
-                .then((pager) => {
-                    dispatch({type: WORDS_REFRESH, pager: pager});
-                });
-        }
+export const WordActions = {
+    list: async (wordContent, langCode, pageNum, pageSize, dispatch) => {
+        await fetch(`words?pageNum=${pageNum}&pageSize=${pageSize}&content=${wordContent}&langCode=${langCode}`)
+            .then(res => res.json())
+            .then((pager) => {
+                dispatch({type: WORDS_REFRESH, pager: pager});
+            });
     },
-    add: function (content, lang) {
-        return {}
+    add: async (wordContent, langCode, dispatch) => {
+        await fetch(`words`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({content: wordContent, langCode})
+        })
+            .then(res => res.json())
+            .then((pager) => {
+                dispatch({type: WORDS_ADDED, content: wordContent, lang: langCode});
+            });
     },
-    update: function (id, content, lang) {
+    update: async (id, content, dispatch) => {
         return {}
     }
 }

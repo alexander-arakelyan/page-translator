@@ -1,6 +1,6 @@
 const LANGS_REFRESH = "LANGS_REFRESH";
 
-export const langsActions = {
+export const LangActions = {
     list: function () {
         return dispatch => {
             fetch("langs")

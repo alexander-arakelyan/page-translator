@@ -4,13 +4,13 @@ import org.bambrikii.lang.pagetranslator.orm.LangRepository;
 import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +26,15 @@ import javax.transaction.Transactional;
 @RestController
 @RequestMapping("/words")
 public class WordController {
-    @Autowired
-    private WordRepository wordRepository;
+    private final WordRepository wordRepository;
+    private final LangRepository langRepository;
+    private final WordConverter wordConverter;
 
-    @Autowired
-    private LangRepository langRepository;
-
-    @Autowired
-    private WordConverter wordConverter;
+    public WordController(WordConverter wordConverter, LangRepository langRepository, WordRepository wordRepository) {
+        this.wordConverter = wordConverter;
+        this.langRepository = langRepository;
+        this.wordRepository = wordRepository;
+    }
 
     @GetMapping
     @Transactional
@@ -55,10 +56,9 @@ public class WordController {
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping(value = "")
+    @PutMapping
     @Transactional
     public ResponseEntity<WordClient> add(@RequestBody WordClient wordClient) {
-
         Word word = wordConverter.toPersistent(wordClient);
         wordRepository.save(word);
 
@@ -69,7 +69,7 @@ public class WordController {
 
     @PostMapping(value = "/{id}")
     @Transactional
-    public ResponseEntity<WordClient> update(@RequestParam Long id, @RequestBody WordClient wordClient) {
+    public ResponseEntity<WordClient> update(@PathVariable Long id, @RequestBody WordClient wordClient) {
 
         Word word = wordRepository.findById(id).get();
         Language lang = langRepository.findByCode(wordClient.getLangCode());
@@ -84,7 +84,7 @@ public class WordController {
 
     @DeleteMapping(value = "/{id}")
     @Transactional
-    public ResponseEntity<Boolean> remove(Long id) {
+    public ResponseEntity<Boolean> remove(@PathVariable Long id) {
         wordRepository.delete(wordRepository.findById(id).get());
         return ResponseEntity.ok(Boolean.TRUE);
     }

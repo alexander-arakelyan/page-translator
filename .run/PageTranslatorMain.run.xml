@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PageTranslatorMain" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+  <configuration default="false" name="PageTranslatorMain" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="org.bambrikii.lang.pagetranslator.PageTranslatorMain" />
-    <module name="env-mini-monitor.monitor-web-starter.main" />
+    <module name="page-translator.translator-web.main" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.bambrikii.lang.pagetranslator.*" />

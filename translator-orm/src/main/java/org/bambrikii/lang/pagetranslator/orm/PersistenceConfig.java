@@ -17,7 +17,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackageClasses = {
         WordRepository.class,
         LangRepository.class,
-        UsageRepository.class
+        UsageRepository.class,
+        TagRepository.class
 })
 public class PersistenceConfig {
 }

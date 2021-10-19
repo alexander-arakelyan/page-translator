@@ -38,7 +38,7 @@ public class WordController {
 
     @GetMapping
     @Transactional
-    public ResponseEntity<Page<WordClient>> list(
+    public ResponseEntity<Page<WordDto>> list(
             @RequestParam(required = false, defaultValue = "") String content,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
@@ -46,7 +46,7 @@ public class WordController {
             @RequestParam(required = false) String langCode
     ) {
         Language lang = langRepository.findByCode(langCode);
-        Page<WordClient> page = wordRepository
+        Page<WordDto> page = wordRepository
                 .findByWordLikeAndLang(
                         content,
                         lang,
@@ -58,18 +58,18 @@ public class WordController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<WordClient> add(@RequestBody WordClient wordClient) {
+    public ResponseEntity<WordDto> add(@RequestBody WordDto wordClient) {
         Word word = wordConverter.toPersistent(wordClient);
         wordRepository.save(word);
 
-        WordClient result = wordConverter.toClient(word);
+        WordDto result = wordConverter.toClient(word);
 
         return ResponseEntity.ok(result);
     }
 
     @PostMapping(value = "/{id}")
     @Transactional
-    public ResponseEntity<WordClient> update(@PathVariable Long id, @RequestBody WordClient wordClient) {
+    public ResponseEntity<WordDto> update(@PathVariable Long id, @RequestBody WordDto wordClient) {
 
         Word word = wordRepository.findById(id).get();
         Language lang = langRepository.findByCode(wordClient.getLangCode());
@@ -77,7 +77,7 @@ public class WordController {
         word.setLang(lang);
         wordRepository.save(word);
 
-        WordClient result = wordConverter.toClient(word);
+        WordDto result = wordConverter.toClient(word);
 
         return ResponseEntity.ok(result);
     }

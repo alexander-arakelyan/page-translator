@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import WordsGrid from "../grid/WordsGrid";
 import {WordActions} from "../words/WordsReducer";
 import {LangActions} from "../langs/LangsReducer";
+import TagsList from "./TagsList";
 
 class Dict extends Component {
     constructor(props) {
@@ -108,7 +109,11 @@ class Dict extends Component {
                         {title: "ID", field: "id"},
                         {title: "Content", field: "content"},
                         {title: "Language", field: "langName"},
-                        {title: "Tags", field: "tags"}
+                        {
+                            title: "Tags", field: "tags", component: (props) => {
+                                return (<TagsList {...props}/>)
+                            }
+                        }
                     ]}
                     rows={this.props.words}
                     pageSize={this.props.pageSize}

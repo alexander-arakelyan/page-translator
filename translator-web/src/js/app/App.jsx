@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom"
 import {Provider} from "react-redux";
 
-import {Container, Table, Row, Col} from "react-bootstrap"
+import {Col, Container, Row} from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import {WordsConnected} from "../dict/Dict"
@@ -21,7 +21,7 @@ class App extends Component {
                     </Row>
                     <Row>
                         <Col>
-                            <WordsConnected></WordsConnected>
+                            <WordsConnected/>
                         </Col>
                     </Row>
                 </Container>

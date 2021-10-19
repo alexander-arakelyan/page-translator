@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alexander Arakelyan on 06/04/18 23:21.
@@ -23,4 +26,6 @@ public class Word {
     private String content;
     @ManyToOne(optional = false)
     private Language lang;
+    @OneToMany
+    private List<Tag> tags = new ArrayList<>();
 }

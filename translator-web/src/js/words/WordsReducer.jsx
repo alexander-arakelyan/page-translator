@@ -8,27 +8,27 @@ const WORD_TAG_ADDED = "WORD_TAG_ADDED";
 const WORD_TAG_REMOVED = "WORD_TAG_REMOVED";
 
 export const WordsActions = {
-    list: async (wordContent, langCode, pageNum, pageSize, dispatch) => {
-        await fetch(`words?pageNum=${pageNum}&pageSize=${pageSize}&content=${wordContent}&langCode=${langCode}`)
+    list: async (name, langCode, pageNum, pageSize, dispatch) => {
+        await fetch(`words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`)
             .then(res => res.json())
             .then((pager) => {
                 dispatch({type: WORDS_REFRESHED, pager: pager});
             });
     },
-    add: async (wordContent, langCode, dispatch) => {
+    add: async (name, langCode, dispatch) => {
         await fetch(`words`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({content: wordContent, langCode})
+            body: JSON.stringify({name, langCode})
         })
             .then(res => res.json())
             .then((pager) => {
-                dispatch({type: WORD_ADDED, content: wordContent, lang: langCode});
+                dispatch({type: WORD_ADDED, name, lang: langCode});
             });
     },
-    update: async (id, content, dispatch) => {
+    update: async (id, name, dispatch) => {
         return {}
     },
     addTag: async (wordId, tagName, dispatch) => {
@@ -65,6 +65,7 @@ export function wordsReducer(state = {}, action) {
     switch (action.type) {
         case WORDS_REFRESHED:
             const {pager} = action;
+            console.log(pager);
             return {...state, pager}
         default:
             return {...state}
@@ -74,7 +75,7 @@ export function wordsReducer(state = {}, action) {
 export function wordReducer(state = {words: []}, action) {
     switch (action.type) {
         case WORD_ADDED:
-            return {...state, content: action.content, lang: action.lang}
+            return {...state, name: action.name, lang: action.lang}
         case WORD_REFRESHED: {
             const words = [...state.words];
             const {word} = action;

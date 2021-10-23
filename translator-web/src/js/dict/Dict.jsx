@@ -18,7 +18,7 @@ class Dict extends Component {
         this.onLangsList = props.onLangsList.bind(this);
         this.onWordAdd = props.onWordAdd.bind(this);
         this.onSelectLang = this.onSelectLang.bind(this);
-        this.onContentChange = this.onContentChange.bind(this);
+        this.onWordNameChange = this.onWordNameChange.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
     }
 
@@ -41,7 +41,7 @@ class Dict extends Component {
         this.onWordsList(this.state.word, langCode, 0);
     }
 
-    onContentChange(content) {
+    onWordNameChange(content) {
         const word = content.target.value;
         this.setState({word});
         this.onWordsList(word, this.state.lang.code);
@@ -66,7 +66,7 @@ class Dict extends Component {
                             <Form.Group as={Col}>
                                 <Form.Label>Content</Form.Label>
                                 <Form.Control type="text" placeholder="Enter word" value={this.state.word}
-                                              onChange={this.onContentChange}/>
+                                              onChange={this.onWordNameChange}/>
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Language</Form.Label>
@@ -146,9 +146,9 @@ export const WordsConnected = connect((state, props) => {
                         });
                 });
         },
-        onWordUpdate: (id, wordContent) => {
+        onWordUpdate: (id, name) => {
             WordsActions
-                .update(id, wordContent, dispatch)
+                .update(id, name, dispatch)
                 .then(r => {
                 });
         },

@@ -24,7 +24,7 @@ class WordsGrid extends Component {
                     <tbody>
                     <tr>
                         <th>ID</th>
-                        <th>Content</th>
+                        <th>Name</th>
                         <th>Language</th>
                         <th>Tags</th>
                     </tr>
@@ -32,7 +32,7 @@ class WordsGrid extends Component {
                         rows.map((rowVal, rowIndex) => {
                             return (<tr key={"row-" + rowVal.id}>
                                 <td>{rowVal.id}</td>
-                                <td>{rowVal.content}</td>
+                                <td>{rowVal.name}</td>
                                 <td>{rowVal.langName}</td>
                                 <td>
                                     <TagsConnected word={rowVal}/>

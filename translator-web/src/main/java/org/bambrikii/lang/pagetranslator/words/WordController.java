@@ -44,7 +44,7 @@ public class WordController {
     @GetMapping
     @Transactional
     public ResponseEntity<Page<WordDto>> list(
-            @RequestParam(required = false, defaultValue = "") String content,
+            @RequestParam(required = false, defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -52,8 +52,8 @@ public class WordController {
     ) {
         Language lang = langRepository.findByCode(langCode);
         Page<WordDto> page = wordRepository
-                .findByWordLikeAndLang(
-                        content,
+                .findByNameLikeAndLang(
+                        name,
                         lang,
                         PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
                 .map(wordConverter::toClient);
@@ -63,7 +63,7 @@ public class WordController {
 
     @GetMapping("/{id}")
     @Transactional
-    public ResponseEntity<WordDto> list(@PathVariable Long id) {
+    public ResponseEntity<WordDto> retrieveById(@PathVariable Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isEmpty()) {
             return null;
@@ -89,7 +89,7 @@ public class WordController {
 
         Word word = wordRepository.findById(id).get();
         Language lang = langRepository.findByCode(wordClient.getLangCode());
-        word.setContent(wordClient.getContent());
+        word.setName(wordClient.getName());
         word.setLang(lang);
         wordRepository.save(word);
 

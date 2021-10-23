@@ -27,7 +27,7 @@ public class WordConverter {
         Language lang = word.getLang();
         return new WordDto(
                 word.getId(),
-                word.getContent(),
+                word.getName(),
                 lang.getCode(),
                 lang.getName(),
                 tagConverter.toClient(word.getTags())
@@ -39,7 +39,7 @@ public class WordConverter {
         Word word = id != null && !Long.valueOf(0).equals(id)
                 ? wordRepository.findById(id).get()
                 : new Word();
-        word.setContent(wordClient.getContent());
+        word.setName(wordClient.getName());
         word.setLang(langRepository.findByCode(wordClient.getLangCode()));
         return word;
     }

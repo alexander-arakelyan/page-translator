@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WordDto {
     private Long id;
-    private String content;
+    private String name;
     private String langCode;
     private String langName;
     private List<TagDto> tags = new ArrayList<>();

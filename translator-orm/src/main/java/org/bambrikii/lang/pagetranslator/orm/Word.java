@@ -3,6 +3,7 @@ package org.bambrikii.lang.pagetranslator.orm;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +24,8 @@ public class Word {
     @Id
     @GeneratedValue
     private Long id;
-    private String content;
+    @Column(nullable = false, updatable = false)
+    private String name;
     @ManyToOne(optional = false)
     private Language lang;
     @ManyToMany

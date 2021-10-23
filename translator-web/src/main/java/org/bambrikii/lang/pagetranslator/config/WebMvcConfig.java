@@ -2,7 +2,7 @@ package org.bambrikii.lang.pagetranslator.config;
 
 import org.bambrikii.lang.pagetranslator.dict.DictController;
 import org.bambrikii.lang.pagetranslator.languages.LangController;
-import org.bambrikii.lang.pagetranslator.tags.TagsController;
+import org.bambrikii.lang.pagetranslator.tags.TagController;
 import org.bambrikii.lang.pagetranslator.usage.UsageController;
 import org.bambrikii.lang.pagetranslator.words.WordController;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         LangController.class,
         UsageController.class,
         DictController.class,
-        TagsController.class
+        TagController.class
 })
 public class WebMvcConfig implements WebMvcConfigurer {
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/public/"};

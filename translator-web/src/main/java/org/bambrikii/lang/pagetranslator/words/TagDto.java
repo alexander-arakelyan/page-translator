@@ -7,5 +7,7 @@ import lombok.Setter;
 @Setter
 public class TagDto {
     private Long id;
-    private WordDto root;
+    private String name;
+    private String langCode;
+    private String langName;
 }

@@ -1,5 +1,6 @@
 import React, {Component} from "react"
 import {Pagination, Table} from "react-bootstrap"
+import {TagsConnected} from "./WordTags";
 
 class WordsGrid extends Component {
     constructor(props) {
@@ -21,19 +22,22 @@ class WordsGrid extends Component {
         return (<React.Fragment>
                 <Table>
                     <tbody>
-                    <tr>{this.props.columns.map((val, index) => {
-                        return (<th key={"col-" + val.field}>{val.title}</th>)
-                    })}</tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Content</th>
+                        <th>Language</th>
+                        <th>Tags</th>
+                    </tr>
                     {
                         rows.map((rowVal, rowIndex) => {
-                            return (<tr key={"row-" + rowVal.id}>{this.state.columns.map((colVal, colIndex) => {
-                                const component = colVal.component;
-                                const fieldVal = rowVal[colVal.field];
-                                return (<td key={"col-" + colVal.field}>
-                                    {component && component({...colVal, ...rowVal, ...fieldVal})}
-                                    {fieldVal}
-                                </td>)
-                            })}</tr>)
+                            return (<tr key={"row-" + rowVal.id}>
+                                <td>{rowVal.id}</td>
+                                <td>{rowVal.content}</td>
+                                <td>{rowVal.langName}</td>
+                                <td>
+                                    <TagsConnected word={rowVal}/>
+                                </td>
+                            </tr>)
                         })
                     }
                     </tbody>
@@ -56,4 +60,4 @@ class WordsGrid extends Component {
     }
 }
 
-export default WordsGrid
+export default WordsGrid;

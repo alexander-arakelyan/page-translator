@@ -3,9 +3,7 @@ package org.bambrikii.lang.pagetranslator.tags;
 import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Tag;
 import org.bambrikii.lang.pagetranslator.orm.TagRepository;
-import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.words.TagDto;
-import org.bambrikii.lang.pagetranslator.words.WordDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -22,18 +20,14 @@ public class TagConverter {
 
     public TagDto toClient(Tag tag) {
         TagDto dto = new TagDto();
-        WordDto dtoRoot = new WordDto();
 
         dto.setId(tag.getId());
 
-        Word root = tag.getRoot();
-        dtoRoot.setId(root.getId());
+        dto.setName(tag.getName());
 
-        Language rootLang = root.getLang();
-        dtoRoot.setLangCode(rootLang.getCode());
-        dtoRoot.setLangName(rootLang.getName());
-
-        dto.setRoot(dtoRoot);
+        Language lang = tag.getLang();
+        dto.setLangCode(lang.getCode());
+        dto.setLangName(lang.getName());
 
         return dto;
     }

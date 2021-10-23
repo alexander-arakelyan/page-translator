@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 
-import Col, {Button, ButtonGroup, Container, Form} from "react-bootstrap"
+import {Button, ButtonGroup, Col, Container, Form} from "react-bootstrap"
 import {connect} from "react-redux";
 
-import WordsGrid from "../grid/WordsGrid";
-import {WordActions} from "../words/WordsReducer";
+import WordsGrid from "../dict/WordsGrid";
+import {WordsActions} from "../words/WordsReducer";
 import {LangActions} from "../langs/LangsReducer";
-import TagsList from "./TagsList";
 
 class Dict extends Component {
     constructor(props) {
@@ -105,16 +104,6 @@ class Dict extends Component {
                     </Form>
                 </Container>
                 <WordsGrid
-                    columns={[
-                        {title: "ID", field: "id"},
-                        {title: "Content", field: "content"},
-                        {title: "Language", field: "langName"},
-                        {
-                            title: "Tags", field: "tags", component: (props) => {
-                                return (<TagsList {...props}/>)
-                            }
-                        }
-                    ]}
                     rows={this.props.words}
                     pageSize={this.props.pageSize}
                     totalPages={this.props.totalPages}
@@ -129,9 +118,8 @@ class Dict extends Component {
 }
 
 export const WordsConnected = connect((state, props) => {
-    let wordsReducer = state.wordsReducer;
-    let langsReducer = state.langsReducer;
-
+    const wordsReducer = state.wordsReducer;
+    const langsReducer = state.langsReducer;
     return {
         words: wordsReducer.pager?.content,
         pageSize: wordsReducer.pager?.size,
@@ -143,29 +131,30 @@ export const WordsConnected = connect((state, props) => {
 }, (dispatch) => {
     return {
         onWordsList: (word, langCode, page = 0, pageSize = 2) => {
-            WordActions
+            WordsActions
                 .list(word, langCode, page, pageSize, dispatch)
                 .then(r => {
                 });
         },
         onWordAdd: (word, langCode, pageSize = 2) => {
-            WordActions
+            WordsActions
                 .add(word, langCode, dispatch)
                 .then(() => {
-                    WordActions
+                    WordsActions
                         .list(word, langCode, 0, pageSize, dispatch)
                         .then(r => {
                         });
                 });
         },
         onWordUpdate: (id, wordContent) => {
-            WordActions
+            WordsActions
                 .update(id, wordContent, dispatch)
                 .then(r => {
                 });
         },
         onLangsList: (content) => {
-            LangActions.list()(dispatch);
+            LangActions
+                .list()(dispatch);
         },
     }
 })(Dict);

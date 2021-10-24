@@ -1,3 +1,5 @@
+import Config from "../utils/Config";
+
 const WORDS_REFRESH = "WORDS_REFRESH";
 const WORDS_REFRESHED = "WORDS_REFRESHED";
 
@@ -9,14 +11,14 @@ const WORD_TAG_REMOVED = "WORD_TAG_REMOVED";
 
 export const WordsActions = {
     list: async (name, langCode, pageNum, pageSize, dispatch) => {
-        await fetch(`words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`)
+        await fetch(`${Config.API_BASE}/words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`)
             .then(res => res.json())
             .then((pager) => {
                 dispatch({type: WORDS_REFRESHED, pager: pager});
             });
     },
     add: async (name, langCode, dispatch) => {
-        await fetch(`words`, {
+        await fetch(`${Config.API_BASE}/words`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -32,7 +34,7 @@ export const WordsActions = {
         return {}
     },
     addTag: async (wordId, tagName, dispatch) => {
-        await fetch(`words/${wordId}/tags`, {
+        await fetch(`${Config.API_BASE}/words/${wordId}/tags`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -48,7 +50,7 @@ export const WordsActions = {
         dispatch({type: WORD_TAG_REMOVED, wordId, tagId});
     },
     loadById: async (wordId, dispatch) => {
-        await fetch(`words/${wordId}`, {
+        await fetch(`${Config.API_BASE}/words/${wordId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

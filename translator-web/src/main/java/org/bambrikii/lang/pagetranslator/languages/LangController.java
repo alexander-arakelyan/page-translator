@@ -2,27 +2,26 @@ package org.bambrikii.lang.pagetranslator.languages;
 
 import org.bambrikii.lang.pagetranslator.orm.LangRepository;
 import org.bambrikii.lang.pagetranslator.orm.Language;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/langs")
+@RestApiV1
 public class LangController {
-    @Autowired
-    private LangRepository langRepository;
+    private final LangRepository langRepository;
+    private final LangConverter langConverter;
 
-    @Autowired
-    private LangConverter langConverter;
+    public LangController(LangRepository langRepository, LangConverter langConverter) {
+        this.langRepository = langRepository;
+        this.langConverter = langConverter;
+    }
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/langs")
     @Transactional
     public Page<LangClient> list() {
 

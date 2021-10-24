@@ -4,27 +4,27 @@ import org.bambrikii.lang.pagetranslator.orm.Usage;
 import org.bambrikii.lang.pagetranslator.orm.UsageRepository;
 import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/usage")
+@RestApiV1
 public class UsageController {
-    @Autowired
-    private WordRepository wordRepository;
-    @Autowired
-    private UsageRepository usageRepository;
+    private final WordRepository wordRepository;
+    private final UsageRepository usageRepository;
 
-    @Autowired
-    private UsageConverter usageConverter;
+    private final UsageConverter usageConverter;
 
-    @GetMapping("/byword/{id}")
+    public UsageController(WordRepository wordRepository, UsageRepository usageRepository, UsageConverter usageConverter) {
+        this.wordRepository = wordRepository;
+        this.usageRepository = usageRepository;
+        this.usageConverter = usageConverter;
+    }
+
+    @GetMapping("/usage/by-word/{id}")
     public ResponseEntity<UsageClient> usage(@RequestParam("id") Long id) {
 
         Word word = wordRepository.findById(id).get();
@@ -36,7 +36,7 @@ public class UsageController {
         return ResponseEntity.ok(usageConverter.toClient(usage.get()));
     }
 
-    @GetMapping("/byword/{id}/inc")
+    @GetMapping("/usage/by-word/{id}/inc")
     public ResponseEntity<UsageClient> increment(@RequestParam("id") Long id) {
 
         Word word = wordRepository.findById(id).get();

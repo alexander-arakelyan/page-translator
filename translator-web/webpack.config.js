@@ -84,8 +84,8 @@ module.exports = {
             });
         },
         proxy: [{
-            context: ["/words", "/langs"],
-            target: "http://localhost:8082"
+            context: ["/api/v1"],
+            target: "http://localhost:8082/"
         }]
     },
     resolve: {

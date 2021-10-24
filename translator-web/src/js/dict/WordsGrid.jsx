@@ -19,6 +19,7 @@ class WordsGrid extends Component {
             pages.push({number, active: number === 1 + this.props?.currentPage});
         }
         const rows = this.props.rows ? this.props?.rows : [];
+        const pageSize = this.props.pageSize;
         return (<React.Fragment>
                 <Table>
                     <tbody>
@@ -42,19 +43,18 @@ class WordsGrid extends Component {
                     }
                     </tbody>
                 </Table>
-                <Pagination>{
-                    pages.map((val, index) => {
+                <Pagination>
+                    {pages.map((val, index) => {
                         return (<Pagination.Item
                             key={val.number}
                             active={val.active}
                             onClick={(event) => {
                                 const page = val.number - 1;
-                                const pageSize = this.props.pageSize;
                                 this.props.pageClicked(page, pageSize)
                             }}
                         > {val.number}</Pagination.Item>);
-                    })
-                }</Pagination>
+                    })}
+                </Pagination>
             </React.Fragment>
         )
     }

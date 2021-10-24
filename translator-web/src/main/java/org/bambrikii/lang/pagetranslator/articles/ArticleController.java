@@ -34,17 +34,31 @@ public class ArticleController {
             @RequestParam(required = false, defaultValue = "") String title,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "updatedAt") String sortBy
     ) {
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
         Page<ArticleDto> page = articleRepository
                 .findByTitleLike(
                         title,
-                        PageRequest.of(pageNum, pageSize, Sort.by(sortBy))
+                        PageRequest.of(pageNum, pageSize, sort)
                 )
                 .map(articleConverter::toDto);
 
         return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/articles/{id}")
+    @Transactional
+    public ResponseEntity<ArticleDto> update(@PathVariable Long id) {
+        Optional<Article> articleOptional = articleRepository.findById(id);
+        if (articleOptional.isEmpty()) {
+            throw new IllegalArgumentException("Article " + id + " not found.");
+        }
+        Article article = articleOptional.get();
+        ArticleDto dto = articleConverter.toDto(article);
+        return ResponseEntity.ok(dto);
+    }
+
 
     @PostMapping("/articles")
     @Transactional
@@ -66,7 +80,6 @@ public class ArticleController {
         dto = articleConverter.toDto(articleRepository.save(article));
         return ResponseEntity.ok(dto);
     }
-
 
     @DeleteMapping("/articles/{id}")
     public ResponseEntity<ArticleDto> remove(@PathVariable Long id) {

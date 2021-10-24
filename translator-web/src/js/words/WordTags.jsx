@@ -70,8 +70,8 @@ class WordTags extends Component {
 }
 
 export const TagsConnected = connect((state, props) => {
-    const wordReducer = state.wordReducer;
-    const {words} = wordReducer;
+    const wordsReducer = state.wordsReducer;
+    const {words} = wordsReducer;
     return {words}
 }, (dispatch) => {
     return {

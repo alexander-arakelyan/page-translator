@@ -6,14 +6,14 @@ import DarkModeToggle from "react-dark-mode-toggle";
 import {Button, ButtonGroup, Col, Container, Form, Nav, Navbar, NavDropdown, Row} from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 
-import {WordsConnected} from "../words/Dict"
+import {WordsPageConnected} from "../words/WordsPage"
 import reduxStore from "../store/ReduxStore";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
-import Articles from "../articles/Articles";
+import {ArticlesPageConnected} from "../articles/ArticlesPage";
 
 const App = ({}) => {
-    const [isDarkMode, setIsDarkMode] = useState(() => false);
+    const [darkMode, setDarkMode] = useState(false);
     return (<React.Fragment>
         <Provider store={reduxStore}>
             <BrowserRouter history={createBrowserHistory()} basename={"#"}>
@@ -36,8 +36,8 @@ const App = ({}) => {
                             </Nav>
                         </Navbar.Collapse>
                         <DarkModeToggle
-                            onChange={setIsDarkMode}
-                            checked={isDarkMode}
+                            onChange={setDarkMode}
+                            checked={darkMode}
                             size={80}
                         />
                     </Container>
@@ -58,10 +58,10 @@ const App = ({}) => {
                                     </Form>
                                 </Route>
                                 <Route path="/words">
-                                    <WordsConnected/>
+                                    <WordsPageConnected/>
                                 </Route>
                                 <Route path="/articles">
-                                    <Articles/>
+                                    <ArticlesPageConnected/>
                                 </Route>
                             </Switch>
                         </Col>

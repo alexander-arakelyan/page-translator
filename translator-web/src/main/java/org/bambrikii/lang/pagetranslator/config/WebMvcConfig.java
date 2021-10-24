@@ -1,5 +1,6 @@
 package org.bambrikii.lang.pagetranslator.config;
 
+import org.bambrikii.lang.pagetranslator.articles.ArticleController;
 import org.bambrikii.lang.pagetranslator.dict.DictController;
 import org.bambrikii.lang.pagetranslator.languages.LangController;
 import org.bambrikii.lang.pagetranslator.tags.TagController;
@@ -20,7 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         LangController.class,
         UsageController.class,
         DictController.class,
-        TagController.class
+        TagController.class,
+        ArticleController.class
 })
 public class WebMvcConfig implements WebMvcConfigurer {
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/public/"};

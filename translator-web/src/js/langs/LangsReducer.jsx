@@ -4,7 +4,6 @@ const LANGS_REFRESH = "LANGS_REFRESH";
 
 export const LangActions = {
     list: function () {
-        console.log(`${Config.API_BASE}/langs`);
         return dispatch => {
             fetch(`${Config.API_BASE}/langs`)
                 .then(res => res.json())

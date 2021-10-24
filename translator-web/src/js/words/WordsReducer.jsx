@@ -63,18 +63,11 @@ export const WordsActions = {
     }
 }
 
-export function wordsReducer(state = {}, action) {
+export function wordsReducer(state = {words: []}, action) {
     switch (action.type) {
         case WORDS_REFRESHED:
             const {pager} = action;
             return {...state, pager}
-        default:
-            return {...state}
-    }
-}
-
-export function wordReducer(state = {words: []}, action) {
-    switch (action.type) {
         case WORD_ADDED:
             return {...state, name: action.name, lang: action.lang}
         case WORD_REFRESHED: {

@@ -24,7 +24,7 @@ class WordsGrid extends Component {
                 <Table>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Language</th>
                         <th>Tags</th>

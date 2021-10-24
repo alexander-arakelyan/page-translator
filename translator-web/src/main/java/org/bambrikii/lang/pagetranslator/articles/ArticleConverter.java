@@ -2,7 +2,9 @@ package org.bambrikii.lang.pagetranslator.articles;
 
 import org.bambrikii.lang.pagetranslator.orm.Article;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ArticleConverter {
     public ArticleDto toDto(Article article) {
         ArticleDto dto = new ArticleDto();

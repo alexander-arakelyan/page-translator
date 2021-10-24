@@ -1,12 +1,13 @@
 import {combineReducers, createStore} from "redux";
-import {wordReducer, wordsReducer} from "../words/WordsReducer";
 import langsReducer from "../langs/LangsReducer";
+import {wordsReducer} from "../words/WordsReducer";
+import {articlesReducer} from "../articles/ArticlesReduces";
 
 const reduxStore = createStore(
     combineReducers({
+        langsReducer,
         wordsReducer,
-        wordReducer,
-        langsReducer
+        articlesReducer,
     }),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )

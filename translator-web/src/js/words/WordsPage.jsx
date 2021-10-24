@@ -6,7 +6,7 @@ import {WordsActions} from "../words/WordsReducer";
 import {LangActions} from "../langs/LangsReducer";
 import WordSearch from "./WordSearch";
 
-class Dict extends Component {
+class WordsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,7 +46,7 @@ class Dict extends Component {
     }
 }
 
-export const WordsConnected = connect((state, props) => {
+export const WordsPageConnected = connect((state, props) => {
     const wordsReducer = state.wordsReducer;
     const langsReducer = state.langsReducer;
     return {
@@ -86,4 +86,4 @@ export const WordsConnected = connect((state, props) => {
                 .list()(dispatch);
         },
     }
-})(Dict);
+})(WordsPage);

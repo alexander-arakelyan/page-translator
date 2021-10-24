@@ -14,7 +14,7 @@ public class UsageConverter {
     public UsageClient toClient(Usage usage) {
         UsageClient client = new UsageClient();
         client.setId(usage.getId());
-        WordDto wordClient = wordConverter.toClient(usage.getWord());
+        WordDto wordClient = wordConverter.toDto(usage.getWord());
         client.setWord(wordClient);
         client.setSearchCount(usage.getSearchCount());
         return client;

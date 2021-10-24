@@ -67,7 +67,6 @@ export function wordsReducer(state = {}, action) {
     switch (action.type) {
         case WORDS_REFRESHED:
             const {pager} = action;
-            console.log(pager);
             return {...state, pager}
         default:
             return {...state}

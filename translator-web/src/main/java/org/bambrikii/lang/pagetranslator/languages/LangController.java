@@ -23,14 +23,14 @@ public class LangController {
 
     @GetMapping(value = "/langs")
     @Transactional
-    public Page<LangClient> list() {
+    public Page<LangDto> list() {
 
         Iterable<Language> languages = langRepository
                 .findAll();
 
-        List<LangClient> langClients = new ArrayList<>();
-        languages.forEach(language -> langClients.add(langConverter.toClient(language)));
+        List<LangDto> langDtos = new ArrayList<>();
+        languages.forEach(language -> langDtos.add(langConverter.toClient(language)));
 
-        return new PageImpl<>(langClients);
+        return new PageImpl<>(langDtos);
     }
 }

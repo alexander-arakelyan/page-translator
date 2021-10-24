@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LangClient {
+public class LangDto {
     private Long id;
     private String code;
     private String name;

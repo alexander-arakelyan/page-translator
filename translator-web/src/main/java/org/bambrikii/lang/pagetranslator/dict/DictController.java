@@ -1,6 +1,6 @@
 package org.bambrikii.lang.pagetranslator.dict;
 
-import org.bambrikii.lang.pagetranslator.languages.LangClient;
+import org.bambrikii.lang.pagetranslator.languages.LangDto;
 import org.bambrikii.lang.pagetranslator.orm.LangRepository;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
@@ -18,9 +18,9 @@ public class DictController {
     }
 
     @RequestMapping("/dict")
-    public void listTranslations(WordDto wordClient, LangClient langClient) {
+    public void listTranslations(WordDto wordClient, LangDto langDto) {
         Long wordId = wordClient.getId();
-        Long langId = langClient.getId();
+        Long langId = langDto.getId();
 //        wordRepository.findTags(wordId);
     }
 }

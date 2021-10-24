@@ -23,7 +23,7 @@ public class WordConverter {
         this.tagConverter = tagConverter;
     }
 
-    public WordDto toClient(Word word) {
+    public WordDto toDto(Word word) {
         Language lang = word.getLang();
         return new WordDto(
                 word.getId(),

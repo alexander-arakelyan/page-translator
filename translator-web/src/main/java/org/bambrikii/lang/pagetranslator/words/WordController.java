@@ -54,7 +54,7 @@ public class WordController {
                         name,
                         lang,
                         PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
-                .map(wordConverter::toClient);
+                .map(wordConverter::toDto);
 
         return ResponseEntity.ok(page);
     }
@@ -66,7 +66,7 @@ public class WordController {
         if (wordOptional.isEmpty()) {
             return null;
         }
-        WordDto wordDto = wordConverter.toClient(wordOptional.get());
+        WordDto wordDto = wordConverter.toDto(wordOptional.get());
         return ResponseEntity.ok(wordDto);
     }
 
@@ -76,7 +76,7 @@ public class WordController {
         Word word = wordConverter.toPersistent(wordClient);
         wordRepository.save(word);
 
-        WordDto result = wordConverter.toClient(word);
+        WordDto result = wordConverter.toDto(word);
 
         return ResponseEntity.ok(result);
     }
@@ -91,7 +91,7 @@ public class WordController {
         word.setLang(lang);
         wordRepository.save(word);
 
-        WordDto result = wordConverter.toClient(word);
+        WordDto result = wordConverter.toDto(word);
 
         return ResponseEntity.ok(result);
     }
@@ -118,7 +118,7 @@ public class WordController {
             word.getTags().add(tag);
             wordRepository.save(word);
         }
-        return wordConverter.toClient(word);
+        return wordConverter.toDto(word);
     }
 
     @PostMapping("/words/{wordId}/tags/by-name")
@@ -145,7 +145,7 @@ public class WordController {
             word.getTags().add(tag);
             wordRepository.save(word);
         }
-        return wordConverter.toClient(word);
+        return wordConverter.toDto(word);
     }
 
     private Tag createTag(String tagName, Language lang) {
@@ -172,6 +172,6 @@ public class WordController {
         Tag tag = tagOptional.get();
         word.getTags().remove(tag);
         wordRepository.save(word);
-        return wordConverter.toClient(word);
+        return wordConverter.toDto(word);
     }
 }

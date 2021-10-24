@@ -14,21 +14,23 @@ class WordsGrid extends Component {
     }
 
     render() {
+        const pageSize = this.props.pageSize;
         const pages = [];
         for (let number = 1; number <= this.props?.totalPages; number++) {
             pages.push({number, active: number === 1 + this.props?.currentPage});
         }
         const rows = this.props.rows ? this.props?.rows : [];
-        const pageSize = this.props.pageSize;
         return (<React.Fragment>
                 <Table>
-                    <tbody>
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Language</th>
                         <th>Tags</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {
                         rows.map((rowVal, rowIndex) => {
                             return (<tr key={"row-" + rowVal.id}>

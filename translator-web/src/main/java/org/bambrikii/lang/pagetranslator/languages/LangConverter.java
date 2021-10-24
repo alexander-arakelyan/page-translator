@@ -10,16 +10,16 @@ public class LangConverter {
     @Autowired
     private LangRepository langRepository;
 
-    public LangClient toClient(Language lang) {
-        return new LangClient(lang.getId(), lang.getCode(), lang.getName());
+    public LangDto toClient(Language lang) {
+        return new LangDto(lang.getId(), lang.getCode(), lang.getName());
     }
 
-    public Language toPersistent(LangClient langClient) {
-        Long id = langClient.getId();
+    public Language toPersistent(LangDto langDto) {
+        Long id = langDto.getId();
         Language lang = id != null && !Long.valueOf(0).equals(id)
                 ? langRepository.findById(id).get() :
                 new Language();
-        lang.setCode(langClient.getCode());
+        lang.setCode(langDto.getCode());
         return lang;
     }
 }

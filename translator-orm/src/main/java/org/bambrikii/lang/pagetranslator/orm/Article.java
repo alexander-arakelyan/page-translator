@@ -10,8 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -28,6 +32,16 @@ public class Article {
     @Column
     @Lob
     private String content;
+
+    @Lob
+    private String draft;
+
+    @ManyToOne
+    private Language lang;
+
+    @OneToMany
+    private Set<ArticleWord> words = new HashSet<>();
+
     @CreationTimestamp
     private Instant createdAt;
     @UpdateTimestamp

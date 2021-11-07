@@ -17,7 +17,6 @@ export const ArticlesGrid = ({
             <tr>
                 <th>Id, Title, Link</th>
                 <th>Content</th>
-                <th>Actions</th>
             </tr>
             </thead>
             <tbody>

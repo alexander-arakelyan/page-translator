@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Button, Col, Form, FormControl, Modal} from "react-bootstrap";
 import JoditEditor from "jodit-react";
+import {TextUtils} from "../utils/TextUtils";
 
 const ArticleModal = ({article, show, onClose, onSave, onRemove, props}) => {
     const editor = useRef(null)
@@ -9,18 +10,30 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, props}) => {
     const [title, setTitle] = useState("");
     const [link, setLink] = useState("");
     const [content, setContent] = useState("");
+    const [draft, setDraft] = useState("");
+
+    const draftRef = useRef(null);
+
+    const handleDraftClick = () => {
+        const substr = TextUtils.selected(draftRef.current);
+        if (substr) {
+            console.log(substr);
+        }
+    };
 
     useEffect(() => {
+        function init(id, title, link, content, draft) {
+            setId(id);
+            setTitle(title);
+            setLink(link)
+            setContent(content)
+            setDraft(draft)
+        }
+
         if (!article) {
-            setId(0);
-            setTitle("");
-            setLink("")
-            setContent("")
+            init(0, "", "", "", "", "")
         } else if (id != article?.id) {
-            setId(article?.id);
-            setTitle(article?.title);
-            setLink(article?.link)
-            setContent(article?.content)
+            init(article?.id, article?.title, article?.link, article?.content, article?.draft);
         }
     })
 
@@ -29,8 +42,8 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, props}) => {
         <div style={{width: "100%"}}>
             <Modal show={show} animation={false} onHide={() => {
                 onClose(false);
-            }} centered={true}>
-                <Modal.Dialog size={"xl"} centered={true} draggable={false}>
+            }} centered={true} size={"xl"} scrollable={true}>
+                <Modal.Dialog size={"xl"} centered={true} draggable={false} scrollable={true}>
                     <Modal.Header closeButton onHide={() => {
                         onClose(false);
                     }}>
@@ -66,6 +79,17 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, props}) => {
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
+                                    <Form.Control ref={draftRef} as="textarea" rows={15} value={draft || content}
+                                                  onChange={(val) => {
+                                                      setDraft(val);
+                                                  }}
+                                                  plaintext={false}
+                                                  onClick={handleDraftClick}
+                                    />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
                                     <JoditEditor
                                         ref={editor}
                                         value={content}
@@ -79,7 +103,6 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, props}) => {
                                 </Form.Group>
                             </Form.Row>
                         </Form>
-                        <pre>{JSON.stringify(article, null, 2)}</pre>
                     </Modal.Body>
                     <Modal.Footer>
 

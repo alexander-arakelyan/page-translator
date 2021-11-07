@@ -26,12 +26,29 @@ class ArticlesPage extends Component {
     }
 
     list(article = undefined) {
-        this.setState({article});
+        if (article) {
+            this.setState({article});
+        }
         this.props.onArticlesList(
             this.state.articleTitle,
             this.props.currentPage,
             this.props.pageSize
         )
+    }
+
+    showEdit() {
+        this.setState({showArticle: true});
+    }
+
+    hideEdit() {
+        this.setState({showArticle: false})
+    }
+
+    updateSearch(article) {
+        if (!article) {
+            return;
+        }
+        this.setState({articleTitle: article.title})
     }
 
     render() {
@@ -61,7 +78,8 @@ class ArticlesPage extends Component {
                     show={this.state.showArticle}
                     article={this.state.article}
                     onClose={(article) => {
-                        this.setState({articleTitle: article?.title, showArticle: false})
+                        this.updateSearch(article);
+                        this.hideEdit();
                         this.list(article);
 
                     }}
@@ -70,14 +88,16 @@ class ArticlesPage extends Component {
                             this.props
                                 .onArticleSave(article)
                                 .then((article) => {
-                                    this.setState({article, articleTitle: article.title, showArticle: true});
+                                    this.updateSearch(article);
+                                    this.showEdit();
                                     this.list(article);
                                 });
                         } else {
                             this.props
                                 .onArticleAdd(article)
                                 .then((article) => {
-                                    this.setState({article, articleTitle: article.title, showArticle: true});
+                                    this.updateSearch(article);
+                                    this.showEdit();
                                     this.list(article);
                                 });
                         }

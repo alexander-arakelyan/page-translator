@@ -12,6 +12,8 @@ public class ArticleDto {
     private String title;
     private String link;
     private String content;
+    private String langCode;
+    private String langName;
     private Instant createdAt;
     private Instant updatedAt;
 }

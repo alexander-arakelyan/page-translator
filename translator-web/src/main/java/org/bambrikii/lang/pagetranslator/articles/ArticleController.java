@@ -2,6 +2,8 @@ package org.bambrikii.lang.pagetranslator.articles;
 
 import org.bambrikii.lang.pagetranslator.orm.Article;
 import org.bambrikii.lang.pagetranslator.orm.ArticleRepository;
+import org.bambrikii.lang.pagetranslator.orm.LangRepository;
+import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @RestApiV1
 public class ArticleController {
     private final ArticleRepository articleRepository;
     private final ArticleConverter articleConverter;
+    private final Function<String, Language> langLookup;
 
-    public ArticleController(ArticleRepository articleRepository, ArticleConverter articleConverter) {
+    public ArticleController(ArticleRepository articleRepository, ArticleConverter articleConverter, LangRepository langRepository) {
         this.articleRepository = articleRepository;
         this.articleConverter = articleConverter;
+        langLookup = code -> langRepository.findByCode(code);
     }
 
     @GetMapping("/articles")
@@ -63,7 +68,7 @@ public class ArticleController {
     @PostMapping("/articles")
     @Transactional
     public ResponseEntity<ArticleDto> add(@RequestBody ArticleDto dto) {
-        Article article = articleConverter.toPersistent(dto);
+        Article article = articleConverter.toPersistent(dto, langLookup);
         dto = articleConverter.toDto(articleRepository.save(article));
         return ResponseEntity.ok(dto);
     }
@@ -76,12 +81,13 @@ public class ArticleController {
             throw new IllegalArgumentException("Article " + id + " not found.");
         }
         Article article = articleOptional.get();
-        article = articleConverter.toPersistent(dto, article);
+        article = articleConverter.toPersistent(dto, article, langLookup);
         dto = articleConverter.toDto(articleRepository.save(article));
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/articles/{id}")
+    @Transactional
     public ResponseEntity<ArticleDto> remove(@PathVariable Long id) {
         Optional<Article> articleOptional = articleRepository.findById(id);
         if (articleOptional.isEmpty()) {

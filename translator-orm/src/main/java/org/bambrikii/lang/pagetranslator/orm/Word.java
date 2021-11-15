@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import java.util.List;
  * Created by Alexander Arakelyan on 06/04/18 23:21.
  */
 @Entity
-@Table
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "lang_id"})
+})
 @Getter
 @Setter
 public class Word {

@@ -82,8 +82,7 @@ export const WordsPageConnected = connect((state, props) => {
                 });
         },
         onLangsList: (content) => {
-            LangActions
-                .list()(dispatch);
+            LangActions.list(dispatch);
         },
     }
 })(WordsPage);

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
@@ -55,9 +56,9 @@ public class ArticleWordController {
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping("/articles/{articleId}/words")
+    @PutMapping("/articles/{articleId}/words/{wordId}")
     @Transactional
-    public ResponseEntity<ArticleWordDto> incrementWord(@PathVariable Long articleId, Long wordId) {
+    public ResponseEntity<ArticleWordDto> incrementWord(@PathVariable Long articleId, @PathVariable Long wordId, @RequestBody ArticleWordDto dto) {
         Optional<ArticleWord> persistentOptional = articleWordRepository.findByArticleIdAndWordId(articleId, wordId);
         ArticleWord persistent;
         if (persistentOptional.isEmpty()) {
@@ -75,9 +76,9 @@ public class ArticleWordController {
         return ResponseEntity.ok(articleWordConverter.toDto(persistent));
     }
 
-    @DeleteMapping("/articles/{articleId}/words")
+    @DeleteMapping("/articles/{articleId}/words/{wordId}")
     @Transactional
-    public ResponseEntity<ArticleWordDto> decrementWord(@PathVariable Long articleId, Long wordId) {
+    public ResponseEntity<ArticleWordDto> decrementWord(@PathVariable Long articleId, @PathVariable Long wordId, @RequestBody ArticleWordDto dto) {
         Optional<ArticleWord> persistentOptional = articleWordRepository.findByArticleIdAndWordId(articleId, wordId);
         ArticleWord persistent;
         if (persistentOptional.isEmpty()) {

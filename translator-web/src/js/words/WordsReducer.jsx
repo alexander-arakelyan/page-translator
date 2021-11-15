@@ -17,8 +17,8 @@ export const WordsActions = {
                 dispatch({type: WORDS_REFRESHED, pager: pager});
             });
     },
-    add: async (name, langCode, dispatch) => {
-        await fetch(`${Config.API_BASE}/words`, {
+    add: (name, langCode, dispatch) => {
+        return fetch(`${Config.API_BASE}/words`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -26,8 +26,9 @@ export const WordsActions = {
             body: JSON.stringify({name, langCode})
         })
             .then(res => res.json())
-            .then((pager) => {
+            .then((word) => {
                 dispatch({type: WORD_ADDED, name, lang: langCode});
+                return word;
             });
     },
     update: async (id, name, dispatch) => {

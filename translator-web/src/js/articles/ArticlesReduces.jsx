@@ -7,15 +7,15 @@ const ARTICLE_REMOVED = "ARTICLE_REMOVED"
 const ARTICLE_LOADED = "ARTICLE_LOADED"
 
 export const ArticlesActions = {
-    list: async (title, page, pageSize, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`)
+    list: (title, page, pageSize, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`)
             .then(res => res.json())
             .then(pager => {
                 dispatch({type: ARTICLES_REFRESHED, pager: pager});
             });
     },
-    add: async (article, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles`, {
+    add: (article, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,8 +28,8 @@ export const ArticlesActions = {
                 return article;
             });
     },
-    update: async (article, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles/${article.id}`, {
+    update: (article, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles/${article.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -42,8 +42,8 @@ export const ArticlesActions = {
                 return article;
             });
     },
-    remove: async (id, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles/${id}`, {
+    remove: (id, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -56,8 +56,8 @@ export const ArticlesActions = {
                 return article;
             });
     },
-    loadById: async (id, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles/${id}`, {
+    loadById: (id, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -69,8 +69,8 @@ export const ArticlesActions = {
                 return article;
             });
     },
-    save: async (article, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles/${article.id}`, {
+    save: (article, dispatch) => {
+        return fetch(`${Config.API_BASE}/articles/${article.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

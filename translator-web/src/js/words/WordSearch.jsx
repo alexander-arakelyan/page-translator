@@ -70,7 +70,7 @@ class WordSearch extends Component {
                                     return (<option
                                         key={lang.code}
                                         value={lang.code}
-                                        active={currLang?.code == lang.code ? "active" : ""}
+                                        selected={currLang?.code == lang.code ? "selected" : ""}
                                     >{lang.name}</option>)
                                 })}
                             </Form.Control>

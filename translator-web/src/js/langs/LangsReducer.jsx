@@ -3,14 +3,12 @@ import Config from "../utils/Config";
 const LANGS_REFRESH = "LANGS_REFRESH";
 
 export const LangActions = {
-    list: function () {
-        return dispatch => {
-            fetch(`${Config.API_BASE}/langs`)
-                .then(res => res.json())
-                .then((pager) => {
-                    dispatch({type: LANGS_REFRESH, pager});
-                })
-        }
+    list: function (dispatch) {
+        return fetch(`${Config.API_BASE}/langs`)
+            .then(res => res.json())
+            .then((pager) => {
+                dispatch({type: LANGS_REFRESH, pager});
+            });
     }
 }
 

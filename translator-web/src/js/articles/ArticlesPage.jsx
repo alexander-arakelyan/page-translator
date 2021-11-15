@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {ArticlesGrid} from "./ArticlesGrid";
 import {ArticleSearch} from "./ArticleSearch";
-import ArticleModal from "./ArticleModal";
+import ArticleModal, {ArticleModalConnected} from "./ArticleModal";
 import {connect} from "react-redux";
 import {ArticlesActions} from "./ArticlesReduces";
 
@@ -74,7 +74,7 @@ class ArticlesPage extends Component {
                         this.setState({article: {title: articleTitle}, showArticle: true});
                     }}
                 />
-                <ArticleModal
+                <ArticleModalConnected
                     show={this.state.showArticle}
                     article={this.state.article}
                     onClose={(article) => {

@@ -30,7 +30,11 @@ export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
                             }}>Find</Button>
                             {titleInternal && <Button variant="secondary" onClick={event => {
                                 onAdd(titleInternal);
-                            }}>Create</Button>}
+                            }}>Add</Button>}
+                            {titleInternal && <Button variant="secondary" onClick={event => {
+                                setTitleInternalInternal("");
+                                onSearch("")
+                            }}>Clear</Button>}
                         </ButtonGroup>
                     </Form.Group>
                 </Form.Row>

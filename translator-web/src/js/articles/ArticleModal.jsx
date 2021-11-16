@@ -142,7 +142,7 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                         }}>Delete</Button>
 
                         <Button variant="primary" onClick={() => {
-                            onSave({...article, title, link, content});
+                            onSave({...article, title, link, content, draft, langCode});
                         }}>Save</Button>
 
                         <Button variant="secondary" onClick={() => {

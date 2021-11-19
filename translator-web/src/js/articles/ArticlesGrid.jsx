@@ -1,5 +1,15 @@
 import React from "react";
-import {Button, Nav, Pagination, Table} from "react-bootstrap";
+import {
+    Button,
+    Link,
+    Pagination,
+    PaginationItem,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
+} from "@mui/material";
 
 export const ArticlesGrid = ({
                                  title, pageSize, totalPages, currentPage, rows = [],
@@ -12,51 +22,50 @@ export const ArticlesGrid = ({
     }
     return (<React.Fragment>
         {title}
-        <Table>
-            <thead>
-            <tr>
-                <th>Id, Title, Link</th>
-                <th>Content</th>
-            </tr>
-            </thead>
-            <tbody>
-            {rows.map(article => {
-                return (<tr key={article.id}>
-                    <td>
-                        <div>[{article.id}] {article.title}</div>
-                        <div><Nav.Link href={article.link}>{article.link}</Nav.Link></div>
-                        <div>Created: {article.createdAt}</div>
-                        <div>Updated: {article.updatedAt}</div>
-                        <div>
-                            <Button variant="danger" onClick={() => {
-                                if (confirm(`Delete [${article.id}] ${article.title}?`)) {
-                                    removeClicked(article.id);
-                                }
-                            }}>Delete</Button>
+        <Table size="small">
+            <TableHead>
+                <TableRow>
+                    <TableCell>Id, Title, Link</TableCell>
+                    <TableCell>Content</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {rows.map(article => {
+                    return (<TableRow key={article.id}>
+                        <TableCell>
+                            <div>[{article.id}] {article.title}</div>
+                            <div><Link href={article.link}>{article.link}</Link></div>
+                            <div>Created: {article.createdAt}</div>
+                            <div>Updated: {article.updatedAt}</div>
+                            <div>
+                                <Button variant="danger" onClick={() => {
+                                    if (confirm(`Delete [${article.id}] ${article.title}?`)) {
+                                        removeClicked(article.id);
+                                    }
+                                }}>Delete</Button>
 
-                            <Button variant="primary" onClick={() => {
-                                editClicked(article.id);
-                            }}>Edit</Button>
+                                <Button variant="primary" onClick={() => {
+                                    editClicked(article.id);
+                                }}>Edit</Button>
 
-                        </div>
-                    </td>
-                    <td dangerouslySetInnerHTML={{__html: article.content}}></td>
-                </tr>);
-            })}
-            </tbody>
+                            </div>
+                        </TableCell>
+                        <TableCell dangerouslySetInnerHTML={{__html: article.content}}></TableCell>
+                    </TableRow>);
+                })}
+            </TableBody>
         </Table>
         <Pagination>
             {pages.map((val, index) => {
-                return (<Pagination.Item
+                return (<PaginationItem
                     key={val.number}
                     active={val.active}
                     onClick={(event) => {
                         const page = val.number - 1;
                         pageClicked(page, pageSize)
                     }}
-                > {val.number}</Pagination.Item>);
+                > {val.number}</PaginationItem>);
             })}
         </Pagination>
-
     </React.Fragment>)
 }

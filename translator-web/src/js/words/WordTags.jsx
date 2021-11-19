@@ -1,8 +1,19 @@
 import React, {Component} from "react"
-import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
 import {TagsActions} from "../tags/TagsReducer";
 import {connect} from "react-redux";
 import {WordsActions} from "../words/WordsReducer";
+import {
+    Button,
+    FormControl,
+    FormGroup,
+    Grid,
+    Input,
+    InputLabel,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow
+} from "@mui/material";
 
 class WordTags extends Component {
     constructor(props) {
@@ -31,40 +42,41 @@ class WordTags extends Component {
         }
 
         return (<React.Fragment>
-            <table>
-                <tbody>
-                {tags.map((tag, index) => {
-                    return (<React.Fragment key={`tag-${wordId}-${tag.id}`}>
-                        <tr>
-                            <td>{tag.id}</td>
-                            <td>{tag.name}</td>
-                            <td>{tag.langName}</td>
-                            <td>
-                                <Button variant="outline-primary" onClick={event => {
-                                    this.onTagRemove(wordId, tag.id)
-                                }}>Remove</Button>
-                            </td>
-                        </tr>
-                    </React.Fragment>)
-                })}
-                </tbody>
-            </table>
-            <Form>
-                <InputGroup className={"mb-3"}>
-                    <FormControl
-                        placeholder="Tag Name"
-                        aria-label="Tag Name"
-                        aria-describedby="basic-addon2"
-                        value={this.state.tagName}
-                        onChange={(event) => {
-                            this.addTagNameChanged(event.target.value);
-                        }}
-                    />
-                    <Button variant="outline-primary" onClick={event => {
-                        this.props.onTagAdd(this.props.word.id, this.state.tagName)
-                    }}>Add</Button>
-                </InputGroup>
-            </Form>
+            <Table size="small">
+                <TableBody>
+                    {tags.map((tag, index) => {
+                        return (
+                            <TableRow key={`tag-${wordId}-${tag.id}`}>
+                                <TableCell>{tag.id}</TableCell>
+                                <TableCell>{tag.name}</TableCell>
+                                <TableCell>{tag.langName}</TableCell>
+                                <TableCell>
+                                    <Button variant="outline-primary" onClick={event => {
+                                        this.onTagRemove(wordId, tag.id)
+                                    }}>Remove</Button>
+                                </TableCell>
+                            </TableRow>)
+                    })}
+                </TableBody>
+            </Table>
+            <FormGroup className={"mb-3"}>
+                <Grid container>
+                    <Grid item>
+                        <Input
+                            placeholder="Tag Name"
+                            value={this.state.tagName}
+                            onChange={(event) => {
+                                this.addTagNameChanged(event.target.value);
+                            }}
+                        />
+                    </Grid>
+                    <Grid>
+                        <Button variant="outline-primary" onClick={event => {
+                            this.props.onTagAdd(this.props.word.id, this.state.tagName)
+                        }}>Add</Button>
+                    </Grid>
+                </Grid>
+            </FormGroup>
         </React.Fragment>)
     }
 }

@@ -60,29 +60,29 @@ export const WordsPageConnected = connect((state, props) => {
 }, (dispatch) => {
     return {
         onWordsList: (word, langCode, page = 0, pageSize = 5) => {
-            WordsActions
+            return WordsActions
                 .list(word, langCode, page, pageSize, dispatch)
                 .then(r => {
                 });
         },
         onWordAdd: (word, langCode, pageSize = 15) => {
-            WordsActions
+            return WordsActions
                 .add(word, langCode, dispatch)
                 .then(() => {
-                    WordsActions
+                    return WordsActions
                         .list(word, langCode, 0, pageSize, dispatch)
                         .then(r => {
                         });
                 });
         },
         onWordUpdate: (id, name) => {
-            WordsActions
+            return WordsActions
                 .update(id, name, dispatch)
                 .then(r => {
                 });
         },
         onLangsList: (content) => {
-            LangActions.list(dispatch);
+            return LangActions.list(dispatch);
         },
     }
 })(WordsPage);

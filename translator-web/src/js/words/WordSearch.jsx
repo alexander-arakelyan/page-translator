@@ -1,12 +1,19 @@
 import React, {Component} from "react";
-import {Button, ButtonGroup, Col, Container, Form} from "react-bootstrap";
+import {
+    Button,
+    Container,
+    FormGroup,
+    Grid,
+    Input,
+    InputLabel, MenuItem, Select
+} from "@mui/material";
 
 class WordSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
             wordName: "",
-            langCode: ""
+            lang: {code: "en"}
         }
         this.onSelectLang = this.onSelectLang.bind(this);
         this.onWordNameChange = this.onWordNameChange.bind(this);
@@ -14,12 +21,12 @@ class WordSearch extends Component {
     }
 
     componentDidMount() {
-        this.props.onLangsList();
+        this.props.onLangsList()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.langs && prevProps.langs != this.props.langs) {
-            let lang = this.props.langs[0];
+            const lang = this.props.langs[0];
             this.setState({lang});
             this.props.onWordsList(this.state.wordName, lang.code, 0);
         }
@@ -50,47 +57,42 @@ class WordSearch extends Component {
         const currLang = this.state.lang;
         return (<React.Fragment>
             <Container fluid={"md"}>
-                <Form>
-                    <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Content</Form.Label>
-                            <Form.Control type="text" placeholder="Enter word" value={this.state.wordName}
-                                          onChange={this.onWordNameChange}/>
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>Language</Form.Label>
-                            <Form.Control
-                                as="select"
-                                title={currLang ? currLang.name : "Language"}
-                                onChange={(e) => {
-                                    this.onSelectLang(e.target.value);
-                                }}
-                            >{
-                                langs.map((lang, index) => {
-                                    return (<option
-                                        key={lang.code}
-                                        value={lang.code}
-                                        selected={currLang?.code == lang.code ? "selected" : ""}
-                                    >{lang.name}</option>)
-                                })}
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>Actions</Form.Label><br/>
-                            <ButtonGroup>
-                                <Button variant="primary" type="button" onClick={this.onSearchClick}>Find</Button>
-                                {this.state.wordName && this.state.lang &&
-                                <Button variant="secondary" onClick={event => this.addNewWord(event)}>Add
-                                    New</Button>}
-                            </ButtonGroup>
-                        </Form.Group>
-                    </Form.Row>
-                    <Form.Row>
-                        <Form.Group>
-                            Search for: {this.state.wordName} ({this.state.lang?.name})
-                        </Form.Group>
-                    </Form.Row>
-                </Form>
+                <Grid container spacing={5}>
+                    <Grid item>
+                        <FormGroup>
+                            <InputLabel>Content</InputLabel>
+                            <Input placeholder="Enter word" value={this.state.wordName}
+                                   onChange={this.onWordNameChange}/>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item>
+
+                        <FormGroup>
+                            <InputLabel>Language</InputLabel>
+                            <Select
+                                value={this.state.lang?.code}
+                                onChange={(event) => this.onSelectLang(event.target.value)}
+                            >{langs.map((lang, index) => {
+                                return (<MenuItem key={lang.code} value={lang.code}>{lang.name}</MenuItem>)
+                            })}
+                            </Select>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item>
+                        <FormGroup>
+                            <InputLabel>Actions</InputLabel>
+                            <Button variant="primary" type="button" onClick={this.onSearchClick}>Find</Button>
+                            {this.state.wordName && this.state.lang &&
+                            <Button variant="secondary" onClick={event => this.addNewWord(event)}>Add
+                                New</Button>}
+                        </FormGroup>
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <FormGroup>
+                        Search for: {this.state.wordName} ({this.state.lang?.name})
+                    </FormGroup>
+                </Grid>
             </Container>
         </React.Fragment>)
     }

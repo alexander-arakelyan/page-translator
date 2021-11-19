@@ -1,6 +1,6 @@
 import React, {Component} from "react"
-import {Pagination, Table} from "react-bootstrap"
 import {TagsConnected} from "./WordTags";
+import {Pagination, PaginationItem, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 class WordsGrid extends Component {
     constructor(props) {
@@ -21,42 +21,40 @@ class WordsGrid extends Component {
         }
         const rows = this.props.rows ? this.props?.rows : [];
         return (<React.Fragment>
-                <Table>
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Language</th>
-                        <th>Tags</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        rows.map((rowVal, rowIndex) => {
-                            return (<tr key={"row-" + rowVal.id}>
-                                <td>{rowVal.id}</td>
-                                <td>{rowVal.name}</td>
-                                <td>{rowVal.langName}</td>
-                                <td>
-                                    <TagsConnected word={rowVal}/>
-                                </td>
-                            </tr>)
-                        })
-                    }
-                    </tbody>
+                <Pagination
+                    count={pages.length}
+                    defaultPage={this.props?.currentPage}
+                    onChange={(event, page) => this.props.pageClicked(page - 1, pageSize)}
+                />
+                <Table size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Id</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Language</TableCell>
+                            <TableCell>Tags</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            rows.map((rowVal, rowIndex) => {
+                                return (<TableRow key={"row-" + rowVal.id}>
+                                    <TableCell>{rowVal.id}</TableCell>
+                                    <TableCell>{rowVal.name}</TableCell>
+                                    <TableCell>{rowVal.langName}</TableCell>
+                                    <TableCell>
+                                        <TagsConnected word={rowVal}/>
+                                    </TableCell>
+                                </TableRow>)
+                            })
+                        }
+                    </TableBody>
                 </Table>
-                <Pagination>
-                    {pages.map((val, index) => {
-                        return (<Pagination.Item
-                            key={val.number}
-                            active={val.active}
-                            onClick={(event) => {
-                                const page = val.number - 1;
-                                this.props.pageClicked(page, pageSize)
-                            }}
-                        > {val.number}</Pagination.Item>);
-                    })}
-                </Pagination>
+                <Pagination
+                    count={pages.length}
+                    defaultPage={this.props?.currentPage}
+                    onChange={(event, page) => this.props.pageClicked(page - 1, pageSize)}
+                />
             </React.Fragment>
         )
     }

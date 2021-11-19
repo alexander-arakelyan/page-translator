@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Form, FormControl, FormGroup, InputGroup, Row} from "react-bootstrap";
 import {connect, useDispatch} from "react-redux";
 import {ArticleWordsGrid} from "./ArticleWordsGrid";
 import {ArticleWordsAction} from "./ArtiicleWordsReducer";
 import {WordsActions} from "../words/WordsReducer";
+import {Button, FormControl, FormGroup, Grid, Input, InputLabel, MenuItem, Select, TableRow} from "@mui/material";
 
 const ArticleWordsComponent = ({
                                    article, words, articleWords = [],
-                                   list,
+                                   findArticleWords,
                                    add, remove,
                                    findWords, addWord,
                                    langs,
@@ -20,7 +20,7 @@ const ArticleWordsComponent = ({
 
     useEffect(() => {
         if (article.id) {
-            list(article.id);
+            findArticleWords(article.id, wordContent);
         }
         if (wordContent && langCode) {
             findWords(wordContent, langCode);
@@ -33,67 +33,88 @@ const ArticleWordsComponent = ({
     }, [wordContent, langCode, selectedWord]);
 
     return (<React.Fragment>
-        <Form>
-            <Form.Row>
-                <Form.Group as={Col}>
-                    <InputGroup>
-                        <FormControl
+        <FormGroup>
+            <Grid container spacing={5}>
+                <Grid item xs={7}>
+                    <FormGroup>
+                        <InputLabel title="Word"/>
+                        <Input
                             placeholder="Word"
-                            aria-label="Word"
-                            aria-describedby="basic-addon2"
                             value={wordContent}
                             onChange={(event) => {
                                 let val = event.target.value;
                                 setWordContent(val);
                                 if (article.id && val) {
+                                    findArticleWords(article.id, val);
                                     findWords(val, langCode);
                                 }
                             }}
                         />
-                        <Form.Control
-                            as="select"
-                            title={langCode ? langCode : "Language"}
+                    </FormGroup>
+                </Grid>
+                <Grid item xs={2}>
+                    <FormGroup>
+                        <InputLabel title={langCode ? langCode : "Language"}/>
+                        <Select
+                            value={langCode}
                             onChange={(e) => {
                                 setLangCode(e.target.value);
                             }}
                         >{
                             langs && langs.map((lang, index) => {
-                                return (<option
+                                return (<MenuItem
                                     key={lang.code}
                                     value={lang.code}
-                                    selected={langCode == lang.code ? "selected" : ""}
-                                >{lang.name}</option>)
-                            })}
-                        </Form.Control>
+                                >{lang.name}</MenuItem>)
+                            })
+                        }
+                        </Select>
+                    </FormGroup>
+                </Grid>
+                <Grid item xs={1}>
+                    <FormGroup>
+                        <Button onClick={() => {
+                            setWordContent("");
+                            findArticleWords(article.id, "");
+                            findWords(wordContent, langCode);
+                        }}>Clear</Button>
+                    </FormGroup>
+                </Grid>
+                <Grid item xs={1}>
+                    <FormGroup>
                         <Button onClick={() => {
                             findWords(article.id);
                         }}>Find</Button>
+                    </FormGroup>
+                </Grid>
+                <Grid item xs={1}>
+                    <FormGroup>
                         <Button onClick={() => {
                             addWord(article.id, wordContent, langCode)
                                 .then(() => {
-                                    list(article.id);
+                                    findArticleWords(article.id, wordContent);
                                     findWords(wordContent, langCode);
                                 })
                                 .catch(() => {
-                                    list(article.id);
+                                    findArticleWords(article.id, wordContent);
                                     findWords(wordContent, langCode);
                                 });
                         }}>Add</Button>
-                    </InputGroup>
-                </Form.Group>
-            </Form.Row>
-        </Form>
+                    </FormGroup>
+                </Grid>
+            </Grid>
+        </FormGroup>
         <ArticleWordsGrid
             words={words}
             articleWords={articleWords}
             onAdd={(word) => {
                 add(article.id, word.id)
                     .then(() => {
-                        list(article.id);
+                        findArticleWords(article.id, word.name);
                         findWords(word.name, word.langCode);
                     })
                     .catch(() => {
-                        list(article.id);
+                        findArticleWords(article.id, word.name);
                         findWords(word.name, word.langCode)
                     });
             }}
@@ -102,13 +123,13 @@ const ArticleWordsComponent = ({
                     .then(() => {
                         setWordContent(articleWord.wordName);
                         setLangCode(articleWord.langCode);
-                        list(article.id);
+                        findArticleWords(article.id, articleWord.wordName);
                         findWords(articleWord.wordName, articleWord.langCode)
                     })
                     .catch(() => {
                         setWordContent(articleWord.wordName);
                         setLangCode(articleWord.langCode);
-                        list(article.id);
+                        findArticleWords(article.id, articleWord.wordName);
                         findWords(articleWord.wordName, articleWord.langCode);
                     });
             }}
@@ -127,8 +148,8 @@ export const ActionWordsComponentConnected = connect((state, props) => {
     }
 }, (dispatch) => {
     return {
-        list: (articleId) => {
-            return ArticleWordsAction.listWords(articleId, dispatch);
+        findArticleWords: (articleId, wordName) => {
+            return ArticleWordsAction.listWords(articleId, wordName, dispatch);
         },
         add: (articleId, wordId) => {
             return ArticleWordsAction.incrementWord(articleId, wordId, dispatch);

@@ -1,5 +1,6 @@
 package org.bambrikii.lang.pagetranslator.articleword;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import org.bambrikii.lang.pagetranslator.orm.ArticleRepository;
 import org.bambrikii.lang.pagetranslator.orm.ArticleWord;
 import org.bambrikii.lang.pagetranslator.orm.ArticleWordRepository;
@@ -7,7 +8,6 @@ import org.bambrikii.lang.pagetranslator.orm.WordRepository;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
+
+import static org.bambrikii.lang.pagetranslator.utils.RequestUtils.toPager;
 
 @RestApiV1
 public class ArticleWordController {
@@ -44,13 +46,15 @@ public class ArticleWordController {
             @PathVariable Long articleId,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "10000") Integer pageSize,
-            @RequestParam(defaultValue = "count") String sortBy
+            @RequestParam(defaultValue = "count DESC") String sortBy,
+            @RequestParam(value = "word", required = false) String wordName
     ) {
-        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        PageRequest pager = PageRequest.of(pageNum, pageSize, sort);
 
-        Page<ArticleWordDto> page = articleWordRepository
-                .findByArticleIdOrderByCountDesc(articleId, pager)
+        PageRequest pager = toPager(pageNum, pageSize, sortBy);
+        Page<ArticleWord> articleWords = StringUtils.isNotBlank(wordName)
+                ? articleWordRepository.findByArticleIdAndWordNameLike(articleId, wordName, pager)
+                : articleWordRepository.findByArticleId(articleId, pager);
+        Page<ArticleWordDto> page = articleWords
                 .map(articleWordConverter::toDto);
 
         return ResponseEntity.ok(page);

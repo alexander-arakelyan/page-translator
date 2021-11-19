@@ -1,12 +1,21 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Col, Form, FormControl, Modal} from "react-bootstrap";
 import JoditEditor from "jodit-react";
 import {TextUtils} from "../utils/TextUtils";
 import {ActionWordsComponentConnected} from "../articlewords/ArticleWordsComponent";
-import langsReducer, {LangActions} from "../langs/LangsReducer";
-import {WordsActions} from "../words/WordsReducer";
-import {ArticlesActions as ArticleActions} from "./ArticlesReduces";
+import {LangActions} from "../langs/LangsReducer";
 import {connect} from "react-redux";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormGroup,
+    Grid, Input,
+    InputLabel, MenuItem,
+    Modal,
+    Select,
+    TableRow,
+    Typography
+} from "@mui/material";
 
 const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, langs, props}) => {
     const editor = useRef(null)
@@ -49,110 +58,117 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
 
     const config = {readonly: false}
     return (<React.Fragment>
-        <div style={{width: "100%"}}>
-            <Modal show={show} animation={false} onHide={() => {
-                onClose(false);
-            }} centered={true} size={"xl"} scrollable={true}>
-                <Modal.Dialog size={"xl"} centered={true} draggable={false} scrollable={true}>
-                    <Modal.Header closeButton onHide={() => {
-                        onClose(false);
-                    }}>
-                        <Modal.Title>{article?.id} - {article?.title}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <FormControl
-                                        placeholder="Title"
-                                        aria-label="Title"
-                                        aria-describedby="basic-addon2"
-                                        value={title}
-                                        onChange={(event) => setTitle(event.target.value)}
-                                    />
-                                </Form.Group>
-                            </Form.Row>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <FormControl
-                                        placeholder="Link"
-                                        aria-label="Link"
-                                        aria-describedby="basic-addon2"
-                                        value={link}
-                                        onChange={(event) => setLink(event.target.value)}
-                                    />
-                                </Form.Group>
-                            </Form.Row>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <Form.Control
-                                        as="select"
-                                        title={langCode ? langCode : "Language"}
-                                        onChange={(e) => setLangCode(e.target.value)}
-                                    >{
-                                        langs && langs.map((lang, index) => {
-                                            return (<option
-                                                key={lang.code}
-                                                value={lang.code}
-                                                selected={langCode == lang.code ? "selected" : ""}
-                                            >{lang.name}</option>)
-                                        })}
-                                    </Form.Control>
-                                </Form.Group>
-                            </Form.Row>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <JoditEditor
-                                        ref={editor}
-                                        value={content}
-                                        config={config}
-                                        tabIndex={1} // tabIndex of textarea
-                                        onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                        onChange={newContent => setContent(content)}
-                                    />
-                                </Form.Group>
-                            </Form.Row>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <Form.Control ref={draftRef} as="textarea" rows={15} value={draft || content}
-                                                  onChange={(val) => setDraft(val.target.value)}
-                                                  plaintext={false}
-                                                  onClick={handleDraftClick}
-                                    />
-                                </Form.Group>
-                            </Form.Row>
-                            {
-                                article?.id &&
-                                <Form.Row>
-                                    <ActionWordsComponentConnected
-                                        article={article}
-                                        langs={langs}
-                                        selectedWord={selectedWord}
-                                    />
-                                </Form.Row>
-                            }
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
+        <Modal open={show}
+               onClose={() => {
+                   onClose(false);
+               }}
+               centered={true}
+               scrollable={true}
+               aria-labelledby="modal-modal-title"
+               aria-describedby="modal-modal-description"
+               style={{
+                   backgroundColor: "white",
+                   horizontalAlign: "center",
+                   padding: "5px",
+                   overflow: "overlay"
+               }}
+        >
+            <Box style={{backgroundColor: "white"}}>
+                <Box style={{backgroundColor: "#1976d2"}}>
+                    <Grid container>
+                        <Grid item xs={10}></Grid>
+                        <Grid item xs={2}>
+                            <Button variant="secondary" onClick={() => {
+                                onClose();
+                            }} style={{float: "right"}}>Close</Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <Typography component={"h2"}>{article?.id} - {article?.title}</Typography>
+                <Box>
+                    <FormGroup>
+                        <Input
+                            placeholder="Title"
+                            value={title}
+                            onChange={(event) => setTitle(event.target.value)}
+                        />
+                    </FormGroup>
+                    <Grid container>
+                        <Grid item xs={10}>
+                            <FormGroup>
+                                <InputLabel title="Link"/>
+                                <Input
+                                    value={link}
+                                    onChange={(event) => setLink(event.target.value)}
+                                    fullWidth={true}
+                                />
+                            </FormGroup>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <FormGroup>
+                                <InputLabel title={langCode ? langCode : "Language"}/>
+                                <Select
+                                    value={langCode}
+                                    onChange={(e) => setLangCode(e.target.value)}
+                                >{
+                                    langs && langs.map((lang, index) => {
+                                        return (<MenuItem
+                                            key={lang.code}
+                                            value={lang.code}
+                                        >{lang.name}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormGroup>
+                        </Grid>
+                    </Grid>
+                    <FormGroup>
+                        <JoditEditor
+                            ref={editor}
+                            value={content}
+                            config={config}
+                            tabIndex={1} // tabIndex of textarea
+                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                            onChange={newContent => setContent(content)}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormControl ref={draftRef} as="textarea" rows={15} value={draft || content}
+                                     onChange={(val) => setDraft(val.target.value)}
+                                     plaintext={false}
+                                     onClick={handleDraftClick}
+                        />
+                    </FormGroup>
+                    {
+                        article?.id &&
+                        <ActionWordsComponentConnected
+                            article={article}
+                            langs={langs}
+                            selectedWord={selectedWord}
+                        />
+                    }
+                </Box>
+                <Box>
+                    <Grid container style={{backgroundColor: "#1976d2"}}>
+                        <Grid item xs={8}></Grid>
+                        <Grid item xs={4}>
+                            <Button variant="danger" onClick={() => {
+                                if (confirm(`Delete [${article.id}] ${article.title}?`)) {
+                                    onRemove(article.id);
+                                }
+                            }}>Delete</Button>
 
-                        <Button variant="danger" onClick={() => {
-                            if (confirm(`Delete [${article.id}] ${article.title}?`)) {
-                                onRemove(article.id);
-                            }
-                        }}>Delete</Button>
+                            <Button variant="primary" onClick={() => {
+                                onSave({...article, title, link, content, draft, langCode});
+                            }}>Save</Button>
 
-                        <Button variant="primary" onClick={() => {
-                            onSave({...article, title, link, content, draft, langCode});
-                        }}>Save</Button>
-
-                        <Button variant="secondary" onClick={() => {
-                            onClose();
-                        }}>Close</Button>
-
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal>
-        </div>
+                            <Button variant="secondary" onClick={() => {
+                                onClose();
+                            }}>Close</Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Box>
+        </Modal>
     </React.Fragment>);
 }
 

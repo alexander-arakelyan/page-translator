@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, ButtonGroup, Col, Container, Form} from "react-bootstrap";
+import {Button, ButtonGroup, FormGroup, Grid, Input, InputLabel} from "@mui/material";
 
 export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
     const [titleInternal, setTitleInternalInternal] = useState("");
@@ -11,19 +11,21 @@ export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
     })
 
     return (<React.Fragment>
-        <Container fluid={"md"}>
-            <Form>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Control type={"text"} placeholder={"Enter title"} value={titleInternal}
-                                      onChange={(val) => {
-                                          const nextVal = val.target.value;
-                                          setTitleInternalInternal(nextVal);
-                                          onSearch(nextVal);
-                                      }}
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col}>
+            <FormGroup>
+                <Grid container spacing={5}>
+                    <Grid item>
+                        <FormGroup>
+                            <InputLabel title={"Enter title"}/>
+                            <Input value={titleInternal}
+                                   onChange={(val) => {
+                                       const nextVal = val.target.value;
+                                       setTitleInternalInternal(nextVal);
+                                       onSearch(nextVal);
+                                   }}
+                            />
+                        </FormGroup>
+                    </Grid>
+                    <Grid item>
                         <ButtonGroup>
                             <Button variant="primary" type="button" onClick={() => {
                                 onSearch(titleInternal);
@@ -36,9 +38,9 @@ export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
                                 onSearch("")
                             }}>Clear</Button>}
                         </ButtonGroup>
-                    </Form.Group>
-                </Form.Row>
-            </Form>
-        </Container>
-    </React.Fragment>);
-}
+                    </Grid>
+                </Grid>
+            </FormGroup>
+        </React.Fragment>
+    )
+};

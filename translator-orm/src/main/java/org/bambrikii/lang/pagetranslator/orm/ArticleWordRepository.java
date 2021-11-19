@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface ArticleWordRepository extends CrudRepository<ArticleWord, Long> {
-    Page<ArticleWord> findByArticleIdOrderByCountDesc(Long articleId, Pageable paging);
+    Page<ArticleWord> findByArticleId(Long articleId, Pageable paging);
+
+    Page<ArticleWord> findByArticleIdAndWordNameLike(Long articleId, String word, Pageable paging);
 
     Optional<ArticleWord> findByArticleIdAndWordId(Long articleId, Long wordId);
 }

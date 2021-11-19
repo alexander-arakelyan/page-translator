@@ -5,8 +5,9 @@ const ARTICLE_WORD_INCREMENTED = "ARTICLE_WORD_INCREMENTED";
 const ARTICLE_WORD_DECREMENTED = "ARTICLE_WORD_DECREMENTED";
 
 export const ArticleWordsAction = {
-    listWords: async (articleId, dispatch) => {
-        return await fetch(`${Config.API_BASE}/articles/${articleId}/words`, {
+    listWords: async (articleId, wordName, dispatch) => {
+        const params = wordName ? `word=${wordName}` : "";
+        return await fetch(`${Config.API_BASE}/articles/${articleId}/words?${params}`, {
             method: "GET",
             headers: {"Content-Type": "application/json"}
         })

@@ -40,7 +40,7 @@ module.exports = {
                 use: ["xml-loader"],
             },
             {
-                test: /\.less$/,
+                test: /\.(less|scss)$/,
                 use: [
                     {loader: "style-loader"},
                     {loader: "css-loader"},

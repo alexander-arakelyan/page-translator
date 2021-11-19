@@ -8,8 +8,6 @@ import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+
+import static org.bambrikii.lang.pagetranslator.utils.RequestUtils.toPager;
 
 /**
  * Created by Alexander Arakelyan on 06/04/18 23:20.
@@ -45,7 +45,7 @@ public class WordController {
             @RequestParam(required = false, defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer pageNum,
             @RequestParam(defaultValue = "50") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "id DESC") String sortBy,
             @RequestParam(required = false) String langCode
     ) {
         Language lang = langRepository.findByCode(langCode);
@@ -53,7 +53,8 @@ public class WordController {
                 .findByNameLikeAndLang(
                         name,
                         lang,
-                        PageRequest.of(pageNum, pageSize, Sort.by(sortBy)))
+                        toPager(pageNum, pageSize, sortBy)
+                )
                 .map(wordConverter::toDto);
 
         return ResponseEntity.ok(page);

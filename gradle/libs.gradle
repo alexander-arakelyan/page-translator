@@ -1,11 +1,11 @@
 ext.libs = [
         spring    : [
-                web  : "org.springframework:spring-web:${springVersion}",
-                cloud: [
+                web     : "org.springframework:spring-web:${springVersion}",
+                cloud   : [
                         deps   : "org.springframework.cloud:spring-cloud-dependencies:2020.0.3",
                         commons: "org.springframework.cloud:spring-cloud-commons:3.0.3"
                 ],
-                boot : [
+                boot    : [
                         starter : [
                                 starter   : "org.springframework.boot:spring-boot-starter:${springBootVersion}",
                                 web       : "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
@@ -26,7 +26,12 @@ ext.libs = [
                         ],
                         devtools: "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
                 ],
-                kafka: "org.springframework.kafka:spring-kafka:2.7.0"
+                kafka   : "org.springframework.kafka:spring-kafka:2.7.0",
+                security: [
+                        oauth: [
+                                client: "org.springframework.security:spring-security-oauth2-client:${springSecurityVersion}"
+                        ]
+                ]
         ],
         jackson   : [
                 databind: "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"

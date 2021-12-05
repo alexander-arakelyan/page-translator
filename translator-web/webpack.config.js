@@ -73,20 +73,31 @@ module.exports = {
         publicPath: "/",
     },
     devServer: {
-        before: function (app, server, compiler) {
-            app.get("/hello-world", function (req, res) {
+        onBeforeSetupMiddleware: function (devServer) {
+            devServer.app.get("/hello-world", function (req, res) {
                 const fileName = "./src/data/xml1.xml"
                 res.writeHead(200, {"Content-Type": "application/xml"});
                 fileSystem.createReadStream(fileName).pipe(res);
             });
-            app.get("/good-bye-cruel-world", function (req, res) {
+            devServer.app.get("/good-bye-cruel-world", function (req, res) {
                 res.json({msg: {message: "Good bye, cruel world!"}});
             });
         },
-        proxy: [{
-            context: ["/api/v1"],
-            target: "http://localhost:8082/"
-        }]
+        proxy: [
+            {
+                context: [
+                    "/api/v1",
+                    "/oauth2/callback/",
+                    "/oauth2/authorize",
+                    "/user/me",
+                    "/auth"
+                ],
+                target: "http://localhost:8082/"
+            }
+        ],
+        historyApiFallback: {
+            index: '/'
+        }
     },
     resolve: {
         extensions: [".js", ".jsx"]

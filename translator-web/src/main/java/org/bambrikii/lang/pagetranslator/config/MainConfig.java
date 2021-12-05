@@ -1,7 +1,11 @@
 package org.bambrikii.lang.pagetranslator.config;
 
-import org.bambrikii.lang.pagetranslator.orm.PersistenceConfig;
+import org.bambrikii.lang.pagetranslator.orm.TranslatorPersistenceConfig;
+import org.bambrikii.security.orm.SecurityPersistenceConfig;
+import org.bambrikii.security.provider.AppProperties;
+import org.bambrikii.security.provider.SecurityConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -13,8 +17,11 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan
 @Import({
-        PersistenceConfig.class,
-        WebMvcConfig.class
+        TranslatorPersistenceConfig.class,
+        SecurityPersistenceConfig.class,
+        WebMvcConfig.class,
+        SecurityConfig.class
 })
+@EnableConfigurationProperties(AppProperties.class)
 public class MainConfig {
 }

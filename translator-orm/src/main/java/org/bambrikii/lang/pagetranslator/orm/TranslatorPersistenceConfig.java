@@ -24,5 +24,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         ArticleRepository.class,
         ArticleWordRepository.class
 })
-public class PersistenceConfig {
+public class TranslatorPersistenceConfig {
 }

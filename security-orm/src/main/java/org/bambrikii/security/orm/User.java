@@ -18,10 +18,11 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(
         name = "user",
-        schema = "public",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email")
-        })
+        schema = "public"//,
+//        uniqueConstraints = {
+//                @UniqueConstraint(columnNames = "email")
+//        }
+)
 public class User {
     @Id
     @GeneratedValue
@@ -31,7 +32,7 @@ public class User {
     private String name;
 
     //    @Email
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String email;
 
     private String imageUrl;

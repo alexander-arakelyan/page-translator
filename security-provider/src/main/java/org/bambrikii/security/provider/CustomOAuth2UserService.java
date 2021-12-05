@@ -17,8 +17,11 @@ import java.util.Optional;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public CustomOAuth2UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -36,11 +39,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if (!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
-            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+        Optional<User> userOptional = tryProcessEmail(oAuth2UserInfo);
+        if (userOptional.isEmpty()) {
+            userOptional = tryProcessLogin(oAuth2UserInfo);
         }
-
-        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
         if (userOptional.isPresent()) {
             user = userOptional.get();
@@ -55,6 +57,25 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         return UserPrincipal.create(user, oAuth2User.getAttributes());
+    }
+
+    private Optional<User> tryProcessEmail(OAuth2UserInfo oAuth2UserInfo) {
+        String email = oAuth2UserInfo.getEmail();
+        if (!StringUtils.hasText(email)) {
+//            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+            return Optional.empty();
+        }
+
+        return userRepository.findByEmail(email);
+    }
+
+    private Optional<User> tryProcessLogin(OAuth2UserInfo userInfo) {
+        String id = userInfo.getId();
+        if (!StringUtils.hasText(id)) {
+            return Optional.empty();
+        }
+
+        return userRepository.findByProviderId(id);
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {

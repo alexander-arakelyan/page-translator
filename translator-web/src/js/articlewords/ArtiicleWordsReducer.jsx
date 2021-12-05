@@ -1,4 +1,5 @@
 import Config from "../utils/Config";
+import {OAuth2Utils} from "../utils/OAuth2Utils";
 
 const ARTICLE_WORDS_LOADED = "ARTICLE_WORDS_LOADED";
 const ARTICLE_WORD_INCREMENTED = "ARTICLE_WORD_INCREMENTED";
@@ -6,10 +7,13 @@ const ARTICLE_WORD_DECREMENTED = "ARTICLE_WORD_DECREMENTED";
 
 export const ArticleWordsAction = {
     listWords: async (articleId, wordName, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         const params = wordName ? `word=${wordName}` : "";
         return await fetch(`${Config.API_BASE}/articles/${articleId}/words?${params}`, {
             method: "GET",
-            headers: {"Content-Type": "application/json"}
+            headers
         })
             .then(res => res.json())
             .then(words => {
@@ -17,9 +21,12 @@ export const ArticleWordsAction = {
             });
     },
     incrementWord: async (articleId, wordId, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return await fetch(`${Config.API_BASE}/articles/${articleId}/words/${wordId}`, {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers,
             body: JSON.stringify({})
         })
             .then(res => res.json())
@@ -28,11 +35,12 @@ export const ArticleWordsAction = {
             });
     },
     decrementWord: async (articleId, wordId, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return await fetch(`${Config.API_BASE}/articles/${articleId}/words/${wordId}`, {
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify({})
         })
             .then(res => res.json())

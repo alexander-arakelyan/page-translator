@@ -64,8 +64,6 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                    onClose={() => {
                        onClose(false);
                    }}
-                   centered={true}
-                   scrollable={true}
                    aria-labelledby="modal-modal-title"
                    aria-describedby="modal-modal-description"
                    style={{
@@ -143,7 +141,6 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                                 <Grid item xs={6}>
                                     <FormControl ref={draftRef} as="textarea" rows={25} value={draft || content}
                                                  onChange={(val) => setDraft(val.target.value)}
-                                                 plaintext={false}
                                                  onClick={handleDraftClick}
                                                  fullWidth={true}
                                     />

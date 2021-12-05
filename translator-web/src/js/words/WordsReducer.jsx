@@ -1,4 +1,5 @@
 import Config from "../utils/Config";
+import {OAuth2Utils} from "../utils/OAuth2Utils";
 
 const WORDS_REFRESH = "WORDS_REFRESH";
 const WORDS_REFRESHED = "WORDS_REFRESHED";
@@ -11,18 +12,20 @@ const WORD_TAG_REMOVED = "WORD_TAG_REMOVED";
 
 export const WordsActions = {
     list: async (name, langCode, pageNum, pageSize, dispatch) => {
-        await fetch(`${Config.API_BASE}/words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`)
+        const headers = OAuth2Utils.authorization();
+        await fetch(`${Config.API_BASE}/words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`,
+            {headers}
+        )
             .then(res => res.json())
             .then((pager) => {
                 dispatch({type: WORDS_REFRESHED, pager: pager});
             });
     },
     add: (name, langCode, dispatch) => {
+        const headers = OAuth2Utils.authorization({"Content-Type": "application/json"});
         return fetch(`${Config.API_BASE}/words`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify({name, langCode})
         })
             .then(res => res.json())
@@ -35,11 +38,10 @@ export const WordsActions = {
         return {}
     },
     addTag: async (wordId, tagName, dispatch) => {
+        const headers = OAuth2Utils.authorization({"Content-Type": "application/json"});
         await fetch(`${Config.API_BASE}/words/${wordId}/tags`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify({name: tagName})
         })
             .then(res => res.json())
@@ -51,11 +53,12 @@ export const WordsActions = {
         dispatch({type: WORD_TAG_REMOVED, wordId, tagId});
     },
     loadById: async (wordId, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         await fetch(`${Config.API_BASE}/words/${wordId}`, {
             method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers
         })
             .then(res => res.json())
             .then((word) => {

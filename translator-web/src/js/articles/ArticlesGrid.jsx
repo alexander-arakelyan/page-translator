@@ -6,7 +6,7 @@ import {
     PaginationItem,
     Table,
     TableBody,
-    TableCell,
+    TableCell, TableContainer,
     TableHead,
     TableRow
 } from "@mui/material";
@@ -22,50 +22,52 @@ export const ArticlesGrid = ({
     }
     return (<React.Fragment>
         {title}
-        <Table size="small">
-            <TableHead>
-                <TableRow>
-                    <TableCell>Id, Title, Link</TableCell>
-                    <TableCell>Content</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {rows.map(article => {
-                    return (<TableRow key={article.id}>
-                        <TableCell>
-                            <div>[{article.id}] {article.title}</div>
-                            <div><Link href={article.link}>{article.link}</Link></div>
-                            <div>Created: {article.createdAt}</div>
-                            <div>Updated: {article.updatedAt}</div>
-                            <div>
-                                <Button variant="danger" onClick={() => {
-                                    if (confirm(`Delete [${article.id}] ${article.title}?`)) {
-                                        removeClicked(article.id);
-                                    }
-                                }}>Delete</Button>
+        <TableContainer>
+            <Table size="small">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Id / Title / Link</TableCell>
+                        <TableCell>Content</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map(article => {
+                        return (<TableRow key={article.id}>
+                            <TableCell>
+                                <div>[{article.id}] {article.title}</div>
+                                <div><Link href={article.link}>{article.link}</Link></div>
+                                <div>Created: {article.createdAt}</div>
+                                <div>Updated: {article.updatedAt}</div>
+                                <div>
+                                    <Button variant="danger" onClick={() => {
+                                        if (confirm(`Delete [${article.id}] ${article.title}?`)) {
+                                            removeClicked(article.id);
+                                        }
+                                    }}>Delete</Button>
 
-                                <Button variant="primary" onClick={() => {
-                                    editClicked(article.id);
-                                }}>Edit</Button>
+                                    <Button variant="primary" onClick={() => {
+                                        editClicked(article.id);
+                                    }}>Edit</Button>
 
-                            </div>
-                        </TableCell>
-                        <TableCell dangerouslySetInnerHTML={{__html: article.content}}></TableCell>
-                    </TableRow>);
+                                </div>
+                            </TableCell>
+                            <TableCell dangerouslySetInnerHTML={{__html: article.content}}></TableCell>
+                        </TableRow>);
+                    })}
+                </TableBody>
+            </Table>
+            <Pagination>
+                {pages.map((val, index) => {
+                    return (<PaginationItem
+                        key={val.number}
+                        active={val.active}
+                        onClick={(event) => {
+                            const page = val.number - 1;
+                            pageClicked(page, pageSize)
+                        }}
+                    > {val.number}</PaginationItem>);
                 })}
-            </TableBody>
-        </Table>
-        <Pagination>
-            {pages.map((val, index) => {
-                return (<PaginationItem
-                    key={val.number}
-                    active={val.active}
-                    onClick={(event) => {
-                        const page = val.number - 1;
-                        pageClicked(page, pageSize)
-                    }}
-                > {val.number}</PaginationItem>);
-            })}
-        </Pagination>
+            </Pagination>
+        </TableContainer>
     </React.Fragment>)
 }

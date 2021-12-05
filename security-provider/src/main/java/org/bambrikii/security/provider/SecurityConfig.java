@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**").permitAll()
-                .antMatchers("/api/v1/**").permitAll() // TODO:
+                .antMatchers("/api/v1/**").hasRole("USER") // TODO:
                 .anyRequest().authenticated()
                 //
                 .and()
@@ -116,7 +116,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .redirectionEndpoint().baseUri("/oauth2/callback/*")
                 .and()
                 .userInfoEndpoint().userService(customOAuth2UserService)
-                .and().successHandler(oAuth2AuthenticationSuccessHandler).failureHandler(oAuth2AuthenticationFailureHandler);
+                .and().successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler)
+        ;
 
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

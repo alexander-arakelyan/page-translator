@@ -1,4 +1,5 @@
 import Config from "../utils/Config";
+import {OAuth2Utils} from "../utils/OAuth2Utils";
 
 const ARTICLES_REFRESHED = "ARTICLES_REFRESHED"
 const ARTICLE_ADDED = "ARTICLE_ADDED"
@@ -8,18 +9,22 @@ const ARTICLE_LOADED = "ARTICLE_LOADED"
 
 export const ArticlesActions = {
     list: (title, page, pageSize, dispatch) => {
-        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`)
+        const headers = OAuth2Utils.authorization();
+        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`,{
+            headers
+        })
             .then(res => res.json())
             .then(pager => {
                 dispatch({type: ARTICLES_REFRESHED, pager: pager});
             });
     },
     add: (article, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return fetch(`${Config.API_BASE}/articles`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify(article)
         })
             .then(res => res.json())
@@ -29,11 +34,12 @@ export const ArticlesActions = {
             });
     },
     update: (article, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return fetch(`${Config.API_BASE}/articles/${article.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify(article)
         })
             .then(res => res.json())
@@ -43,11 +49,12 @@ export const ArticlesActions = {
             });
     },
     remove: (id, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return fetch(`${Config.API_BASE}/articles/${id}`, {
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify({})
         })
             .then(res => res.json())
@@ -57,11 +64,12 @@ export const ArticlesActions = {
             });
     },
     loadById: (id, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return fetch(`${Config.API_BASE}/articles/${id}`, {
             method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers
         })
             .then(res => res.json())
             .then(article => {
@@ -70,11 +78,12 @@ export const ArticlesActions = {
             });
     },
     save: (article, dispatch) => {
+        const headers = OAuth2Utils.authorization({
+            "Content-Type": "application/json"
+        });
         return fetch(`${Config.API_BASE}/articles/${article.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify(article)
         })
             .then(res => res.json())

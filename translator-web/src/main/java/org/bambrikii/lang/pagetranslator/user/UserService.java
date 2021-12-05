@@ -28,7 +28,7 @@ public class UserService {
 
     public void validateUserIsSame(UserPrincipal userPrincipal, User createdBy) {
         User user = retrieveUser(userPrincipal);
-        if (user.equals(createdBy)) {
+        if (!user.equals(createdBy)) {
             throw new BadRequestException("User is not authorized to delete other's articles.");
         }
     }

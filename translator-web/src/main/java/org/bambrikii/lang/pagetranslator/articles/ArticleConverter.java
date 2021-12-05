@@ -2,6 +2,8 @@ package org.bambrikii.lang.pagetranslator.articles;
 
 import org.bambrikii.lang.pagetranslator.orm.Article;
 import org.bambrikii.lang.pagetranslator.orm.Language;
+import org.bambrikii.security.orm.User;
+import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,27 @@ public class ArticleConverter {
         return dto;
     }
 
-    public Article toPersistent(ArticleDto dto, Function<String, Language> langLookup) {
-        return toPersistent(dto, new Article(), langLookup);
+    public Article toPersistent(
+            ArticleDto dto,
+            UserPrincipal userPrincipal,
+            Function<String, Language> langLookup,
+            Function<UserPrincipal, User> userLookup
+    ) {
+        return toPersistent(dto, new Article(), userPrincipal, langLookup, userLookup);
     }
 
-    public Article toPersistent(ArticleDto dto, Article article, Function<String, Language> langLookup) {
-        BeanUtils.copyProperties(dto, article, new String[]{"id", "createdAt", "updatedAt"});
+    public Article toPersistent(
+            ArticleDto dto,
+            Article article,
+            UserPrincipal userPrincipal,
+            Function<String, Language> langLookup,
+            Function<UserPrincipal, User> userLookup
+    ) {
+        BeanUtils.copyProperties(dto, article, new String[]{"id", "createdAt", "updatedAt", "createdBy"});
         article.setLang(langLookup.apply(dto.getLangCode()));
+        if (article.getCreatedBy() == null) {
+            article.setCreatedBy(userLookup.apply(userPrincipal));
+        }
         return article;
     }
 }

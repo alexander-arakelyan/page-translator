@@ -5,7 +5,11 @@ import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
 import org.bambrikii.lang.pagetranslator.tags.TagConverter;
+import org.bambrikii.security.orm.User;
+import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.stereotype.Service;
+
+import java.util.function.Function;
 
 @Service
 public class WordConverter {
@@ -34,13 +38,14 @@ public class WordConverter {
         );
     }
 
-    public Word toPersistent(WordDto wordClient) {
+    public Word toPersistent(WordDto wordClient, UserPrincipal userPrincipal, Function<UserPrincipal, User> userLookup) {
         Long id = wordClient.getId();
         Word word = id != null && !Long.valueOf(0).equals(id)
                 ? wordRepository.findById(id).get()
                 : new Word();
         word.setName(wordClient.getName());
         word.setLang(langRepository.findByCode(wordClient.getLangCode()));
+        word.setCreatedBy(userLookup.apply(userPrincipal));
         return word;
     }
 }

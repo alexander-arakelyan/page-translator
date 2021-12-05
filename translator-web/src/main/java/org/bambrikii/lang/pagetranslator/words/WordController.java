@@ -6,7 +6,10 @@ import org.bambrikii.lang.pagetranslator.orm.Tag;
 import org.bambrikii.lang.pagetranslator.orm.TagRepository;
 import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
+import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
+import org.bambrikii.security.provider.CurrentUser;
+import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,12 +34,20 @@ public class WordController {
     private final LangRepository langRepository;
     private final WordConverter wordConverter;
     private final TagRepository tagRepository;
+    private final UserService userService;
 
-    public WordController(WordConverter wordConverter, LangRepository langRepository, WordRepository wordRepository, TagRepository tagRepository) {
+    public WordController(
+            WordConverter wordConverter,
+            LangRepository langRepository,
+            WordRepository wordRepository,
+            TagRepository tagRepository,
+            UserService userService
+    ) {
         this.wordConverter = wordConverter;
         this.langRepository = langRepository;
         this.wordRepository = wordRepository;
         this.tagRepository = tagRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/words")
@@ -73,8 +84,11 @@ public class WordController {
 
     @PutMapping("/words")
     @Transactional
-    public ResponseEntity<WordDto> add(@RequestBody WordDto wordClient) {
-        Word word = wordConverter.toPersistent(wordClient);
+    public ResponseEntity<WordDto> add(
+            @RequestBody WordDto wordClient,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
+        Word word = wordConverter.toPersistent(wordClient, userPrincipal, userService::retrieveUser);
         wordRepository.save(word);
 
         WordDto result = wordConverter.toDto(word);
@@ -84,7 +98,11 @@ public class WordController {
 
     @PostMapping(value = "/words/{id}")
     @Transactional
-    public ResponseEntity<WordDto> update(@PathVariable Long id, @RequestBody WordDto wordClient) {
+    public ResponseEntity<WordDto> update(
+            @PathVariable Long id,
+            @RequestBody WordDto wordClient,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
 
         Word word = wordRepository.findById(id).get();
         Language lang = langRepository.findByCode(wordClient.getLangCode());
@@ -99,14 +117,21 @@ public class WordController {
 
     @DeleteMapping(value = "/words/{id}")
     @Transactional
-    public ResponseEntity<Boolean> remove(@PathVariable Long id) {
+    public ResponseEntity<Boolean> remove(
+            @PathVariable Long id,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
         wordRepository.delete(wordRepository.findById(id).get());
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
     @PostMapping("/words/{wordId}/tags")
     @Transactional
-    public WordDto addTag(@PathVariable Long wordId, @RequestBody Long tagId) {
+    public WordDto addTag(
+            @PathVariable Long wordId,
+            @RequestBody Long tagId,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
         Optional<Word> wordOptional = wordRepository.findById(wordId);
         if (wordOptional.isEmpty()) {
             return null;
@@ -124,7 +149,11 @@ public class WordController {
 
     @PostMapping("/words/{wordId}/tags/by-name")
     @Transactional
-    public WordDto addTag(@PathVariable Long wordId, @RequestBody TagDto tagDto) {
+    public WordDto addTag(
+            @PathVariable Long wordId,
+            @RequestBody TagDto tagDto,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
         String tagName = tagDto.getName();
         Optional<Word> wordOptional = wordRepository.findById(wordId);
         if (wordOptional.isEmpty()) {
@@ -160,7 +189,11 @@ public class WordController {
 
     @DeleteMapping("/words/{wordId}/tags")
     @Transactional
-    public WordDto removeTag(@PathVariable Long wordId, @RequestBody Tag tagDto) {
+    public WordDto removeTag(
+            @PathVariable Long wordId,
+            @RequestBody Tag tagDto,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
         Optional<Word> wordOptional = wordRepository.findById(wordId);
         if (wordOptional.isEmpty()) {
             return null;

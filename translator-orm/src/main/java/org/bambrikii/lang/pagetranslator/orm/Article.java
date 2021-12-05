@@ -2,6 +2,7 @@ package org.bambrikii.lang.pagetranslator.orm;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bambrikii.security.orm.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -46,4 +47,6 @@ public class Article {
     private Instant createdAt;
     @UpdateTimestamp
     private Instant updatedAt;
+    @ManyToOne
+    private User createdBy;
 }

@@ -19,8 +19,7 @@
     "react-router-dom": "^5.3.0",
     "react-s-alert": "^1.4.1",
     "redux": "^4.0.5",
-    "redux-form": "^8.3.5",
-    "sonarqube-scanner": "^2.6.0"
+    "redux-form": "^8.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -62,9 +61,9 @@
     "build:prod": "webpack --mode production",
     "build:dev": "webpack --mode development --config webpack.config.js",
     "server": "node dev/dev-server.js",
-    "test": "jest --config jest.config.json",
-    "testi": "webpack --config=webpack.config.js && jest --config=jest.integration.config.json",
-    "test:only": "node node_modules/jest/bin/jest.js --config jest.config.json",
+    "test": "jest --config jest.config.json --passWithNoTests",
+    "testi": "webpack --config=webpack.config.js && jest --config=jest.integration.config.json --passWithNoTests",
+    "test:only": "node node_modules/jest/bin/jest.js --config jest.config.json --passWithNoTests",
     "test:with:webpack": "node node_modules/webpack/bin/webpack.js --config=webpack.config.js && node node_modules/jest/bin/jest.js --config=jest.config.json"
   }
 }

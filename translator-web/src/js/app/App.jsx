@@ -5,7 +5,7 @@ import DarkModeToggle from "react-dark-mode-toggle";
 
 import {WordsPageConnected} from "../words/WordsPage"
 import reduxStore from "../store/ReduxStore";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter, HashRouter, Link, Route, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {ArticlesPageConnected} from "../articles/ArticlesPage";
 import {
@@ -27,6 +27,7 @@ import AppHeader from "../common/AppHeader";
 import Signup from "../signup/Signup";
 import Login from "../login/Login";
 import Alert from "react-s-alert";
+import {Router} from "react-router";
 
 const App = ({}) => {
     const [darkMode, setDarkMode] = useState(false);
@@ -51,80 +52,45 @@ const App = ({}) => {
             .catch(error => {
                 setLoading(false);
             });
-    },[authenticated,loading])
+    }, [authenticated, loading])
 
     return (<React.Fragment>
         <Provider store={reduxStore}>
-            <BrowserRouter history={createBrowserHistory()} basename={"/"}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{mr: 2}}
-                        >
-                        </IconButton>
-                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Page Translator
-                        </Typography>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton size="large" edge="start" color="inherit" aria-label="menu"/>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>Page Translator</Typography>
 
-                        <div>
-                            <IconButton
-                                size="small"
-                                aria-haspopup="false"
-                                color="inherit"
-                                href={"/"}
-                            >Home
-                            </IconButton>
+                    <div>
+                        <IconButton href="/" size="small" color="inherit">Home</IconButton>
+                    </div>
+                    {authenticated && <div>
+                        <IconButton href="/#words" size="small" color="inherit">Words</IconButton>
+                        <IconButton href="/#articles" size="small" color="inherit">Articles</IconButton>
+                    </div>}
 
-                            <IconButton
-                                size="small"
-                                aria-haspopup="false"
-                                color="inherit"
-                                href={"/words"}
-                            >Words
-                            </IconButton>
+                    <AppHeader authenticated={authenticated} onLogout={handleLogout}/>
+                    <DarkModeToggle onChange={setDarkMode} checked={darkMode} size={80}
+                    />
 
-                            <IconButton
-                                size="small"
-                                aria-haspopup="false"
-                                color="inherit"
-                                href={"/articles"}
-                            >Articles
-                            </IconButton>
-                        </div>
+                </Toolbar>
+            </AppBar>
 
-                        <AppHeader authenticated={authenticated} onLogout={handleLogout}/>
-
-                        <DarkModeToggle
-                            onChange={setDarkMode}
-                            checked={darkMode}
-                            size={80}
-                        />
-
-                    </Toolbar>
-                </AppBar>
-
-                <Container className="p-3">
+            <Container className="p-3">
+                <HashRouter basename="/">
                     <Switch>
-                        <Route path="/" exact={true}>
+                        <Route path="/words"> <WordsPageConnected/> </Route>
+                        <Route path="/articles"> <ArticlesPageConnected/> </Route>
+
+                        <PrivateRoute path="/" exact={true} authenticated={authenticated}>
                             <Grid container spacing={2} rowSpacing={2}>
-                                <Grid item spacing>
-                                    <Button href="/words">Words</Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button href="/articles">Articles</Button>
-                                </Grid>
+                                <Grid item><Button href="#words">Words</Button></Grid>
+                                <Grid item><Button href="#articles">Articles</Button></Grid>
                             </Grid>
-                        </Route>
-                        <Route path="/words">
-                            <WordsPageConnected/>
-                        </Route>
-                        <Route path="/articles">
-                            <ArticlesPageConnected/>
-                        </Route>
+                        </PrivateRoute>
+                        <PrivateRoute path="/" exact={true} authenticated={!authenticated}>
+                            Main Page
+                        </PrivateRoute>
 
                         <PrivateRoute path="/profile" authenticated={authenticated} currentUser={currentUser}
                                       component={Profile}></PrivateRoute>
@@ -135,8 +101,8 @@ const App = ({}) => {
                         <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
                         <Route component={NotFound}></Route>
                     </Switch>
-                </Container>
-            </BrowserRouter>
+                </HashRouter>
+            </Container>
         </Provider>
     </React.Fragment>)
 }

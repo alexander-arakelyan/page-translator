@@ -5,18 +5,22 @@ jar {
 }
 
 task copyStaticFiles(type: Copy) {
+//  from("dist/") {
+//    include("*.*")
+//  }
+//  from("dist/static/images/") {
+//    include("*.*")
+//    into("static/images/")
+//  }
+//  from("dist/public/") {
+//    include("*.*")
+//    into("public/")
+//  }
   from("dist/") {
-    include("*.*")
-  }
-  from("dist/static/images/") {
-    include("*.*")
-    into("static/images/")
-  }
-  from("dist/public/") {
     include("*.*")
     into("public/")
   }
-  destinationDir = file("${buildDir}/resources/main/META-INF/resources/")
+  destinationDir = file("${buildDir}/resources/main/")
 }
 
 copyStaticFiles.dependsOn(npmBuildProd)

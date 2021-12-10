@@ -67,6 +67,9 @@ module.exports = {
             filename: "./index.html"
         })
     ],
+    entry: {
+        index: './src/index.js'
+    },
     output: {
         filename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
@@ -89,6 +92,7 @@ module.exports = {
                     "/api/v1",
                     "/oauth2/callback/",
                     "/oauth2/authorize",
+                    "/oauth2/redirect",
                     "/user/me",
                     "/auth"
                 ],

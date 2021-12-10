@@ -9,18 +9,14 @@ class AppHeader extends Component {
             <div>
                 {this.props.authenticated ? (
                     <>
-                        <IconButton size="small" aria-haspopup="false"
-                                    color="inherit" href="/profile">Profile</IconButton>
-                        <IconButton size="small" aria-haspopup="false"
-                                    color="inherit" href={"#"}
+                        <IconButton href="/#profile" size="small" color="inherit">Profile</IconButton>
+                        <IconButton href="#" size="small" color="inherit"
                                     onClick={this.props.onLogout}>Logout</IconButton>
                     </>
                 ) : (
                     <>
-                        <IconButton size="small" aria-haspopup="false"
-                                    color="inherit" href="/signup">Signup</IconButton>
-                        <IconButton size="small" aria-haspopup="false"
-                                    color="inherit" href="/login">Login</IconButton>
+                        <IconButton href="/#signup" size="small" color="inherit">Signup</IconButton>
+                        <IconButton href="/#login" size="small" color="inherit">Login</IconButton>
                     </>
                 )}
             </div>

@@ -24,12 +24,4 @@ public class UserController {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
-
-    @GetMapping("/oauth2/redirect")
-    public void redirectUser(
-            HttpServletResponse response,
-            @RequestParam(value = "token", defaultValue = "") String token
-    ) throws IOException {
-        response.sendRedirect("/#/oauth2/redirect?token=" + token);
-    }
 }

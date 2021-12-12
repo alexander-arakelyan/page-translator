@@ -92,7 +92,6 @@ module.exports = {
                     "/api/v1",
                     "/oauth2/callback/",
                     "/oauth2/authorize",
-                    "/oauth2/redirect",
                     "/user/me",
                     "/auth"
                 ],

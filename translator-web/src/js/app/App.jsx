@@ -6,7 +6,7 @@ import DarkModeToggle from "react-dark-mode-toggle";
 import {WordsPageConnected} from "../words/WordsPage"
 import reduxStore from "../store/ReduxStore";
 import {BrowserRouter, HashRouter, Link, Route, Switch} from "react-router-dom";
-import {createBrowserHistory} from "history";
+import {createBrowserHistory, createHashHistory} from "history";
 import {ArticlesPageConnected} from "../articles/ArticlesPage";
 import {
     AppBar, Button,
@@ -77,7 +77,7 @@ const App = ({}) => {
             </AppBar>
 
             <Container className="p-3">
-                <HashRouter basename="/">
+                <HashRouter history={createHashHistory()} basename="/">
                     <Switch>
                         <Route path="/words"> <WordsPageConnected/> </Route>
                         <Route path="/articles"> <ArticlesPageConnected/> </Route>
@@ -92,16 +92,25 @@ const App = ({}) => {
                             Main Page
                         </PrivateRoute>
 
-                        <PrivateRoute path="/profile" authenticated={authenticated} currentUser={currentUser}
-                                      component={Profile}></PrivateRoute>
+                        <PrivateRoute path="/profile"
+                                      authenticated={authenticated}
+                                      currentUser={currentUser}
+                                      component={Profile}
+                        />
                         <Route path="/login"
-                               render={(props) => <Login authenticated={authenticated} {...props} />}></Route>
+                               render={(props) => <Login authenticated={authenticated} {...props} />}
+                        />
                         <Route path="/signup"
-                               render={(props) => <Signup authenticated={authenticated} {...props} />}></Route>
-                        <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
-                        <Route component={NotFound}></Route>
+                               render={(props) => <Signup authenticated={authenticated} {...props} />}
+                        />
+                        <Route component={NotFound}/>
                     </Switch>
                 </HashRouter>
+                <BrowserRouter history={createBrowserHistory()} basename="/">
+                    <Switch>
+                        <Route path="/oauth2/redirect" exact={false} component={OAuth2RedirectHandler}/>
+                    </Switch>
+                </BrowserRouter>
             </Container>
         </Provider>
     </React.Fragment>)

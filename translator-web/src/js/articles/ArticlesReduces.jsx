@@ -1,5 +1,6 @@
 import Config from "../utils/Config";
 import {OAuth2Utils} from "../utils/OAuth2Utils";
+import {JsonUtils} from "../utils/JsonUtils";
 
 const ARTICLES_REFRESHED = "ARTICLES_REFRESHED"
 const ARTICLE_ADDED = "ARTICLE_ADDED"
@@ -10,10 +11,10 @@ const ARTICLE_LOADED = "ARTICLE_LOADED"
 export const ArticlesActions = {
     list: (title, page, pageSize, dispatch) => {
         const headers = OAuth2Utils.authorization();
-        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`,{
+        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`, {
             headers
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(pager => {
                 dispatch({type: ARTICLES_REFRESHED, pager: pager});
             });
@@ -27,7 +28,7 @@ export const ArticlesActions = {
             headers,
             body: JSON.stringify(article)
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(article => {
                 dispatch({type: ARTICLE_ADDED, article});
                 return article;
@@ -42,7 +43,7 @@ export const ArticlesActions = {
             headers,
             body: JSON.stringify(article)
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(article => {
                 dispatch({type: ARTICLE_UPDATED, article});
                 return article;
@@ -57,7 +58,7 @@ export const ArticlesActions = {
             headers,
             body: JSON.stringify({})
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(article => {
                 dispatch({type: ARTICLE_REMOVED, id});
                 return article;
@@ -71,7 +72,7 @@ export const ArticlesActions = {
             method: "GET",
             headers
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(article => {
                 dispatch({type: ARTICLE_LOADED, article});
                 return article;
@@ -86,7 +87,7 @@ export const ArticlesActions = {
             headers,
             body: JSON.stringify(article)
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(article => {
                 dispatch({type: ARTICLE_UPDATED, article});
                 return article;

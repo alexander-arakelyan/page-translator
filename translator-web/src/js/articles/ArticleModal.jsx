@@ -59,13 +59,27 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
     })
 
     const config = {readonly: false}
+
+    const style = {
+        position: 'absolute',
+        left: '50%',
+        transform: 'translate(-50%)',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        pt: 2,
+        px: 4,
+        pb: 3,
+        width: "90%"
+    };
+
     return (<React.Fragment>
             <Modal open={show}
                    onClose={() => {
                        onClose(false);
                    }}
-                   aria-labelledby="modal-modal-title"
-                   aria-describedby="modal-modal-description"
+                   aria-labelledby="parent-modal-title"
+                   aria-describedby="parent-modal-description"
                    style={{
                        backgroundColor: "white",
                        horizontalAlign: "center",
@@ -78,10 +92,11 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                        }
                    }}
             >
-                <Box style={{backgroundColor: "white"}}>
-                    <Box style={{backgroundColor: "#1976d2"}}>
+                <Box sx={{...style, backgroundColor: "white"}}>
+                    <Box sx={{backgroundColor: "#1976d2"}}>
                         <Grid container>
-                            <Grid item xs={10}></Grid>
+                            <Grid item xs={10}><Typography
+                                component={"h2"}>{article?.id} - {article?.title}</Typography></Grid>
                             <Grid item xs={2}>
                                 <Button variant="secondary" onClick={() => {
                                     onClose();
@@ -89,8 +104,15 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                             </Grid>
                         </Grid>
                     </Box>
-                    <Typography component={"h2"}>{article?.id} - {article?.title}</Typography>
                     <Box>
+                        <FormGroup>
+                            <InputLabel title="Link"/>
+                            <Input
+                                value={link}
+                                onChange={(event) => setLink(event.target.value)}
+                                fullWidth={true}
+                            />
+                        </FormGroup>
                         <FormGroup>
                             <Input
                                 placeholder="Title"
@@ -98,54 +120,36 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                                 onChange={(event) => setTitle(event.target.value)}
                             />
                         </FormGroup>
-                        <Grid container>
-                            <Grid item xs={10}>
-                                <FormGroup>
-                                    <InputLabel title="Link"/>
-                                    <Input
-                                        value={link}
-                                        onChange={(event) => setLink(event.target.value)}
-                                        fullWidth={true}
-                                    />
-                                </FormGroup>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <FormGroup>
-                                    <InputLabel title={langCode ? langCode : "Language"}/>
-                                    <Select
-                                        value={langCode}
-                                        onChange={(e) => setLangCode(e.target.value)}
-                                    >{
-                                        langs && langs.map((lang, index) => {
-                                            return (<MenuItem
-                                                key={lang.code}
-                                                value={lang.code}
-                                            >{lang.name}</MenuItem>)
-                                        })}
-                                    </Select>
-                                </FormGroup>
-                            </Grid>
-                        </Grid>
                         <FormGroup>
-                            <Grid container>
-                                <Grid item xs={6}>
-                                    <JoditEditor
-                                        ref={editor}
-                                        value={content}
-                                        config={config}
-                                        tabIndex={1} // tabIndex of textarea
-                                        onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                        onChange={newContent => setContent(content)}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormControl ref={draftRef} as="textarea" rows={25} value={draft || content}
-                                                 onChange={(val) => setDraft(val.target.value)}
-                                                 onClick={handleDraftClick}
-                                                 fullWidth={true}
-                                    />
-                                </Grid>
-                            </Grid>
+                            <InputLabel title={langCode ? langCode : "Language"}/>
+                            <Select
+                                value={langCode}
+                                onChange={(e) => setLangCode(e.target.value)}
+                            >{
+                                langs && langs.map((lang, index) => {
+                                    return (<MenuItem
+                                        key={lang.code}
+                                        value={lang.code}
+                                    >{lang.name}</MenuItem>)
+                                })}
+                            </Select>
+                        </FormGroup>
+                        <FormGroup>
+                            <JoditEditor
+                                ref={editor}
+                                value={content}
+                                config={config}
+                                tabIndex={1} // tabIndex of textarea
+                                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                onChange={newContent => setContent(content)}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControl ref={draftRef} as="textarea" rows={25} value={draft || content}
+                                         onChange={(val) => setDraft(val.target.value)}
+                                         onClick={handleDraftClick}
+                                         fullWidth={true}
+                            />
                         </FormGroup>
                         {
                             article?.id &&

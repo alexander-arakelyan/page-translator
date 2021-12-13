@@ -83,7 +83,7 @@ const ArticleWordsComponent = ({
                 <Grid item xs={1}>
                     <FormGroup>
                         <Button onClick={() => {
-                            findWords(article.id);
+                            findWords(wordContent, langCode);
                         }}>Find</Button>
                     </FormGroup>
                 </Grid>

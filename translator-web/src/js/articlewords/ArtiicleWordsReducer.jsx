@@ -1,5 +1,6 @@
 import Config from "../utils/Config";
 import {OAuth2Utils} from "../utils/OAuth2Utils";
+import {JsonUtils} from "../utils/JsonUtils";
 
 const ARTICLE_WORDS_LOADED = "ARTICLE_WORDS_LOADED";
 const ARTICLE_WORD_INCREMENTED = "ARTICLE_WORD_INCREMENTED";
@@ -15,7 +16,7 @@ export const ArticleWordsAction = {
             method: "GET",
             headers
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(words => {
                 dispatch({type: ARTICLE_WORDS_LOADED, articleWord: words})
             });
@@ -29,7 +30,7 @@ export const ArticleWordsAction = {
             headers,
             body: JSON.stringify({})
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(articleWord => {
                 dispatch({type: ARTICLE_WORD_INCREMENTED, articleWord})
             });
@@ -43,7 +44,7 @@ export const ArticleWordsAction = {
             headers,
             body: JSON.stringify({})
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then(articleWord => {
                 dispatch({type: ARTICLE_WORD_DECREMENTED, articleWord});
                 return articleWord;

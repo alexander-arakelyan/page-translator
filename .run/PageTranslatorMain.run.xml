@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PageTranslatorMain" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+  <configuration default="false" name="PageTranslatorMain" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="org.bambrikii.lang.pagetranslator.PageTranslatorMain" />
     <module name="page-translator.translator-web.main" />
     <extension name="coverage">
@@ -9,13 +9,14 @@
       </pattern>
     </extension>
     <extension name="net.ashald.envfile">
-      <option name="IS_ENABLED" value="false" />
-      <option name="IS_SUBST" value="false" />
-      <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-      <option name="IS_IGNORE_MISSING_FILES" value="false" />
+      <option name="IS_ENABLED" value="true" />
+      <option name="IS_SUBST" value="true" />
+      <option name="IS_PATH_MACRO_SUPPORTED" value="true" />
+      <option name="IS_IGNORE_MISSING_FILES" value="true" />
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH=".local.env" />
       </ENTRIES>
     </extension>
     <method v="2">

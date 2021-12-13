@@ -1,5 +1,6 @@
 import Config from "../utils/Config";
 import {OAuth2Utils} from "../utils/OAuth2Utils";
+import {JsonUtils} from "../utils/JsonUtils";
 
 const LANGS_REFRESH = "LANGS_REFRESH";
 
@@ -9,7 +10,7 @@ export const LangActions = {
         return fetch(`${Config.API_BASE}/langs`, {
             headers
         })
-            .then(res => res.json())
+            .then(res => JsonUtils.tryReturnJson(res))
             .then((pager) => {
                 dispatch({type: LANGS_REFRESH, pager});
             });

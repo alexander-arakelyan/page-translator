@@ -1,7 +1,7 @@
 import {ACCESS_TOKEN} from "../constants/index"
 
 export const OAuth2Utils = {
-    authorization: (headers) => {
+    authorization: (headers?) => {
         if (headers === undefined) {
             headers = {};
         }

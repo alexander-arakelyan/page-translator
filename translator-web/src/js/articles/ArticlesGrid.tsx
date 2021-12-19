@@ -39,13 +39,13 @@ export const ArticlesGrid = ({
                                 <div>Created: {article.createdAt}</div>
                                 <div>Updated: {article.updatedAt}</div>
                                 <div>
-                                    <Button variant="danger" onClick={() => {
+                                    <Button variant="outlined" onClick={() => {
                                         if (confirm(`Delete [${article.id}] ${article.title}?`)) {
                                             removeClicked(article.id);
                                         }
                                     }}>Delete</Button>
 
-                                    <Button variant="primary" onClick={() => {
+                                    <Button variant="outlined" onClick={() => {
                                         editClicked(article.id);
                                     }}>Edit</Button>
 
@@ -56,18 +56,14 @@ export const ArticlesGrid = ({
                     })}
                 </TableBody>
             </Table>
-            <Pagination>
-                {pages.map((val, index) => {
-                    return (<PaginationItem
-                        key={val.number}
-                        active={val.active}
-                        onClick={(event) => {
-                            const page = val.number - 1;
-                            pageClicked(page, pageSize)
-                        }}
-                    > {val.number}</PaginationItem>);
-                })}
-            </Pagination>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+                        onChange={(event, value) => {
+                const page = value - 1;
+                pageClicked(page, pageSize)
+            }}
+            />
         </TableContainer>
     </React.Fragment>)
 }

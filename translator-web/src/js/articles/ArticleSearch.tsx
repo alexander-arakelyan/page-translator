@@ -2,7 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Button, ButtonGroup, FormGroup, Grid, Input, InputLabel} from "@mui/material";
 
 export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
+    const [ mounted, setMounted ] = useState(false);
     const [titleInternal, setTitleInternalInternal] = useState("");
+
+    if (!mounted) {
+        setMounted(true);
+    }
 
     useEffect(() => {
         if (titleInternal != articleTitle) {
@@ -27,13 +32,13 @@ export const ArticleSearch = ({articleTitle, onSearch, onAdd}) => {
                     </Grid>
                     <Grid item>
                         <ButtonGroup>
-                            <Button variant="primary" type="button" onClick={() => {
+                            <Button variant="outlined" type="button" onClick={() => {
                                 onSearch(titleInternal);
                             }}>Find</Button>
-                            {titleInternal && <Button variant="secondary" onClick={event => {
+                            {titleInternal && <Button variant="contained" onClick={event => {
                                 onAdd(titleInternal);
                             }}>Add</Button>}
-                            {titleInternal && <Button variant="secondary" onClick={event => {
+                            {titleInternal && <Button variant="contained" onClick={event => {
                                 setTitleInternalInternal("");
                                 onSearch("")
                             }}>Clear</Button>}

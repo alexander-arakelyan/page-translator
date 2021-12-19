@@ -4,24 +4,15 @@ import {
     Redirect
 } from "react-router-dom";
 
-
-const PrivateRoute = ({component: Component, authenticated, ...rest}, props) => (
-    <Route
-        {...rest}
+export const PrivateRoute = ({authenticated, currentUser, children, ...props}) => {
+   return (<Route
+        {...props}
         render={props =>
             authenticated ? (
-                <Component {...rest} {...props} />
+                [children]
             ) : (
-                // <Redirect
-                //     to={{
-                //         pathname: '/login',
-                //         state: {from: props.location}
-                //     }}
-                // />
                 <div>Access denied</div>
             )
         }
     />
-);
-
-export default PrivateRoute
+)};

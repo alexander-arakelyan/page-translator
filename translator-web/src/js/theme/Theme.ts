@@ -108,9 +108,12 @@ export const lightTheme: Theme = createTheme(lightOptions);
 const darkOptions: ThemeOptions = {...lightOptions, palette: {  mode: 'dark'  }};
 export const darkTheme: Theme = createTheme(darkOptions);
 
+const THEME_KEY = "theme-ui-color-mode";
+
 export const getThemeNameStorage = ()=>{
-  return localStorage.getItem("theme") || "light";
+  return localStorage.getItem(THEME_KEY) || "light";
 }
+
 export const setThemeNameStorage = (name)=> {
-  localStorage.setItem("theme", name);
+  localStorage.setItem(THEME_KEY, name);
 }

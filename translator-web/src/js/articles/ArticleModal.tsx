@@ -1,25 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 import { TextUtils } from "../utils/TextUtils";
-import { ActionWordsComponentConnected } from "../articlewords/ArticleWordsComponent";
+import { ArticleWordsComponent } from "../articlewords/ArticleWordsComponent";
 import { LangActions } from "../langs/LangsReducer";
-import { connect } from "react-redux";
 import {
   Box,
   Button,
-  FormControl,
   FormGroup,
   Grid, Input,
   InputLabel, MenuItem,
   Modal,
   Select,
-  TableRow, TextareaAutosize,
+  TextareaAutosize,
   Typography
 } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 
 import * as classes from "../app/App.scss"
+import { selectLangs } from "../langs/LangsSelector";
 
-const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, langs, ...props}) => {
+export const ArticleModal = ({
+                        article, show, onClose, onSave, onRemove
+                      }) => {
+  const dispatch = useDispatch();
+
+  const langs = useSelector(selectLangs);
+  const onLangsList = () => {
+    return LangActions.list(dispatch);
+  }
+
   const editor = useRef(null)
 
   const [ mounted, setMounted ] = useState(false);
@@ -80,6 +89,11 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
              onClose={ () => {
                onClose(false);
              } }
+             sx={{
+               background: 'background',
+               padding: "5px",
+               overflow: "overlay"
+             }}
              BackdropProps={ {
                classes: {
                  root: classes.backDrop
@@ -136,7 +150,7 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                 config={ config }
                 // tabIndex={1} // tabIndex of textarea
                 onBlur={ newContent => setContent(newContent) } // preferred to use only this option to update the content for performance reasons
-                onChange={ newContent => setContent(content) }
+                onChange={ newContent => setContent(newContent) }
               />
             </FormGroup>
             <FormGroup>
@@ -146,20 +160,19 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
                 value={ draft || content }
                 onChange={ (val) => setDraft(val.target.value) }
                 onClick={ handleDraftClick }
-                // fullWidth={ true }
               />
             </FormGroup>
             {
               article?.id &&
-              <ActionWordsComponentConnected
+              <ArticleWordsComponent
                   article={ article }
-                  langs={ langs }
+                // langs={ langs }
                   selectedWord={ selectedWord }
               />
             }
           </Box>
           <Box>
-            <Grid container style={ {backgroundColor: "#1976d2"} }>
+            <Grid container>
               <Grid item xs={ 8 }></Grid>
               <Grid item xs={ 4 }>
                 <Button variant="contained" onClick={ () => {
@@ -183,20 +196,3 @@ const ArticleModal = ({article, show, onClose, onSave, onRemove, onLangsList, la
     </React.Fragment>
   );
 }
-
-export const ArticleModalConnected = connect(
-  (state, props) => {
-    const {pager} = state.langsReducer;
-    return {
-      langs: pager?.content
-    }
-  }
-  ,
-  (dispatch) => {
-    return {
-      onLangsList: () => {
-        return LangActions.list(dispatch);
-      },
-    }
-  }
-)(ArticleModal);

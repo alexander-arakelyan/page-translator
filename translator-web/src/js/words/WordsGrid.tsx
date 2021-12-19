@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { TagsConnected } from "./WordTags";
+import React from "react"
+import { WordTags } from "./WordTags";
 import {
   Pagination,
   PaginationItem,
@@ -35,7 +35,7 @@ export const WordsGrid = ({rows, pageSize, totalPages, currentPage, pageClicked}
                   <TableCell>{ rowVal.name }</TableCell>
                   <TableCell>{ rowVal.langName }</TableCell>
                   <TableCell>
-                    <TagsConnected word={ rowVal }/>
+                    <WordTags word={ rowVal }/>
                   </TableCell>
                 </TableRow>)
               })

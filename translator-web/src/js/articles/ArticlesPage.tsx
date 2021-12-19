@@ -1,17 +1,42 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArticlesGrid } from "./ArticlesGrid";
 import { ArticleSearch } from "./ArticleSearch";
-import { ArticleModalConnected } from "./ArticleModal";
-import { connect } from "react-redux";
+import { ArticleModal } from "./ArticleModal";
 import { ArticlesActions } from "./ArticlesReduces";
+import {
+  selectArticle,
+  selectArticles,
+  selectArticlesCurrentPage,
+  selectArticlesPageSize,
+  selectArticlesTotalPages
+} from "./ArticleSelector";
+import { useSelector, useDispatch } from "react-redux";
 
-const ArticlesPage = ({
-                        articles, rows, article, totalPages, onArticlesList, currentPage, pageSize,
-                        onArticleSave,
-                        onArticleAdd,
-                        onArticleEdit,
-                        onArticleRemove
-                      }) => {
+export const ArticlesPage = ({}) => {
+  const dispatch = useDispatch();
+
+  const article = useSelector(selectArticle);
+  const articles = useSelector(selectArticles);
+  const pageSize = useSelector(selectArticlesPageSize);
+  const currentPage = useSelector(selectArticlesCurrentPage);
+  const totalPages = useSelector(selectArticlesTotalPages)
+
+  const onArticlesList = (title, page = 0, pageSize = 5) => {
+    return ArticlesActions.list(title, page, pageSize, dispatch);
+  }
+    const onArticleAdd = (article) => {
+    return ArticlesActions.add(article, dispatch);
+  }
+  const onArticleEdit = (id) => {
+    return ArticlesActions.loadById(id, dispatch);
+  }
+    const onArticleSave = (article) => {
+    return ArticlesActions.save(article, dispatch);
+  }
+  const onArticleRemove= (id) => {
+    return ArticlesActions.remove(id, dispatch);
+  }
+
   const [ mounted, setMounted ] = useState(false);
   const [ article0, setArticle0 ] = useState({title: undefined});
   const [ articleTitle, setArticleTitle ] = useState("",);
@@ -49,12 +74,10 @@ const ArticlesPage = ({
     setArticleTitle(article0.title);
   }
 
-  const pageSize0 = pageSize;
   const pages = [];
   for (let number = 1; number <= totalPages; number++) {
     pages.push({number, active: number === 1 + currentPage});
   }
-  const rows0 = rows || [];
   return (
     <React.Fragment>
       <ArticleSearch
@@ -68,7 +91,7 @@ const ArticlesPage = ({
           setShowArticle(true);
         } }
       />
-      <ArticleModalConnected
+      <ArticleModal
         show={ showArticle }
         article={ article }
         onClose={ (article) => {
@@ -123,37 +146,3 @@ const ArticlesPage = ({
     </React.Fragment>
   )
 }
-
-export const ArticlesPageConnected = connect((state, props) => {
-  const articlesReducer = state.articlesReducer;
-  return {
-    article: articlesReducer.article,
-    articles: articlesReducer.pager?.content,
-    pageSize: articlesReducer.pager?.size,
-    currentPage: articlesReducer.pager?.number,
-    totalPages: articlesReducer.pager?.totalPages
-  }
-}, (dispatch) => {
-  return {
-    onArticlesList: (title, page = 0, pageSize = 5) => {
-      return ArticlesActions
-      .list(title, page, pageSize, dispatch);
-    },
-    onArticleAdd: (article) => {
-      return ArticlesActions
-      .add(article, dispatch);
-    },
-    onArticleEdit: (id) => {
-      return ArticlesActions
-      .loadById(id, dispatch);
-    },
-    onArticleSave: (article) => {
-      return ArticlesActions
-      .save(article, dispatch);
-    },
-    onArticleRemove: (id, onEdit) => {
-      return ArticlesActions
-      .remove(id, dispatch);
-    }
-  }
-})(ArticlesPage);

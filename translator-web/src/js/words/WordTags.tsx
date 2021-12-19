@@ -1,6 +1,5 @@
-import React, { Component, useState } from "react"
+import React, { useState } from "react"
 import { TagsActions } from "../tags/TagsReducer";
-import { connect } from "react-redux";
 import { WordsActions } from "../words/WordsReducer";
 import {
   Button,
@@ -12,13 +11,35 @@ import {
   TableCell,
   TableRow
 } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { selectWords } from "./WordSelectors";
 
-const WordTags = ({
-                    word,
-                    words,
-                    onTagAdd,
-                    onTagRemove
-                  }) => {
+export const WordTags = ({word}) => {
+  const dispatch = useDispatch();
+
+  const words = useSelector(selectWords);
+
+  const onTagAdd = (wordId, tagName) => {
+    TagsActions
+    .addTagToWordByName(wordId, tagName, dispatch)
+    .then(r => {
+      WordsActions
+      .loadById(wordId, dispatch)
+      .then(word => {
+      });
+    });
+  }
+  const onTagRemove = (wordId, tagId) => {
+    TagsActions
+    .removeTagFromWord(wordId, tagId, dispatch)
+    .then(r => {
+      WordsActions
+      .loadById(wordId, dispatch)
+      .then(word => {
+      });
+    });
+  }
+
   const [ tagName, setTagName ] = useState("");
 
   const addTagNameChanged = (tagName) => {
@@ -37,14 +58,14 @@ const WordTags = ({
   return (<React.Fragment>
     <Table size="small">
       <TableBody>
-        { tags.map((tag, index) => {
+        { tags.map((tag) => {
           return (
             <TableRow key={ `tag-${ wordId }-${ tag.id }` }>
               <TableCell>{ tag.id }</TableCell>
               <TableCell>{ tag.name }</TableCell>
               <TableCell>{ tag.langName }</TableCell>
               <TableCell>
-                <Button variant="outlined" onClick={ event => {
+                <Button variant="outlined" onClick={ () => {
                   onTagRemove(wordId, tag.id)
                 } }>Remove</Button>
               </TableCell>
@@ -64,7 +85,7 @@ const WordTags = ({
           />
         </Grid>
         <Grid>
-          <Button variant="outlined" onClick={ event => {
+          <Button variant="outlined" onClick={ () => {
             onTagAdd(word.id, tagName)
           } }>Add</Button>
         </Grid>
@@ -72,32 +93,3 @@ const WordTags = ({
     </FormGroup>
   </React.Fragment>)
 }
-
-export const TagsConnected = connect((state, props) => {
-  const wordsReducer = state.wordsReducer;
-  const {words} = wordsReducer;
-  return {words}
-}, (dispatch) => {
-  return {
-    onTagAdd: (wordId, tagName) => {
-      TagsActions
-      .addTagToWordByName(wordId, tagName, dispatch)
-      .then(r => {
-        WordsActions
-        .loadById(wordId, dispatch)
-        .then(word => {
-        });
-      });
-    },
-    onTagRemove: (wordId, tagId) => {
-      TagsActions
-      .removeTagFromWord(wordId, tagId, dispatch)
-      .then(r => {
-        WordsActions
-        .loadById(wordId, dispatch)
-        .then(word => {
-        });
-      });
-    }
-  }
-})(WordTags);

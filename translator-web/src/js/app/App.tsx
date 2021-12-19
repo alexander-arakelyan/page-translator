@@ -5,11 +5,10 @@ import DarkModeToggle from "react-dark-mode-toggle";
 
 import { lightTheme, darkTheme, setThemeNameStorage } from '../theme/Theme'
 
-import { WordsPageConnected } from "../words/WordsPage"
+import { WordsPage } from "../words/WordsPage"
 import reduxStore from "../store/ReduxStore";
 import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
 import { createBrowserHistory, createHashHistory } from "history";
-import { ArticlesPageConnected } from "../articles/ArticlesPage";
 import {
   AppBar,
   Button,
@@ -32,6 +31,7 @@ import Signup from "../signup/Signup";
 import Login from "../login/Login";
 import Alert from "react-s-alert";
 import { getThemeNameStorage } from "../theme/Theme";
+import { ArticlesPage } from "../articles/ArticlesPage";
 
 const App = ({}) => {
   const [ themeName, setThemeName] = useState(getThemeNameStorage());
@@ -90,8 +90,8 @@ const App = ({}) => {
         <Container>
           <HashRouter history={ createHashHistory() } basename="/">
             <Switch>
-              <Route path="/words"> <WordsPageConnected/> </Route>
-              <Route path="/articles"> <ArticlesPageConnected/> </Route>
+              <Route path="/words"> <WordsPage /> </Route>
+              <Route path="/articles"> <ArticlesPage /> </Route>
 
               <PrivateRoute path="/" exact={ true } authenticated={ authenticated } currentUser={ currentUser }>
                 <Grid container spacing={ 2 } rowSpacing={ 2 }>

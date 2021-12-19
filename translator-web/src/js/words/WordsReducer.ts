@@ -67,7 +67,7 @@ export const WordsActions = {
     }
 }
 
-export function wordsReducer(state = {words: []}, action) {
+export function wordsReducer(state = {words: [], pager: undefined}, action) {
     switch (action.type) {
         case WORDS_REFRESHED:
             const {pager} = action;

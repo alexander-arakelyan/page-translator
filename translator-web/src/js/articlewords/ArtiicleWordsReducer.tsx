@@ -52,7 +52,7 @@ export const ArticleWordsAction = {
     }
 }
 
-export function articleWordsReducer(state = {}, action) {
+export function articleWordsReducer(state = {pager: undefined}, action) {
     switch (action.type) {
         case ARTICLE_WORDS_LOADED:
             return {...state, pager: action.articleWord}

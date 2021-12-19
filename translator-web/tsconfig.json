@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "noImplicitThis": false,
-    "alwaysStrict": false,
     "outDir": "./dist/",
     "module": "es6",
     "target": "es5",
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false
   }
 }

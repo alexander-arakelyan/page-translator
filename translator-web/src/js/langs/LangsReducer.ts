@@ -17,7 +17,7 @@ export const LangActions = {
     }
 }
 
-function langsReducer(state = {}, action) {
+function langsReducer(state = {pager: undefined}, action) {
     switch (action.type) {
         case LANGS_REFRESH:
             return {...state, pager: action.pager}

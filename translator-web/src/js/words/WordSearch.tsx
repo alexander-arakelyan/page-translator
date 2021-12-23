@@ -7,19 +7,17 @@ import {
   Input,
   InputLabel, MenuItem, Select
 } from "@mui/material";
+import { LangStorage } from "../langs/LangsSelector";
 
 export const WordSearch = ({
                              langs,
                              onLangsList,
-                             // onSelectLang,
-                             // onWordNameChange,
                              onWordAdd,
-                             // onSearchClick,
                              onWordsList
                            }) => {
   const [ mounted, setMounted ] = useState(false)
   const [ wordName, setWordName ] = useState("");
-  const [ lang, setLang ] = useState({code: "en", name: "English"});
+  const [ lang, setLang ] = useState(LangStorage.getDefault());
 
   if (!mounted) {
     onLangsList()
@@ -37,6 +35,7 @@ export const WordSearch = ({
     const lang = langs.filter((lang) => lang.code === langCode)[0];
     setLang(lang)
     onWordsList(wordName, langCode, 0);
+    LangStorage.setDefault(lang);
   }
 
   const onWordNameChange = (content) => {

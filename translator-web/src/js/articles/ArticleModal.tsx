@@ -20,8 +20,8 @@ import * as classes from "../app/App.scss"
 import { selectLangs } from "../langs/LangsSelector";
 
 export const ArticleModal = ({
-                        article, show, onClose, onSave, onRemove
-                      }) => {
+                               article, show, onClose, onSave, onRemove
+                             }) => {
   const dispatch = useDispatch();
 
   const langs = useSelector(selectLangs);
@@ -71,33 +71,17 @@ export const ArticleModal = ({
 
   const config = {readonly: false}
 
-  const style = {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translate(-50%)',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-    width: "90%"
-  };
-
   return (<React.Fragment>
       <Modal open={ show }
              onClose={ () => {
                onClose(false);
              } }
-             sx={{
-               background: 'background',
-               padding: "5px",
-               overflow: "overlay"
-             }}
-             BackdropProps={ {
-               classes: {
-                 root: classes.backDrop
-               }
+             sx={ {
+               background: '#eee',
+               p: "25px",
+               m: "25px",
+               height: "100%",
+               overflow: "overlay",
              } }
       >
         <Box>
@@ -113,83 +97,85 @@ export const ArticleModal = ({
               </Grid>
             </Grid>
           </Box>
-          <Box>
-            <FormGroup>
-              <InputLabel title="Link"/>
-              <Input
-                value={ link }
-                onChange={ (event) => setLink(event.target.value) }
-                fullWidth={ true }
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                placeholder="Title"
-                value={ title }
-                onChange={ (event) => setTitle(event.target.value) }
-              />
-            </FormGroup>
-            <FormGroup>
-              <InputLabel title={ langCode ? langCode : "Language" }/>
-              <Select
-                value={ langCode }
-                onChange={ (e) => setLangCode(e.target.value) }
-              >{
-                langs && langs.map((lang, index) => {
-                  return (<MenuItem
-                    key={ lang.code }
-                    value={ lang.code }
-                  >{ lang.name }</MenuItem>)
-                }) }
-              </Select>
-            </FormGroup>
-            <FormGroup>
-              <JoditEditor
-                ref={ editor }
-                value={ content }
-                config={ config }
-                // tabIndex={1} // tabIndex of textarea
-                onBlur={ newContent => setContent(newContent) } // preferred to use only this option to update the content for performance reasons
-                onChange={ newContent => setContent(newContent) }
-              />
-            </FormGroup>
-            <FormGroup>
-              <TextareaAutosize
-                ref={ draftRef }
-                minRows={ 25 }
-                value={ draft || content }
-                onChange={ (val) => setDraft(val.target.value) }
-                onClick={ handleDraftClick }
-              />
-            </FormGroup>
-            {
-              article?.id &&
-              <ArticleWordsComponent
-                  article={ article }
-                // langs={ langs }
-                  selectedWord={ selectedWord }
-              />
-            }
-          </Box>
-          <Box>
-            <Grid container>
-              <Grid item xs={ 8 }></Grid>
-              <Grid item xs={ 4 }>
-                <Button variant="contained" onClick={ () => {
-                  if (confirm(`Delete [${ article.id }] ${ article.title }?`)) {
-                    onRemove(article.id);
-                  }
-                } }>Delete</Button>
+          <Box sx={ {} }>
+            <Box>
+              <FormGroup>
+                <InputLabel title="Link"/>
+                <Input
+                  value={ link }
+                  onChange={ (event) => setLink(event.target.value) }
+                  fullWidth={ true }
+                />
+              </FormGroup>
+              <FormGroup>
+                <Input
+                  placeholder="Title"
+                  value={ title }
+                  onChange={ (event) => setTitle(event.target.value) }
+                />
+              </FormGroup>
+              <FormGroup>
+                <InputLabel title={ langCode ? langCode : "Language" }/>
+                <Select
+                  value={ langCode }
+                  onChange={ (e) => setLangCode(e.target.value) }
+                >{
+                  langs && langs.map((lang, index) => {
+                    return (<MenuItem
+                      key={ lang.code }
+                      value={ lang.code }
+                    >{ lang.name }</MenuItem>)
+                  }) }
+                </Select>
+              </FormGroup>
+              <FormGroup>
+                <JoditEditor
+                  ref={ editor }
+                  value={ content }
+                  config={ config }
+                  // tabIndex={1} // tabIndex of textarea
+                  onBlur={ newContent => setContent(newContent) } // preferred to use only this option to update the content for performance reasons
+                  onChange={ newContent => setContent(newContent) }
+                />
+              </FormGroup>
+              <FormGroup>
+                <TextareaAutosize
+                  ref={ draftRef }
+                  minRows={ 25 }
+                  value={ draft || content }
+                  onChange={ (val) => setDraft(val.target.value) }
+                  onClick={ handleDraftClick }
+                />
+              </FormGroup>
+              {
+                article?.id &&
+                <ArticleWordsComponent
+                    article={ article }
+                  // langs={ langs }
+                    selectedWord={ selectedWord }
+                />
+              }
+            </Box>
+            <Box>
+              <Grid container>
+                <Grid item xs={ 8 }></Grid>
+                <Grid item xs={ 4 }>
+                  <Button variant="contained" onClick={ () => {
+                    if (confirm(`Delete [${ article.id }] ${ article.title }?`)) {
+                      onRemove(article.id);
+                    }
+                  } }>Delete</Button>
 
-                <Button variant="outlined" onClick={ () => {
-                  onSave({...article, title, link, content, draft, langCode});
-                } }>Save</Button>
+                  <Button variant="contained" onClick={ () => {
+                    onSave({...article, title, link, content, draft, langCode});
+                  } }>Save</Button>
 
-                <Button variant="contained" onClick={ () => {
-                  onClose();
-                } }>Close</Button>
+                  <Button variant="contained" onClick={ () => {
+                    onClose();
+                  } }>Close</Button>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
         </Box>
       </Modal>

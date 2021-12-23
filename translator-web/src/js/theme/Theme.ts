@@ -5,6 +5,9 @@ let lightOptions: ThemeOptions = {
   palette: {
     // primary:  grey,
     // secondary: lightGreen,
+    background: {
+      default: "#e4f0e2"
+    }
   },
   spacing: 8,
   components: {
@@ -105,15 +108,25 @@ let lightOptions: ThemeOptions = {
 };
 export const lightTheme: Theme = createTheme(lightOptions);
 
-const darkOptions: ThemeOptions = {...lightOptions, palette: {  mode: 'dark'  }};
+const darkOptions: ThemeOptions = {
+  ...lightOptions, palette: {
+    mode: 'dark',
+    background: {
+      default: "#222222"
+    },
+    text: {
+      primary: "#afafaf"
+    }
+  }
+};
 export const darkTheme: Theme = createTheme(darkOptions);
 
 const THEME_KEY = "theme-ui-color-mode";
 
-export const getThemeNameStorage = ()=>{
+export const getThemeNameStorage = () => {
   return localStorage.getItem(THEME_KEY) || "light";
 }
 
-export const setThemeNameStorage = (name)=> {
+export const setThemeNameStorage = (name) => {
   localStorage.setItem(THEME_KEY, name);
 }

@@ -8,6 +8,7 @@ import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.orm.WordRepository;
 import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
+import org.bambrikii.security.orm.User;
 import org.bambrikii.security.provider.CurrentUser;
 import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.data.domain.Page;
@@ -171,18 +172,19 @@ public class WordController {
             Optional<Tag> tagOptional = tagRepository.findByNameAndLang(tagName, lang);
             Tag tag = tagOptional.isPresent()
                     ? tagOptional.get()
-                    : createTag(tagName, lang);
+                    : createTag(tagName, lang, userService.retrieveUser(userPrincipal));
             word.getTags().add(tag);
             wordRepository.save(word);
         }
         return wordConverter.toDto(word);
     }
 
-    private Tag createTag(String tagName, Language lang) {
+    private Tag createTag(String tagName, Language lang, User user) {
         Tag tag;
         tag = new Tag();
         tag.setName(tagName);
         tag.setLang(lang);
+        tag.setCreatedBy(user);
         tagRepository.save(tag);
         return tag;
     }

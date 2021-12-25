@@ -4,8 +4,12 @@ import org.bambrikii.lang.pagetranslator.orm.LangRepository;
 import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Tag;
 import org.bambrikii.lang.pagetranslator.orm.TagRepository;
+import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.bambrikii.lang.pagetranslator.words.TagDto;
+import org.bambrikii.security.orm.User;
+import org.bambrikii.security.provider.CurrentUser;
+import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,25 +23,35 @@ public class TagController {
     private final LangRepository langRepository;
     private final TagRepository tagRepository;
     private final TagConverter tagConverter;
+    private final UserService userService;
 
     public TagController(
             LangRepository langRepository,
             TagRepository tagRepository,
-            TagConverter tagConverter
+            TagConverter tagConverter,
+            UserService userService
     ) {
         this.langRepository = langRepository;
         this.tagRepository = tagRepository;
         this.tagConverter = tagConverter;
+        this.userService = userService;
     }
 
     @PostMapping("/tags")
     @Transactional
-    public TagDto add(String name, String langCode) {
+    public TagDto add(
+            String name, String langCode,
+            @CurrentUser UserPrincipal userPrincipal
+            ) {
+        Language lang = langRepository.findByCode(langCode);
+        User user = userService.retrieveUser(userPrincipal);
+
         Tag tag = new Tag();
         tag.setName(name);
-        Language lang = langRepository.findByCode(langCode);
         tag.setLang(lang);
+        tag.setCreatedBy(user);
         tagRepository.save(tag);
+
         return tagConverter.toClient(tag);
     }
 

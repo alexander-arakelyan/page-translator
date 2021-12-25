@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static org.bambrikii.security.provider.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
@@ -70,16 +70,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
 
+        Predicate<String> predicate = isAuthorizedPredicate(clientRedirectUri);
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
-                .anyMatch(authorizedRedirectUri -> {
-                    // Only validate host and port. Let the clients use different paths if they want to
-                    URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
-                });
+                .anyMatch(predicate);
+    }
+
+    private Predicate<String> isAuthorizedPredicate(URI clientRedirectUri) {
+        return authorizedRedirectUri -> {
+            URI authorizedURI = URI.create(authorizedRedirectUri); // Only validate host and port. Let the clients use different paths if they want to
+            return isaBoolean(clientRedirectUri, authorizedURI);
+        };
+    }
+
+    private boolean isaBoolean(URI clientRedirectUri, URI authorizedURI) {
+        return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                && authorizedURI.getPort() == clientRedirectUri.getPort();
     }
 }

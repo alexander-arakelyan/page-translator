@@ -12,6 +12,7 @@ import org.bambrikii.security.orm.User;
 import org.bambrikii.security.provider.CurrentUser;
 import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -191,7 +192,7 @@ public class WordController {
 
     @DeleteMapping("/words/{wordId}/tags")
     @Transactional
-    public WordDto removeTag(
+    public ResponseEntity<WordDto> removeTag(
             @PathVariable Long wordId,
             @RequestBody Tag tagDto,
             @CurrentUser UserPrincipal userPrincipal
@@ -205,9 +206,15 @@ public class WordController {
         if (tagOptional.isEmpty()) {
             return null;
         }
+
         Tag tag = tagOptional.get();
+        User user = userService.retrieveUser(userPrincipal);
+        if (!user.equals(tag.getCreatedBy())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(wordConverter.toDto(word));
+        }
+
         word.getTags().remove(tag);
         wordRepository.save(word);
-        return wordConverter.toDto(word);
+        return ResponseEntity.ok(wordConverter.toDto(word));
     }
 }

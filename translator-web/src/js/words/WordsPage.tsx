@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { WordsGrid } from "../words/WordsGrid";
 import { WordsActions } from "../words/WordsReducer";
@@ -14,6 +14,7 @@ import {
   selectWordsPageSize,
   selectWordsTotalPages
 } from "./WordSelectors";
+import { TagsActions } from "../tags/TagsReducer";
 
 export const WordsPage = ({}) => {
   const dispatch = useDispatch();
@@ -25,7 +26,10 @@ export const WordsPage = ({}) => {
   const word = useSelector(selectWord);
   const langs = useSelector(selectLangs);
 
+  const [ page, setPage ] = useState(0);
+
   const onWordsList = (word, langCode, page = 0, pageSize = 5) => {
+    setPage(page);
     return WordsActions
     .list(word, langCode, page, pageSize, dispatch)
     .then(r => {
@@ -65,7 +69,9 @@ export const WordsPage = ({}) => {
           onWordsList(wordName, langCode);
         } }
         onWordAdd={ (wordName, langCode) => {
-          onWordAdd(wordName, langCode, pageSize)
+          onWordAdd(wordName, langCode, pageSize).then(() => {
+            onWordsList(wordName, langCode, page, pageSize)
+          })
         } }
       />
       <WordsGrid
@@ -74,7 +80,22 @@ export const WordsPage = ({}) => {
         totalPages={ totalPages }
         currentPage={ currentPage }
         pageClicked={ (page, pageSize) => {
+          setPage(page);
           onWordsList(wordName, langCode, page, pageSize)
+        } }
+        onTagAdd={ (wordId, tagName) => {
+          TagsActions
+          .addTagToWordByName(wordId, tagName, dispatch)
+          .then(r => {
+            onWordsList(wordName, langCode, page, pageSize)
+          });
+        } }
+        onTagRemove={ (wordId, tagId) => {
+          TagsActions
+          .removeTagFromWord(wordId, tagId, dispatch)
+          .then(r => {
+            onWordsList(wordName, langCode, page, pageSize)
+          });
         } }
       />
     </React.Fragment>

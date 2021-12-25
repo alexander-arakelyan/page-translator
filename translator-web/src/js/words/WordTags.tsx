@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { TagsActions } from "../tags/TagsReducer";
 import { WordsActions } from "../words/WordsReducer";
 import {
@@ -11,35 +11,9 @@ import {
   TableCell,
   TableRow
 } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { selectWords } from "./WordSelectors";
+import { useDispatch } from "react-redux";
 
-export const WordTags = ({word}) => {
-  const dispatch = useDispatch();
-
-  const words = useSelector(selectWords);
-
-  const onTagAdd = (wordId, tagName) => {
-    TagsActions
-    .addTagToWordByName(wordId, tagName, dispatch)
-    .then(r => {
-      WordsActions
-      .loadById(wordId, dispatch)
-      .then(word => {
-      });
-    });
-  }
-  const onTagRemove = (wordId, tagId) => {
-    TagsActions
-    .removeTagFromWord(wordId, tagId, dispatch)
-    .then(r => {
-      WordsActions
-      .loadById(wordId, dispatch)
-      .then(word => {
-      });
-    });
-  }
-
+export const WordTags = ({word, onTagAdd, onTagRemove}) => {
   const [ tagName, setTagName ] = useState("");
 
   const addTagNameChanged = (tagName) => {
@@ -47,13 +21,7 @@ export const WordTags = ({word}) => {
   }
 
   const wordId = word.id;
-  const word0 = words && words[wordId];
-  let tags;
-  if (word0) {
-    tags = word0.tags;
-  } else {
-    tags = word.tags;
-  }
+  let tags = word.tags;
 
   return (<React.Fragment>
     <Table size="small">
@@ -61,7 +29,7 @@ export const WordTags = ({word}) => {
         { tags.map((tag) => {
           return (
             <TableRow key={ `tag-${ wordId }-${ tag.id }` }>
-              <TableCell>{ tag.id }</TableCell>
+              {/*<TableCell>{ tag.id }</TableCell>*/ }
               <TableCell>{ tag.name }</TableCell>
               <TableCell>{ tag.langName }</TableCell>
               <TableCell>

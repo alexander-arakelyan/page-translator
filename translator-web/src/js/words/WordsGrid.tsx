@@ -2,7 +2,6 @@ import React from "react"
 import { WordTags } from "./WordTags";
 import {
   Pagination,
-  PaginationItem,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +10,10 @@ import {
   TableRow
 } from "@mui/material";
 
-export const WordsGrid = ({rows, pageSize, totalPages, currentPage, pageClicked}) => {
+export const WordsGrid = ({
+                            rows, pageSize, totalPages, currentPage, pageClicked,
+                            onTagAdd, onTagRemove
+                          }) => {
   const pages = [];
   for (let number = 1; number <= totalPages; number++) {
     pages.push({number, active: number === 1 + currentPage});
@@ -35,7 +37,7 @@ export const WordsGrid = ({rows, pageSize, totalPages, currentPage, pageClicked}
                   <TableCell>{ rowVal.name }</TableCell>
                   <TableCell>{ rowVal.langName }</TableCell>
                   <TableCell>
-                    <WordTags word={ rowVal }/>
+                    <WordTags word={ rowVal } onTagAdd={ onTagAdd } onTagRemove={ onTagRemove }/>
                   </TableCell>
                 </TableRow>)
               })

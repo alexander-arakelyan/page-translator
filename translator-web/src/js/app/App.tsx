@@ -7,34 +7,32 @@ import { lightTheme, darkTheme, setThemeNameStorage } from '../theme/Theme'
 
 import { WordsPage } from "../words/WordsPage"
 import reduxStore from "../store/ReduxStore";
-import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
-import { createBrowserHistory, createHashHistory } from "history";
 import {
   AppBar,
   Button,
   Container,
   CssBaseline,
   Grid,
-  IconButton,
-  ThemeProvider,
+  IconButton, ThemeProvider,
   Toolbar,
   Typography
 } from "@mui/material";
-import { PrivateRoute } from "../common/PrivateRoute";
 import { getCurrentUser } from "../utils/APIUtils";
 import { ACCESS_TOKEN } from "../constants";
-import NotFound from "../common/NotFound";
-import Profile from "../profile/Profile";
-import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
+import { NotFound } from "../common/NotFound";
+import { Profile } from "../profile/Profile";
+import { OAuth2RedirectHandler } from "../oauth2/OAuth2RedirectHandler";
 import AppHeader from "../common/AppHeader";
-import Signup from "../signup/Signup";
-import Login from "../login/Login";
+import { Signup } from "../signup/Signup";
+import { Login } from "../login/Login";
 import Alert from "react-s-alert";
 import { getThemeNameStorage } from "../theme/Theme";
 import { ArticlesPage } from "../articles/ArticlesPage";
+import { Route } from "../route/Route";
+import { RouteIconButton } from "../route/RouteIconButton";
 
 const App = ({}) => {
-  const [ themeName, setThemeName] = useState(getThemeNameStorage());
+  const [ themeName, setThemeName ] = useState(getThemeNameStorage());
   const [ authenticated, setAuthenticated ] = useState(false);
   const [ currentUser, setCurrentUser ] = useState(null);
   const [ loading, setLoading ] = useState(false);
@@ -61,7 +59,7 @@ const App = ({}) => {
   const currentTheme = themeName == "light" ? lightTheme : darkTheme;
   return (<React.Fragment>
     <ThemeProvider theme={ currentTheme }>
-      <CssBaseline />
+      <CssBaseline/>
       <Provider store={ reduxStore }>
         <AppBar position="static">
           <Toolbar>
@@ -72,57 +70,48 @@ const App = ({}) => {
               <IconButton href="/" size="small" color="inherit">Home</IconButton>
             </div>
             { authenticated && <div>
-                <IconButton href="/#words" size="small" color="inherit">Words</IconButton>
-                <IconButton href="/#articles" size="small" color="inherit">Articles</IconButton>
+                <RouteIconButton href="/#words">Words</RouteIconButton>
+                <RouteIconButton href="/#articles">Articles</RouteIconButton>
             </div> }
 
             <AppHeader authenticated={ authenticated } onLogout={ handleLogout }/>
-            <DarkModeToggle onChange={ (value)=> {
+            <DarkModeToggle onChange={ (value) => {
               const name = value ? "dark" : "light";
               setThemeName(name)
               setThemeNameStorage(name);
-            } } checked={ themeName!="light" } size={ 80 }
+            } } checked={ themeName != "light" } size={ 80 }
             />
 
           </Toolbar>
         </AppBar>
 
         <Container>
-          <HashRouter history={ createHashHistory() } basename="/">
-            <Switch>
-              <Route path="/words"> <WordsPage /> </Route>
-              <Route path="/articles"> <ArticlesPage /> </Route>
-
-              <PrivateRoute path="/" exact={ true } authenticated={ authenticated } currentUser={ currentUser }>
-                <Grid container spacing={ 2 } rowSpacing={ 2 }>
-                  <Grid item><Button href="#words">Words</Button></Grid>
-                  <Grid item><Button href="#articles">Articles</Button></Grid>
-                </Grid>
-              </PrivateRoute>
-              <PrivateRoute path="/" exact={ true } authenticated={ !authenticated } currentUser={ currentUser }>
-                Main Page
-              </PrivateRoute>
-
-              <PrivateRoute path="/profile"
-                            authenticated={ authenticated }
-                            currentUser={ currentUser }
-              >
-                <Profile/>
-              </PrivateRoute>
-              <Route path="/login"
-                     render={ (props) => <Login authenticated={ authenticated } { ...props } /> }
-              />
-              <Route path="/signup"
-                     render={ (props) => <Signup authenticated={ authenticated } { ...props } /> }
-              />
-              <Route component={ NotFound }/>
-            </Switch>
-          </HashRouter>
-          <BrowserRouter history={ createBrowserHistory() } basename="/">
-            <Switch>
-              <Route path="/oauth2/redirect" exact={ false } component={ OAuth2RedirectHandler }/>
-            </Switch>
-          </BrowserRouter>
+          <Route path="/#profile">
+            { authenticated && <Profile currentUser={ currentUser }/> }
+          </Route>
+          <Route path={/\/oauth2\/redirect.*/} enabled={!authenticated}>
+            {!authenticated && <OAuth2RedirectHandler location={ "/" } history={ "/" } authenticated={authenticated}/> }
+          </Route>
+          <Route path="/#words">
+            <WordsPage/>
+          </Route>
+          <Route path="/#articles"><ArticlesPage/></Route>
+          <Route path="/#login" enabled={ !authenticated }>
+            <Login authenticated={ authenticated } location={ location } history={ history }/>
+          </Route>
+          <Route path="/signup" enabled={ authenticated }>
+            <Signup authenticated={ authenticated } location={ location } history={ history }/>
+          </Route>
+          <Route path="/">
+            { authenticated && <Grid container spacing={ 2 } rowSpacing={ 2 }>
+                <Grid item><Button href="#words">Words</Button></Grid>
+                <Grid item><Button href="#articles">Articles</Button></Grid>
+            </Grid> }
+            { !authenticated && <Typography>Main Page</Typography> }
+          </Route>
+          <Route path="-">
+            <NotFound/>
+          </Route>
         </Container>
       </Provider>
     </ThemeProvider>

@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
 import './AppHeader.css';
-import { Button, IconButton } from "@mui/material";
+import { RouteIconButton } from "../route/RouteIconButton";
 
 export const AppHeader = ({authenticated, onLogout}) => {
   return (
     <div>
       { authenticated ? (
         <>
-          <IconButton href="/#profile" size="small" color="inherit">Profile</IconButton>
-          <IconButton href="#" size="small" color="inherit"
-                      onClick={ onLogout }>Logout</IconButton>
+          <RouteIconButton href="/#profile">Profile</RouteIconButton>
+          <RouteIconButton href="#" onClick={ onLogout }>Logout</RouteIconButton>
         </>
       ) : (
         <>
-          <IconButton href="/#signup" size="small" color="inherit">Signup</IconButton>
-          <IconButton href="/#login" size="small" color="inherit">Login</IconButton>
+          <RouteIconButton href="/#signup">Signup</RouteIconButton>
+          <RouteIconButton href="/#login">Login</RouteIconButton>
         </>
       ) }
     </div>

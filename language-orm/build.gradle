@@ -1,0 +1,6 @@
+apply from: "${rootDir}/gradle/java.gradle"
+apply plugin: "java-library"
+
+dependencies {
+    api(libs.spring.boot.starter.data.jpa)
+}

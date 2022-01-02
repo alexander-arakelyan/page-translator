@@ -3,6 +3,7 @@ apply plugin: "java-library"
 
 dependencies {
     api(project(":security-orm"))
+    api(project(":language-orm"))
     api(project(":translator-model"))
 
     api(libs.spring.boot.starter.data.jpa)

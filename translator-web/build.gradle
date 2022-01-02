@@ -12,6 +12,8 @@ bootJar {
 dependencies {
     implementation(project(":translator-orm"))
     implementation(project(":security-provider"))
+    implementation(project(":grammar-service"))
+    implementation(project(":language-service"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.actuator)

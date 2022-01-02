@@ -1,0 +1,7 @@
+apply from: "${rootDir}/gradle/java.gradle"
+
+dependencies {
+    implementation(project(":grammar-orm"))
+
+    implementation(libs.spring.boot.starter.web)
+}

@@ -1,5 +1,6 @@
 package org.bambrikii.lang.pagetranslator.orm;
 
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

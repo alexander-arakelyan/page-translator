@@ -2,6 +2,7 @@ package org.bambrikii.lang.pagetranslator.orm;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.security.orm.User;
 
 import javax.persistence.Column;

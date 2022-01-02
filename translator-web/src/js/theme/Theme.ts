@@ -6,7 +6,7 @@ let lightOptions: ThemeOptions = {
     // primary:  grey,
     // secondary: lightGreen,
     background: {
-      default: "#e4f0e2"
+      // default: "#e4f0e2"
     }
   },
   spacing: 8,

@@ -3,7 +3,12 @@ rootProject.name = "page-translator"
 include("security-orm")
 include("security-provider")
 
+include("language-orm")
+include("language-service")
+
 include("translator-model")
 include("translator-orm")
 include("translator-web")
 
+include("grammar-orm")
+include("grammar-service")

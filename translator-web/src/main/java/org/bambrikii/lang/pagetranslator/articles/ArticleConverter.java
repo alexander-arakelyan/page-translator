@@ -1,7 +1,7 @@
 package org.bambrikii.lang.pagetranslator.articles;
 
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Article;
-import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.security.orm.User;
 import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.beans.BeanUtils;

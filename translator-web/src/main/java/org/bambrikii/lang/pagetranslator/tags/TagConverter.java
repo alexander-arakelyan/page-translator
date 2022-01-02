@@ -1,6 +1,6 @@
 package org.bambrikii.lang.pagetranslator.tags;
 
-import org.bambrikii.lang.pagetranslator.orm.Language;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Tag;
 import org.bambrikii.lang.pagetranslator.orm.TagRepository;
 import org.bambrikii.lang.pagetranslator.words.TagDto;

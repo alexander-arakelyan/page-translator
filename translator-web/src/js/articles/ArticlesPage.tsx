@@ -93,7 +93,7 @@ export const ArticlesPage = ({}) => {
       />
       <ArticleModal
         show={ showArticle }
-        article={ article }
+        article={ article0 }
         onClose={ (article) => {
           updateSearch(article);
           hideEdit();

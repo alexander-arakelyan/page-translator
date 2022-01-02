@@ -1,7 +1,9 @@
 package org.bambrikii.lang.pagetranslator.orm;
 
+import org.bambrikii.lang.translator.page.lang.orm.LanguagePersistenceConfig;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -10,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EntityScan(basePackageClasses = {
         Word.class,
-        Language.class,
         Usage.class,
         Tag.class,
         Article.class,
@@ -18,11 +19,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @EnableJpaRepositories(basePackageClasses = {
         WordRepository.class,
-        LangRepository.class,
         UsageRepository.class,
         TagRepository.class,
         ArticleRepository.class,
         ArticleWordRepository.class
+})
+@Import({
+        LanguagePersistenceConfig.class
 })
 public class TranslatorPersistenceConfig {
 }

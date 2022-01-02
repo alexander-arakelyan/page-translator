@@ -2,16 +2,13 @@ package org.bambrikii.lang.pagetranslator.config;
 
 import org.bambrikii.lang.pagetranslator.articles.ArticleController;
 import org.bambrikii.lang.pagetranslator.articleword.ArticleWordController;
-import org.bambrikii.lang.pagetranslator.languages.LangController;
 import org.bambrikii.lang.pagetranslator.tags.TagController;
 import org.bambrikii.lang.pagetranslator.usage.UsageController;
 import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.words.WordController;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -21,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @ComponentScan(basePackageClasses = {
         WordController.class,
-        LangController.class,
         UsageController.class,
         TagController.class,
         ArticleController.class,

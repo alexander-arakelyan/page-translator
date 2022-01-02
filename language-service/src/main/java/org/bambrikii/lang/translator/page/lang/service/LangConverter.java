@@ -1,14 +1,16 @@
-package org.bambrikii.lang.pagetranslator.languages;
+package org.bambrikii.lang.translator.page.lang.service;
 
-import org.bambrikii.lang.pagetranslator.orm.LangRepository;
-import org.bambrikii.lang.pagetranslator.orm.Language;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bambrikii.lang.translator.page.lang.orm.LangRepository;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LangConverter {
-    @Autowired
-    private LangRepository langRepository;
+    private final LangRepository langRepository;
+
+    public LangConverter(LangRepository langRepository) {
+        this.langRepository = langRepository;
+    }
 
     public LangDto toClient(Language lang) {
         return new LangDto(lang.getId(), lang.getCode(), lang.getName());

@@ -1,9 +1,9 @@
 package org.bambrikii.lang.pagetranslator.articles;
 
+import org.bambrikii.lang.translator.page.lang.orm.LangRepository;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Article;
 import org.bambrikii.lang.pagetranslator.orm.ArticleRepository;
-import org.bambrikii.lang.pagetranslator.orm.LangRepository;
-import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
 import org.bambrikii.security.orm.User;

@@ -1,5 +1,6 @@
 package org.bambrikii.lang.pagetranslator.orm;
 
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

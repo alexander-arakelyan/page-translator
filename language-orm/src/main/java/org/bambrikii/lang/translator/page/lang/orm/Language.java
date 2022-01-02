@@ -1,4 +1,4 @@
-package org.bambrikii.lang.pagetranslator.orm;
+package org.bambrikii.lang.translator.page.lang.orm;
 
 import lombok.Getter;
 import lombok.Setter;

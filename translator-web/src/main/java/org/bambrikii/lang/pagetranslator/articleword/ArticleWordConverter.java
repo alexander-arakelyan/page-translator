@@ -1,7 +1,7 @@
 package org.bambrikii.lang.pagetranslator.articleword;
 
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.ArticleWord;
-import org.bambrikii.lang.pagetranslator.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Word;
 import org.bambrikii.lang.pagetranslator.tags.TagConverter;
 import org.springframework.stereotype.Service;

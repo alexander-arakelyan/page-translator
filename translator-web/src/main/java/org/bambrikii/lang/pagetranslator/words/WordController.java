@@ -1,7 +1,7 @@
 package org.bambrikii.lang.pagetranslator.words;
 
-import org.bambrikii.lang.pagetranslator.orm.LangRepository;
-import org.bambrikii.lang.pagetranslator.orm.Language;
+import org.bambrikii.lang.translator.page.lang.orm.LangRepository;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Tag;
 import org.bambrikii.lang.pagetranslator.orm.TagRepository;
 import org.bambrikii.lang.pagetranslator.orm.Word;

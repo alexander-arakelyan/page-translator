@@ -97,22 +97,42 @@ kubernetes {
                 type = "kubernetes.io/dockerconfigjson"
             }
         }
-        secretGroup {
-            name = "db"
-            secret {
-                name = "db-url"
-//                literal = "${DB_URL}"
-                literal = "jdbc:postgresql://postgres:5432/page_translator"
+    }
+    configmapGroups {
+        configmapGroup {
+            name = "postgres-config-web"
+            configmap {
+                name = "POSTGRES_URL"
+                literal = "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
             }
-            secret {
-                name = "db-username"
-//                literal = "${DB_USERNAME}"
-                literal = "page_translator"
+        }
+    }
+    configmapGroups {
+        configmapGroup {
+            name = "oauth-config"
+            configmap {
+                name = "OAUTH2_APP_AUTH_TOKEN_SECRET"
+                literal = "${OAUTH2_APP_AUTH_TOKEN_SECRET}"
             }
-            secret {
-                name = "db-password"
-//                literal = "${DB_PASSWORD}"
-                literal = "page_translator"
+            configmap {
+                name = "OAUTH2_GOOGLE_CLIENT_ID"
+                literal = "${OAUTH2_GOOGLE_CLIENT_ID}"
+            }
+            configmap {
+                name = "OAUTH2_BASE_URL"
+                literal = "${OAUTH2_BASE_URL}"
+            }
+            configmap {
+                name = "OAUTH2_GITHUB_CLIENT_ID"
+                literal = "${OAUTH2_GITHUB_CLIENT_ID}"
+            }
+            configmap {
+                name = "OAUTH2_GOOGLE_CLIENT_SECRET"
+                literal = "${OAUTH2_GOOGLE_CLIENT_SECRET}"
+            }
+            configmap {
+                name = "OAUTH2_GITHUB_CLIENT_SECRET"
+                literal = "${OAUTH2_GITHUB_CLIENT_SECRET}"
             }
         }
     }

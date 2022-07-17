@@ -20,7 +20,10 @@ spec:
             - containerPort: 8082
           env:
             - name: DB_URL
-              value: jdbc:postgresql://postgres:5432/page_translator
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-web
+                  key: POSTGRES_URL
             - name: DB_USERNAME
               valueFrom:
                 configMapKeyRef:

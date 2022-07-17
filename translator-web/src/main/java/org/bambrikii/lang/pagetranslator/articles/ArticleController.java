@@ -1,17 +1,16 @@
 package org.bambrikii.lang.pagetranslator.articles;
 
-import org.bambrikii.lang.translator.page.lang.orm.LangRepository;
-import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.lang.pagetranslator.orm.Article;
 import org.bambrikii.lang.pagetranslator.orm.ArticleRepository;
 import org.bambrikii.lang.pagetranslator.user.UserService;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
+import org.bambrikii.lang.translator.page.lang.orm.LangRepository;
+import org.bambrikii.lang.translator.page.lang.orm.Language;
 import org.bambrikii.security.orm.User;
 import org.bambrikii.security.provider.CurrentUser;
 import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,19 +47,12 @@ public class ArticleController {
     @Transactional
     public ResponseEntity<Page<ArticleDto>> list(
             @RequestParam(required = false, defaultValue = "") String title,
-            @RequestParam(defaultValue = "0") Integer pageNum,
-            @RequestParam(defaultValue = "50") Integer pageSize,
-            @RequestParam(defaultValue = "updatedAt") String sortBy,
-            @CurrentUser UserPrincipal userPrincipal
+            @CurrentUser UserPrincipal userPrincipal,
+            Pageable pager
     ) {
         User user = userService.retrieveUser(userPrincipal);
-        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
         Page<ArticleDto> page = articleRepository
-                .findByCreatedByAndTitleLike(
-                        user,
-                        title,
-                        PageRequest.of(pageNum, pageSize, sort)
-                )
+                .findByCreatedByAndTitleLike(user, title, pager)
                 .map(articleConverter::toDto);
 
         return ResponseEntity.ok(page);

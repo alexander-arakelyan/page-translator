@@ -7,5 +7,6 @@ buildscript {
         classpath("com.github.node-gradle:gradle-node-plugin:${gradleNodePluginVersion}")
         classpath("com.gorylenko.gradle-git-properties:gradle-git-properties:2.3.1")
         classpath("com.github.davidmc24.gradle.plugin:gradle-avro-plugin:1.2.1")
+        classpath("com.github.bambrikii:gradle-virtualization-plugin:1.9.4")
     }
 }

@@ -11,9 +11,9 @@ const WORD_TAG_ADDED = "WORD_TAG_ADDED";
 const WORD_TAG_REMOVED = "WORD_TAG_REMOVED";
 
 export const WordsActions = {
-    list: async (name, langCode, pageNum, pageSize, dispatch) => {
+    list: async (name, langCode, page, size, dispatch) => {
         const headers = OAuth2Utils.authorization();
-        await fetch(`${Config.API_BASE}/words?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&langCode=${langCode}`,
+        await fetch(`${Config.API_BASE}/words?page=${page}&size=${size}&name=${name}&langCode=${langCode}`,
             {headers}
         )
             .then(res => res.json())

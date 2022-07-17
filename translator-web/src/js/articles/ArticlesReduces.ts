@@ -11,7 +11,7 @@ const ARTICLE_LOADED = "ARTICLE_LOADED"
 export const ArticlesActions = {
     list: (title, page, pageSize, dispatch) => {
         const headers = OAuth2Utils.authorization();
-        return fetch(`${Config.API_BASE}/articles?title=${title}&pageNum=${page}&pageSize=${pageSize}`, {
+        return fetch(`${Config.API_BASE}/articles?title=${title}&page=${page}&size=${pageSize}`, {
             headers
         })
             .then(res => JsonUtils.tryReturnJson(res))

@@ -12,6 +12,7 @@ import org.bambrikii.security.orm.User;
 import org.bambrikii.security.provider.CurrentUser;
 import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
-
-import static org.bambrikii.lang.pagetranslator.utils.RequestUtils.toPager;
 
 /**
  * Created by Alexander Arakelyan on 06/04/18 23:20.
@@ -56,17 +55,15 @@ public class WordController {
     @Transactional
     public ResponseEntity<Page<WordDto>> list(
             @RequestParam(required = false, defaultValue = "") String name,
-            @RequestParam(defaultValue = "0") Integer pageNum,
-            @RequestParam(defaultValue = "50") Integer pageSize,
-            @RequestParam(defaultValue = "id DESC") String sortBy,
-            @RequestParam(required = false) String langCode
+            @RequestParam(required = false) String langCode,
+            Pageable pager
     ) {
         Language lang = langRepository.findByCode(langCode);
         Page<WordDto> page = wordRepository
                 .findByNameLikeAndLang(
                         name,
                         lang,
-                        toPager(pageNum, pageSize, sortBy)
+                        pager
                 )
                 .map(wordConverter::toDto);
 

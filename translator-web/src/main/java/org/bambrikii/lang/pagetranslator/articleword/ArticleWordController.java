@@ -14,6 +14,7 @@ import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
-
-import static org.bambrikii.lang.pagetranslator.utils.RequestUtils.toPager;
 
 @RestApiV1
 public class ArticleWordController {
@@ -53,13 +52,10 @@ public class ArticleWordController {
     @Transactional
     public ResponseEntity<Page<ArticleWordDto>> listWords(
             @PathVariable Long articleId,
-            @RequestParam(defaultValue = "0") Integer pageNum,
-            @RequestParam(defaultValue = "10000") Integer pageSize,
-            @RequestParam(defaultValue = "count DESC") String sortBy,
-            @RequestParam(value = "word", required = false) String wordName
+            @RequestParam(value = "word", required = false) String wordName,
+            Pageable pager
     ) {
 
-        PageRequest pager = toPager(pageNum, pageSize, sortBy);
         Page<ArticleWord> articleWords = StringUtils.isNotBlank(wordName)
                 ? articleWordRepository.findByArticleIdAndWordNameLike(articleId, wordName, pager)
                 : articleWordRepository.findByArticleId(articleId, pager);

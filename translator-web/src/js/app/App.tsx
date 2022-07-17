@@ -30,6 +30,8 @@ import { getThemeNameStorage } from "../theme/Theme";
 import { ArticlesPage } from "../articles/ArticlesPage";
 import { Route } from "../route/Route";
 import { RouteIconButton } from "../route/RouteIconButton";
+import { TopicsPage } from "../topics/TopicsPage";
+import { ExportPage } from "../export/ExportPage";
 
 const App = ({}) => {
   const [ themeName, setThemeName ] = useState(getThemeNameStorage());
@@ -70,8 +72,10 @@ const App = ({}) => {
               <IconButton href="/" size="small" color="inherit">Home</IconButton>
             </div>
             { authenticated && <div>
-                <RouteIconButton href="/#words">Words</RouteIconButton>
+                <RouteIconButton href="/#topics">Topics</RouteIconButton>
                 <RouteIconButton href="/#articles">Articles</RouteIconButton>
+                <RouteIconButton href="/#words">Words</RouteIconButton>
+                <RouteIconButton href="/#export">Export</RouteIconButton>
             </div> }
 
             <AppHeader authenticated={ authenticated } onLogout={ handleLogout }/>
@@ -89,13 +93,16 @@ const App = ({}) => {
           <Route path="/#profile">
             { authenticated && <Profile currentUser={ currentUser }/> }
           </Route>
-          <Route path={/\/oauth2\/redirect.*/} enabled={!authenticated}>
-            {!authenticated && <OAuth2RedirectHandler location={ "/" } history={ "/" } authenticated={authenticated}/> }
+          <Route path={ /\/oauth2\/redirect.*/ } enabled={ !authenticated }>
+            { !authenticated &&
+            <OAuth2RedirectHandler location={ "/" } history={ "/" } authenticated={ authenticated }/> }
           </Route>
           <Route path="/#words">
             <WordsPage/>
           </Route>
           <Route path="/#articles"><ArticlesPage/></Route>
+          <Route path="/#topics"><TopicsPage/></Route>
+          <Route path="/#export"><ExportPage/></Route>
           <Route path="/#login" enabled={ !authenticated }>
             <Login authenticated={ authenticated } location={ location } history={ history }/>
           </Route>

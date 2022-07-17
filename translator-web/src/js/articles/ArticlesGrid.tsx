@@ -57,7 +57,7 @@ export const ArticlesGrid = ({
       </Table>
       <Pagination
         count={ totalPages }
-        page={ currentPage }
+        page={ currentPage + 1 }
         onChange={ (event, page) => {
           pageClicked(page - 1, pageSize)
         } }

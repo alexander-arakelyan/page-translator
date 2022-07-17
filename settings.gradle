@@ -12,3 +12,7 @@ include("translator-web")
 
 include("grammar-orm")
 include("grammar-service")
+
+include("export-service")
+
+include("translator-db")

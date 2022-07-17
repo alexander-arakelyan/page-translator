@@ -1,0 +1,5 @@
+Properties props = new Properties()
+props.load(new FileInputStream("${rootDir}/gradle/ext.properties"))
+props.each { prop ->
+    project.ext.set(prop.key, prop.value)
+}

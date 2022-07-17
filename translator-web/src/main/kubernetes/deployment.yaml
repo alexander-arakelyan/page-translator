@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translator-web
+spec:
+  selector:
+    matchLabels:
+      app: translator-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: translator-web
+    spec:
+      containers:
+        - name: translator-web
+          image: localhost:5000/page-translator/translator-web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://postgres:5432/page_translator
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_DB
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_PASSWORD
+            - name: OAUTH2_APP_AUTH_TOKEN_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_APP_AUTH_TOKEN_SECRET
+            - name: OAUTH2_GOOGLE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_GOOGLE_CLIENT_ID
+            - name: OAUTH2_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_BASE_URL
+            - name: OAUTH2_GITHUB_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_GITHUB_CLIENT_ID
+            - name: OAUTH2_GOOGLE_CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_GOOGLE_CLIENT_SECRET
+            - name: OAUTH2_GITHUB_CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: oauth-config
+                  key: OAUTH2_GITHUB_CLIENT_SECRET

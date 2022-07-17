@@ -1,0 +1,20 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: export-service-mapping-1655676531196
+  namespace: bambrikii
+  labels:
+    app: export-service
+  annotations: { }
+spec:
+  ambassador_id:
+    - default
+  connect_timeout_ms: 3000
+  prefix: /
+  retry_policy:
+    num_retries: 1
+    per_try_timeout: 0.150s
+    retry_on: 5xx
+  service: export-service.bambrikii:80
+  timeout_ms: 3000
+#  hostname: export-service

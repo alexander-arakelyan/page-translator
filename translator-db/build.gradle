@@ -1,0 +1,24 @@
+apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
+
+docker {
+    namespace = "${dockerNamespace}"
+    repo = "${dockerRepo}" // repository to push images in
+    username = "${dockerUsername}"
+    password = "${dockerPassword}"
+    repositories {}
+    dockerBuildDir = buildDir
+    tagName = "${project.name}"
+    containerName = "${project.name}"
+    mounts {
+    }
+}
+kubernetes {
+    namespace = "${kubernetesNamespace}"
+    resources = [
+            "${projectDir.path}/src/main/kubernetes/client.yaml",
+            "${projectDir.path}/src/main/kubernetes/config.yaml",
+            "${projectDir.path}/src/main/kubernetes/pv.yaml",
+            "${projectDir.path}/src/main/kubernetes/deployment.yaml",
+            "${projectDir.path}/src/main/kubernetes/service.yaml",
+    ]
+}

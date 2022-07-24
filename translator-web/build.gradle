@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.thymeleaf)
     implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.spring.openapi.ui)
 
 //    implementation(platform(libs.spring.cloud.deps))
 //    implementation(libs.spring.cloud.commons)
@@ -34,9 +35,6 @@ dependencies {
 
     implementation(libs.jsoup)
     implementation(libs.postgresql)
-
-    implementation(libs.swagger.swagger2)
-    implementation(libs.swagger.ui)
 
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.security.oauth.client)

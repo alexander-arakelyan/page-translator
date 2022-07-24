@@ -7,31 +7,34 @@ ext.libs = [
                 ],
                 boot    : [
                         starter : [
-                                starter   : "org.springframework.boot:spring-boot-starter:${springBootVersion}",
-                                web       : "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
-                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
-                                actuator  : "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
-                                test      : "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
-                                security  : "org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
-                                mail      : "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}",
-                                validation: "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}",
+                                starter   : "org.springframework.boot:spring-boot-starter",
+                                web       : "org.springframework.boot:spring-boot-starter-web",
+                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf",
+                                actuator  : "org.springframework.boot:spring-boot-starter-actuator",
+                                test      : "org.springframework.boot:spring-boot-starter-test",
+                                security  : "org.springframework.boot:spring-boot-starter-security",
+                                mail      : "org.springframework.boot:spring-boot-starter-mail",
+                                validation: "org.springframework.boot:spring-boot-starter-validation",
                                 data      : [
-                                        jpa: "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+                                        jpa: "org.springframework.boot:spring-boot-starter-data-jpa"
                                 ],
-                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
-                                activemq  : "org.springframework.boot:spring-boot-starter-activemq:${springBootVersion}",
-                                webflux   : "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+                                thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf",
+                                activemq  : "org.springframework.boot:spring-boot-starter-activemq",
+                                webflux   : "org.springframework.boot:spring-boot-starter-webflux"
                         ],
                         config  : [
-                                processor: "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+                                processor: "org.springframework.boot:spring-boot-configuration-processor"
                         ],
-                        devtools: "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+                        devtools: "org.springframework.boot:spring-boot-devtools"
                 ],
                 kafka   : "org.springframework.kafka:spring-kafka:2.7.0",
                 security: [
                         oauth: [
-                                client: "org.springframework.security:spring-security-oauth2-client:${springSecurityVersion}"
+                                client: "org.springframework.security:spring-security-oauth2-client"
                         ]
+                ],
+                openapi : [
+                        ui: "org.springdoc:springdoc-openapi-ui:1.6.4"
                 ]
         ],
         jackson   : [

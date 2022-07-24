@@ -1,7 +1,8 @@
 package org.bambrikii.lang.pagetranslator.config;
 
-import org.bambrikii.lang.translator.page.lang.service.LanguageConfig;
+import org.bambrikii.lang.pagetranslator.export.ExportConfig;
 import org.bambrikii.lang.pagetranslator.orm.TranslatorPersistenceConfig;
+import org.bambrikii.lang.translator.page.lang.service.LanguageConfig;
 import org.bambrikii.security.orm.SecurityPersistenceConfig;
 import org.bambrikii.security.provider.AppSecurityProperties;
 import org.bambrikii.security.provider.SecurityConfig;
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Import;
         WebMvcConfig.class,
         SecurityConfig.class,
         LanguageConfig.class,
+        ExportConfig.class
 })
 @EnableConfigurationProperties({
         AppSecurityProperties.class,

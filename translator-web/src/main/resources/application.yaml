@@ -40,15 +40,6 @@ spring:
               - user:email
               - read:user
 
-
-#
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
-  api-docs:
-    enabled: true
-
 app:
   auth:
     tokenSecret: "${OAUTH2_APP_AUTH_TOKEN_SECRET}"

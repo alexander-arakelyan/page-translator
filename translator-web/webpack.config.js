@@ -83,7 +83,7 @@ module.exports = {
     devServer: {
         onBeforeSetupMiddleware: function (devServer) {
             devServer.app.get("/hello-world", function (req, res) {
-                const fileName = "./src/data/xml1.xml"
+                const fileName = "./src/data/xml1.xml";
                 res.writeHead(200, {"Content-Type": "application/xml"});
                 fileSystem.createReadStream(fileName).pipe(res);
             });

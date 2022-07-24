@@ -46,6 +46,7 @@
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "less-plugin-clean-css": "^1.5.1",
+    "prettier": "2.7.1",
     "react-test-renderer": "^17.0.2",
     "regenerator-runtime": "^0.13.9",
     "style-loader": "^1.1.4",

@@ -14,22 +14,22 @@ spec:
     spec:
       containers:
         - name: export-service
-          image: "a:5001/bambrikii/export-service:latest"
+          image: "localhost:5001/page-translator/export-service:latest"
           ports:
             - containerPort: 8083
           env:
             - name: DB_URL
               valueFrom:
-                secretKeyRef:
-                  key: db-url
-                  name: db
+                configMapKeyRef:
+                  name: postgres-config-web
+                  key: POSTGRES_URL
             - name: DB_USERNAME
               valueFrom:
-                secretKeyRef:
-                  key: db-username
-                  name: db
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_DB
             - name: DB_PASSWORD
               valueFrom:
-                secretKeyRef:
-                  key: db-password
-                  name: db
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_PASSWORD

@@ -8,8 +8,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +16,9 @@ import java.util.Date;
 @Log4j2
 @Service
 public class TokenProvider {
-    private AppProperties appProperties;
+    private AppSecurityProperties appProperties;
 
-    public TokenProvider(AppProperties appProperties) {
+    public TokenProvider(AppSecurityProperties appProperties) {
         this.appProperties = appProperties;
     }
 

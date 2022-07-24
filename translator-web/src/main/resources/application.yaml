@@ -74,13 +74,14 @@ app:
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirect
 
+page-translator:
+  export-service-url: http://localhost:8083
+
 #
 logging:
   level:
-    org:
-      springframework:
-        web: DEBUG
-        security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
     org.hibernate: ERROR
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE

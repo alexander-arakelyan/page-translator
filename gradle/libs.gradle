@@ -20,6 +20,7 @@ ext.libs = [
                                 ],
                                 thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
                                 activemq  : "org.springframework.boot:spring-boot-starter-activemq:${springBootVersion}",
+                                webflux   : "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
                         ],
                         config  : [
                                 processor: "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"

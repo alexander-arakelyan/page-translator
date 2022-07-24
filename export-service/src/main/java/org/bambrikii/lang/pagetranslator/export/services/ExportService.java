@@ -1,5 +1,6 @@
 package org.bambrikii.lang.pagetranslator.export.services;
 
+import org.bambrikii.lang.pagetranslator.export.model.ImportContainer;
 import org.bambrikii.lang.pagetranslator.export.model.ExportArticle;
 import org.bambrikii.lang.pagetranslator.export.model.ExportArticleWord;
 import org.bambrikii.lang.pagetranslator.export.model.ExportContainer;
@@ -85,5 +86,10 @@ public class ExportService {
         exportTag.setName(tag.getName());
         exportTag.setLanguageCode(tag.getLang().getCode());
         return exportTag;
+    }
+
+    public ImportContainer import1(ExportContainer export) {
+        // TODO:
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

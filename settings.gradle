@@ -10,9 +10,11 @@ include("translator-model")
 include("translator-orm")
 include("translator-web")
 
+include("grammar-api")
 include("grammar-orm")
 include("grammar-service")
 
+include("export-api")
 include("export-service")
 
 include("translator-db")

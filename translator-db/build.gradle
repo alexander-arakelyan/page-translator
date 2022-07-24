@@ -24,7 +24,7 @@ kubernetes {
             "${projectDir.path}/src/main/kubernetes/service.yaml",
     ]
     configmapGroup {
-        name = "postgres-config2"
+        name = "postgres-config"
         configmap {
             name = "POSTGRES_DB"
             literal = "${POSTGRES_DB}"

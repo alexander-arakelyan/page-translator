@@ -20,12 +20,12 @@ import static org.bambrikii.security.provider.HttpCookieOAuth2AuthorizationReque
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private TokenProvider tokenProvider;
-    private AppProperties appProperties;
+    private AppSecurityProperties appProperties;
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
 
     @Autowired
-    public OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
+    public OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppSecurityProperties appProperties,
                                               HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.tokenProvider = tokenProvider;
         this.appProperties = appProperties;

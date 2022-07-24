@@ -12,12 +12,14 @@ bootJar {
 dependencies {
     implementation(project(":translator-orm"))
     implementation(project(":security-provider"))
-    implementation(project(":grammar-service"))
+    implementation(project(":grammar-api"))
     implementation(project(":language-service"))
+    implementation(project(":export-api"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.thymeleaf)
+    implementation(libs.spring.boot.starter.webflux)
 
 //    implementation(platform(libs.spring.cloud.deps))
 //    implementation(libs.spring.cloud.commons)

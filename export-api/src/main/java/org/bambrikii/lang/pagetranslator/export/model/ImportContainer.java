@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ImportContainer {
+public class ImportContainer extends ExportContainer {
 }

@@ -11,6 +11,7 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "babel-plugin-transform-styles": "0.0.3",
+    "date-fns": "^2.29.2",
     "history": "^5.0.1",
     "jodit-react": "^1.1.5",
     "jquery": "^3.5.0",

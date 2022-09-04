@@ -1,5 +1,6 @@
 package org.bambrikii.security.provider;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 @ComponentScan(basePackageClasses = {
         CustomUserDetailsService.class
+})
+@EnableConfigurationProperties({
+        AppSecurityProperties.class,
 })
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService customUserDetailsService;

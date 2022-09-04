@@ -88,8 +88,44 @@ public class ExportService {
         return exportTag;
     }
 
-    public ImportContainer import1(ExportContainer export) {
+    public ImportContainer import1(ImportContainer export) {
         // TODO:
+        ensureWords(export.getWords());
+        ensureArticles(export.getArticles());
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void ensureArticles(List<ExportArticle> exportArticles) {
+        for (ExportArticle exportArticle : exportArticles) {
+            ensureArticle(exportArticle.getLink(), exportArticle.getTitle(), exportArticle.getLanguageCode(), exportArticle.getContent());
+            List<ExportArticleWord> exportWord = exportArticle.getWords();
+            for (ExportArticleWord exportArticleWord : exportWord) {
+                ensureWord(exportArticleWord.getName(), exportArticleWord.getLanguageCode());
+            }
+        }
+    }
+
+    private void ensureArticle(String link, String title, String languageCode, String content) {
+
+    }
+
+    private void ensureWords(List<ExportWord> exportWords) {
+        for (ExportWord exportWord : exportWords) {
+            String name = exportWord.getName();
+            String languageCode = exportWord.getLanguageCode();
+            Word word = ensureWord(name, languageCode);
+            List<ExportTag> exportTags = exportWord.getTags();
+            for (ExportTag exportTag : exportTags) {
+                ensureTag(word, exportTag.getName(), exportTag.getLanguageCode());
+            }
+        }
+    }
+
+    private void ensureTag(Word word, String name, String languageCode) {
+
+    }
+
+    private Word ensureWord(String name, String languageCode) {
+        return null;
     }
 }

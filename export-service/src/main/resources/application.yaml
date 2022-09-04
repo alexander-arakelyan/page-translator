@@ -21,6 +21,25 @@ spring:
     hibernate:
       format_sql: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: "${OAUTH2_GOOGLE_CLIENT_ID}"
+            clientSecret: "${OAUTH2_GOOGLE_CLIENT_SECRET}"
+            redirectUri: "${OAUTH2_BASE_URL:{baseUrl}}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+          github:
+            clientId: "${OAUTH2_GITHUB_CLIENT_ID}"
+            clientSecret: "${OAUTH2_GITHUB_CLIENT_SECRET}"
+            redirectUri: "${OAUTH2_BASE_URL:{baseUrl}}/oauth2/callback/{registrationId}"
+            scope:
+              - user:email
+              - read:user
+
 #
 springdoc:
   swagger-ui:
@@ -30,11 +49,29 @@ springdoc:
     enabled: true
 
 app:
+  auth:
+    tokenSecret: "${OAUTH2_APP_AUTH_TOKEN_SECRET}"
+    tokenExpirationMsec: 864000000
   cors:
     allowedOrigins:
       - http://localhost:3000
       - http://localhost:8080
+      - http://localhost:8082
+      - http://translator-web.page-translator.local
       - https://page-translator.herokuapp.com
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - http://localhost:8080/oauth2/redirect
+      - http://localhost:8082/oauth2/redirect
+      - http://translator-web.page-translator.local/oauth2/redirect
+      - https://page-translator.herokuapp.com/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect
 
 #
 logging:

@@ -10,7 +10,8 @@ export const JsonUtils = {
 
   downloadFile: (content: string, fileName: string) => {
     const downloadLink = document.createElement("a");
-    downloadLink.href = "data:application/json;charset=utf-8," + content;
+    downloadLink.href =
+      "data:application/json;charset=utf-8," + encodeURIComponent(content);
     downloadLink.download = fileName;
 
     document.body.appendChild(downloadLink);

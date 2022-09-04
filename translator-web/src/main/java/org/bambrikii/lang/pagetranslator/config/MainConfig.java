@@ -4,10 +4,8 @@ import org.bambrikii.lang.pagetranslator.export.ExportConfig;
 import org.bambrikii.lang.pagetranslator.orm.TranslatorPersistenceConfig;
 import org.bambrikii.lang.translator.page.lang.service.LanguageConfig;
 import org.bambrikii.security.orm.SecurityPersistenceConfig;
-import org.bambrikii.security.provider.AppSecurityProperties;
 import org.bambrikii.security.provider.SecurityConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -25,9 +23,6 @@ import org.springframework.context.annotation.Import;
         SecurityConfig.class,
         LanguageConfig.class,
         ExportConfig.class
-})
-@EnableConfigurationProperties({
-        AppSecurityProperties.class,
 })
 public class MainConfig {
 }

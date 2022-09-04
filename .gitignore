@@ -2,3 +2,7 @@
 .gradle
 .run
 *.env
+**/bin
+**/.settings
+**/out
+**/build

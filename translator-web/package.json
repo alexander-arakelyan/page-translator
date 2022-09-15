@@ -13,7 +13,7 @@
     "babel-plugin-transform-styles": "0.0.3",
     "date-fns": "^2.29.2",
     "history": "^5.0.1",
-    "jodit-react": "^1.1.5",
+    "jodit-react": "1.1.5",
     "jquery": "^3.5.0",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",

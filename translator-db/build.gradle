@@ -2,40 +2,42 @@ apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
 
 apply from: "${rootDir}/gradle/ext.gradle"
 
-docker {
-    namespace = "${dockerNamespace}"
-    repo = "${dockerRepo}" // repository to push images in
-    username = "${dockerUsername}"
-    password = "${dockerPassword}"
-    repositories {}
-    dockerBuildDir = buildDir
-    tagName = "${project.name}"
-    containerName = "${project.name}"
-    mounts {
+if (project.hasProperty("dockerRepo")) {
+    docker {
+        namespace = "${dockerNamespace}"
+        repo = "${dockerRepo}" // repository to push images in
+        username = "${dockerUsername}"
+        password = "${dockerPassword}"
+        repositories {}
+        dockerBuildDir = buildDir
+        tagName = "${project.name}"
+        containerName = "${project.name}"
+        mounts {
+        }
     }
-}
-kubernetes {
-    namespace = "${kubernetesNamespace}"
-    resources = [
-            "${projectDir.path}/src/main/kubernetes/client.yaml",
-            "${projectDir.path}/src/main/kubernetes/config.yaml",
-            "${projectDir.path}/src/main/kubernetes/pv.yaml",
-            "${projectDir.path}/src/main/kubernetes/deployment.yaml",
-            "${projectDir.path}/src/main/kubernetes/service.yaml",
-    ]
-    configmapGroup {
-        name = "postgres-config"
-        configmap {
-            name = "POSTGRES_DB"
-            literal = "${POSTGRES_DB}"
-        }
-        configmap {
-            name = "POSTGRES_USER"
-            literal = "${POSTGRES_USER}"
-        }
-        configmap {
-            name = "POSTGRES_PASSWORD"
-            literal = "${POSTGRES_PASSWORD}"
+    kubernetes {
+        namespace = "${kubernetesNamespace}"
+        resources = [
+                "${projectDir.path}/src/main/kubernetes/client.yaml",
+                "${projectDir.path}/src/main/kubernetes/config.yaml",
+                "${projectDir.path}/src/main/kubernetes/pv.yaml",
+                "${projectDir.path}/src/main/kubernetes/deployment.yaml",
+                "${projectDir.path}/src/main/kubernetes/service.yaml",
+        ]
+        configmapGroup {
+            name = "postgres-config"
+            configmap {
+                name = "POSTGRES_DB"
+                literal = "${POSTGRES_DB}"
+            }
+            configmap {
+                name = "POSTGRES_USER"
+                literal = "${POSTGRES_USER}"
+            }
+            configmap {
+                name = "POSTGRES_PASSWORD"
+                literal = "${POSTGRES_PASSWORD}"
+            }
         }
     }
 }

@@ -14,3 +14,11 @@ dependencies {
 
     api(libs.spring.boot.starter.validation)
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

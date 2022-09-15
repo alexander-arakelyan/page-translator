@@ -1,7 +1,16 @@
 apply from: "${rootDir}/gradle/spring.gradle"
+apply plugin: "java-library"
 
 dependencies {
     implementation(project(":language-orm"))
 
     implementation(libs.spring.boot.starter.web)
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }

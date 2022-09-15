@@ -48,93 +48,95 @@ dependencies {
 
 test.dependsOn(npmTest)
 
-apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
+if (project.hasProperty("localDockerRepo")) {
+    apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
 
-docker {
-    namespace = "${localDockerNamespace}"
-    repo = "${localDockerRepo}"
-    username = "${localDockerUsername}"
-    password = "${localDockerPassword}"
-    repositories {
-        repository {
-            url = "localhost"
-            username = "${dockerUsername}"
-            password = "${dockerPassword}"
+    docker {
+        namespace = "${localDockerNamespace}"
+        repo = "${localDockerRepo}"
+        username = "${localDockerUsername}"
+        password = "${localDockerPassword}"
+        repositories {
+            repository {
+                url = "localhost"
+                username = "${dockerUsername}"
+                password = "${dockerPassword}"
+            }
         }
-    }
-    dockerBuildDir = buildDir // optional, ${project.buildDir} will be used by default
-    tagName = "${project.name}" // optional, ${project.name} will be used by default
-    containerName = "${project.name}" // optional, ${project.name} will be used by default
-    mounts {
-        mount {
-            host = "/home"
-            container = "/temp1"
-            options = "z"
+        dockerBuildDir = buildDir // optional, ${project.buildDir} will be used by default
+        tagName = "${project.name}" // optional, ${project.name} will be used by default
+        containerName = "${project.name}" // optional, ${project.name} will be used by default
+        mounts {
+            mount {
+                host = "/home"
+                container = "/temp1"
+                options = "z"
+            }
+            mount {
+                host = "/usr/bin"
+                container = "/temp2"
+                options = "z"
+            }
         }
-        mount {
-            host = "/usr/bin"
-            container = "/temp2"
-            options = "z"
-        }
-    }
-    envs {
-        env {
-            name = "ENV1"
-            value = "ENV1-VAL"
-        }
-    }
-}
-kubernetes {
-    namespace = "${kubernetesNamespace}"
-    resources = [
-            "${projectDir.path}/src/main/kubernetes/deployment.yaml",
-            "${projectDir.path}/src/main/kubernetes/service.yaml",
-            "${projectDir.path}/src/main/kubernetes/ingress.yaml",
-    ]
-    secretGroups {
-        secretGroup {
-            name = "regcred"
-            secret {
-                file = ".dockerconfigjson=${System.getProperty("user.home")}/.docker/config.json"
-                type = "kubernetes.io/dockerconfigjson"
+        envs {
+            env {
+                name = "ENV1"
+                value = "ENV1-VAL"
             }
         }
     }
-    configmapGroups {
-        configmapGroup {
-            name = "postgres-config-web"
-            configmap {
-                name = "POSTGRES_URL"
-                literal = "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
+    kubernetes {
+        namespace = "${kubernetesNamespace}"
+        resources = [
+                "${projectDir.path}/src/main/kubernetes/deployment.yaml",
+                "${projectDir.path}/src/main/kubernetes/service.yaml",
+                "${projectDir.path}/src/main/kubernetes/ingress.yaml",
+        ]
+        secretGroups {
+            secretGroup {
+                name = "regcred"
+                secret {
+                    file = ".dockerconfigjson=${System.getProperty("user.home")}/.docker/config.json"
+                    type = "kubernetes.io/dockerconfigjson"
+                }
             }
         }
-    }
-    configmapGroups {
-        configmapGroup {
-            name = "oauth-config"
-            configmap {
-                name = "OAUTH2_APP_AUTH_TOKEN_SECRET"
-                literal = "${OAUTH2_APP_AUTH_TOKEN_SECRET}"
+        configmapGroups {
+            configmapGroup {
+                name = "postgres-config-web"
+                configmap {
+                    name = "POSTGRES_URL"
+                    literal = "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
+                }
             }
-            configmap {
-                name = "OAUTH2_GOOGLE_CLIENT_ID"
-                literal = "${OAUTH2_GOOGLE_CLIENT_ID}"
-            }
-            configmap {
-                name = "OAUTH2_BASE_URL"
-                literal = "${OAUTH2_BASE_URL}"
-            }
-            configmap {
-                name = "OAUTH2_GITHUB_CLIENT_ID"
-                literal = "${OAUTH2_GITHUB_CLIENT_ID}"
-            }
-            configmap {
-                name = "OAUTH2_GOOGLE_CLIENT_SECRET"
-                literal = "${OAUTH2_GOOGLE_CLIENT_SECRET}"
-            }
-            configmap {
-                name = "OAUTH2_GITHUB_CLIENT_SECRET"
-                literal = "${OAUTH2_GITHUB_CLIENT_SECRET}"
+        }
+        configmapGroups {
+            configmapGroup {
+                name = "oauth-config"
+                configmap {
+                    name = "OAUTH2_APP_AUTH_TOKEN_SECRET"
+                    literal = "${OAUTH2_APP_AUTH_TOKEN_SECRET}"
+                }
+                configmap {
+                    name = "OAUTH2_GOOGLE_CLIENT_ID"
+                    literal = "${OAUTH2_GOOGLE_CLIENT_ID}"
+                }
+                configmap {
+                    name = "OAUTH2_BASE_URL"
+                    literal = "${OAUTH2_BASE_URL}"
+                }
+                configmap {
+                    name = "OAUTH2_GITHUB_CLIENT_ID"
+                    literal = "${OAUTH2_GITHUB_CLIENT_ID}"
+                }
+                configmap {
+                    name = "OAUTH2_GOOGLE_CLIENT_SECRET"
+                    literal = "${OAUTH2_GOOGLE_CLIENT_SECRET}"
+                }
+                configmap {
+                    name = "OAUTH2_GITHUB_CLIENT_SECRET"
+                    literal = "${OAUTH2_GITHUB_CLIENT_SECRET}"
+                }
             }
         }
     }

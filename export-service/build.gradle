@@ -1,6 +1,6 @@
 apply from: "${rootDir}/gradle/spring.gradle"
-apply plugin: "org.springframework.boot"
 apply from: "${rootDir}/gradle/ext.gradle"
+apply plugin: "org.springframework.boot"
 
 bootJar {
     mainClass = "org.bambrikii.lang.pagetranslator.export.ExportMain"
@@ -39,71 +39,73 @@ dependencies {
     annotationProcessor(libs.spring.boot.config.processor)
 }
 
-apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
+if (project.hasProperty("localDockerRepo")) {
+    apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
 
-docker {
-    namespace = "${localDockerNamespace}"
-    repo = "${localDockerRepo}"
-    username = "${localDockerUsername}"
-    password = "${localDockerPassword}"
-    repositories {
+    docker {
+        namespace = "${localDockerNamespace}"
+        repo = "${localDockerRepo}"
+        username = "${localDockerUsername}"
+        password = "${localDockerPassword}"
+        repositories {
 //        repository {
 //            url = "${dockerRepo}"
 //            username = "${dockerUsername}"
 //            password = "${dockerPassword}"
 //        }
-    }
-    dockerBuildDir = buildDir // optional, ${project.buildDir} will be used by default
-    tagName = "${project.name}" // optional, ${project.name} will be used by default
-    containerName = "${project.name}" // optional, ${project.name} will be used by default
-    mounts {
-        mount {
-            host = "/home"
-            container = "/temp1"
-            options = "z"
         }
-        mount {
-            host = "/usr/bin"
-            container = "/temp2"
-            options = "z"
+        dockerBuildDir = buildDir // optional, ${project.buildDir} will be used by default
+        tagName = "${project.name}" // optional, ${project.name} will be used by default
+        containerName = "${project.name}" // optional, ${project.name} will be used by default
+        mounts {
+            mount {
+                host = "/home"
+                container = "/temp1"
+                options = "z"
+            }
+            mount {
+                host = "/usr/bin"
+                container = "/temp2"
+                options = "z"
+            }
+        }
+        envs {
+            env {
+                name = "ENV1"
+                value = "ENV1-VAL"
+            }
         }
     }
-    envs {
-        env {
-            name = "ENV1"
-            value = "ENV1-VAL"
-        }
-    }
-}
-kubernetes {
-    namespace = "${kubernetesNamespace}"
-    resources = [
-            "${projectDir.path}/src/main/kubernetes/deployment.yaml",
-            "${projectDir.path}/src/main/kubernetes/service.yaml",
+    kubernetes {
+        namespace = "${kubernetesNamespace}"
+        resources = [
+                "${projectDir.path}/src/main/kubernetes/deployment.yaml",
+                "${projectDir.path}/src/main/kubernetes/service.yaml",
 //            "${projectDir.path}/src/main/kubernetes/mapping.yaml",
-    ]
-    secretGroups {
-        secretGroup {
-            name = "regcred"
-            secret {
-                file = ".dockerconfigjson=${System.getProperty("user.home")}/.docker/config.json"
-                type = "kubernetes.io/dockerconfigjson"
+        ]
+        secretGroups {
+            secretGroup {
+                name = "regcred"
+                secret {
+                    file = ".dockerconfigjson=${System.getProperty("user.home")}/.docker/config.json"
+                    type = "kubernetes.io/dockerconfigjson"
+                }
             }
-        }
-        secretGroup {
-            name = "db"
-            secret {
-                name = "db-url"
+            secretGroup {
+                name = "db"
+                secret {
+                    name = "db-url"
 //                literal = "${DB_URL}"
-                literal = "jdbc:postgresql://postgres:5432/page_translator"
-            }
-            secret {
-                name = "db-username"
-                literal = "${DB_USERNAME}"
-            }
-            secret {
-                name = "db-password"
-                literal = "${DB_PASSWORD}"
+                    literal = "jdbc:postgresql://postgres:5432/page_translator"
+                }
+                secret {
+                    name = "db-username"
+                    literal = "${DB_USERNAME}"
+                }
+                secret {
+                    name = "db-password"
+                    literal = "${DB_PASSWORD}"
+                }
             }
         }
     }

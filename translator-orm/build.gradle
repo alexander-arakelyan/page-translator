@@ -8,3 +8,11 @@ dependencies {
 
     api(libs.spring.boot.starter.data.jpa)
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

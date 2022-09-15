@@ -14,4 +14,13 @@ dependencies {
     api(libs.jsoup)
 
     testImplementation(libs.commons.io)
+    testImplementation(libs.h2)
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }

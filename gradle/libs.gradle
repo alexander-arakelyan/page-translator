@@ -6,7 +6,7 @@ ext.libs = [
                         commons: "org.springframework.cloud:spring-cloud-commons:3.0.3"
                 ],
                 boot    : [
-                        starter : [
+                        starter      : [
                                 starter   : "org.springframework.boot:spring-boot-starter",
                                 web       : "org.springframework.boot:spring-boot-starter-web",
                                 thymeleaf : "org.springframework.boot:spring-boot-starter-thymeleaf",
@@ -22,10 +22,10 @@ ext.libs = [
                                 activemq  : "org.springframework.boot:spring-boot-starter-activemq",
                                 webflux   : "org.springframework.boot:spring-boot-starter-webflux"
                         ],
-                        config  : [
+                        config       : [
                                 processor: "org.springframework.boot:spring-boot-configuration-processor"
                         ],
-                        devtools: "org.springframework.boot:spring-boot-devtools"
+                        devtools     : "org.springframework.boot:spring-boot-devtools"
                 ],
                 kafka   : "org.springframework.kafka:spring-kafka:2.7.0",
                 security: [

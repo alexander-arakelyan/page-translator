@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class ExportRestController {
+public class ExportController {
     private final ExportService exportService;
 
-    public ExportRestController(ExportService exportService) {
+    public ExportController(ExportService exportService) {
         this.exportService = exportService;
     }
 

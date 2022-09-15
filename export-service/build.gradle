@@ -11,6 +11,7 @@ bootJar {
 dependencies {
     implementation(project(":translator-orm"))
     implementation(project(":export-api"))
+    implementation(project(":export-impl"))
     implementation(project(":security-provider"))
     implementation(project(":security-orm"))
 

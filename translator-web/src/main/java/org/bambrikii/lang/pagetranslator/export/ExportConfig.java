@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(
-        basePackageClasses = ExportController.class
+        basePackageClasses = ExportFacadeController.class
 )
 public class ExportConfig {
 }

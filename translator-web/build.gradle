@@ -16,6 +16,8 @@ dependencies {
     implementation(project(":language-service"))
     implementation(project(":export-api"))
 
+    implementation(project(":export-impl"))
+
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.thymeleaf)

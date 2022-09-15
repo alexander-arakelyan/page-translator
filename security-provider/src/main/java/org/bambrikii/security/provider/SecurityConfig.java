@@ -107,6 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/v3/api-docs/**"
                 ).permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**").permitAll()
                 .antMatchers("/api/v1/**").hasRole("USER") // TODO:
                 .anyRequest().authenticated()

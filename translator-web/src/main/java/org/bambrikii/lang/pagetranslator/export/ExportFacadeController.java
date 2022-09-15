@@ -3,6 +3,7 @@ package org.bambrikii.lang.pagetranslator.export;
 import org.bambrikii.lang.pagetranslator.export.model.ExportContainer;
 import org.bambrikii.lang.pagetranslator.export.model.ImportContainer;
 import org.bambrikii.lang.pagetranslator.utils.RestApiV1;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +13,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@ConditionalOnMissingBean(name = {
+        "exportController"
+})
 @RestApiV1
-public class ExportController {
+public class ExportFacadeController {
     private final WebClient exportWebClient;
 
-    public ExportController(WebClient exportWebClient) {
+    public ExportFacadeController(WebClient exportWebClient) {
         this.exportWebClient = exportWebClient;
     }
 

@@ -1,0 +1,17 @@
+apply from: "${rootDir}/gradle/spring.gradle"
+apply from: "${rootDir}/gradle/ext.gradle"
+apply plugin: "java-library"
+
+dependencies {
+    api(project(":translator-orm"))
+    api(project(":export-api"))
+    api(project(":security-orm"))
+
+    api(libs.spring.boot.starter.web)
+    api(libs.spring.boot.starter.data.jpa)
+    api(libs.gson)
+    api(libs.jaxb.api)
+    api(libs.jsoup)
+
+    testImplementation(libs.commons.io)
+}

@@ -1,0 +1,40 @@
+apply from: "${rootDir}/gradle/spring.gradle"
+apply from: "${rootDir}/gradle/ext.gradle"
+apply plugin: "org.springframework.boot"
+
+bootJar {
+    mainClass = "org.bambrikii.lang.pagetranslator.export.evernote.EvernoteMain"
+    archiveFileName = "${project.name}.jar"
+}
+
+dependencies {
+    implementation(files('src/main/driver'))
+    runtimeOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+
+    implementation("org.seleniumhq.selenium:selenium-java:4.5.0")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.5.0")
+
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.data.jpa)
+    implementation(libs.gson)
+    implementation(libs.jaxb.api)
+    implementation(libs.jsoup)
+
+    implementation("com.h2database:h2:$h2dbVersion")
+}
+
+task printSourceSetInformation() {
+    doLast {
+        sourceSets.each { srcSet ->
+            println "[" + srcSet.name + "]"
+            print "-->Source directories: " + srcSet.allJava.srcDirs + "\n"
+            print "-->Output directories: " + srcSet.output.classesDirs.files + "\n"
+            print "-->Compile classpath:\n"
+            srcSet.compileClasspath.files.each {
+                print "  " + it.path + "\n"
+            }
+            println ""
+        }
+    }
+}

@@ -48,10 +48,10 @@ configurations {
 sourceSets {
     integrationTest {
         java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
+            compileClasspath += main.output + test.output + test.runtimeClasspath
+            runtimeClasspath += main.output + test.output + compileClasspath + output + test.runtimeClasspath
             srcDirs = [
-                "src/integrationTest/java"
+                    "src/integrationTest/java"
             ]
         }
     }

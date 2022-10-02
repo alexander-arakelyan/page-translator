@@ -17,5 +17,6 @@ include("grammar-service")
 include("export-api")
 include("export-impl")
 include("export-service")
+include("export-evernote")
 
 include("translator-db")

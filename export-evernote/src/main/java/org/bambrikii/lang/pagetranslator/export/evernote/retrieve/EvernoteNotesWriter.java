@@ -1,4 +1,4 @@
-package org.bambrikii.lang.pagetranslator.export.evernote;
+package org.bambrikii.lang.pagetranslator.export.evernote.retrieve;
 
 import java.io.IOException;
 

@@ -3,6 +3,8 @@ package org.bambrikii.lang.pagetranslator.export.api;
 import org.bambrikii.lang.pagetranslator.export.model.ExportContainer;
 import org.bambrikii.lang.pagetranslator.export.model.ImportContainer;
 import org.bambrikii.lang.pagetranslator.export.services.ExportService;
+import org.bambrikii.security.provider.CurrentUser;
+import org.bambrikii.security.provider.UserPrincipal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +28,11 @@ public class ExportController {
     }
 
     @PostMapping(value = "/import")
-    public ResponseEntity<ImportContainer> import1(@RequestBody ImportContainer export) {
-        ImportContainer result = exportService.import1(export);
+    public ResponseEntity<ImportContainer> import1(
+            @RequestBody ImportContainer export,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
+        var result = exportService.import1(export, userPrincipal.getEmail());
         return ResponseEntity.ok(result);
     }
 }

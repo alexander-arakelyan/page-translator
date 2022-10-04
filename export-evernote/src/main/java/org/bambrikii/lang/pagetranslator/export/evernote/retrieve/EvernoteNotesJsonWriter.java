@@ -1,4 +1,4 @@
-package org.bambrikii.lang.pagetranslator.export.evernote;
+package org.bambrikii.lang.pagetranslator.export.evernote.retrieve;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

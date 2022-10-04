@@ -6,6 +6,7 @@ dependencies {
     api(project(":translator-orm"))
     api(project(":export-api"))
     api(project(":security-orm"))
+    api(project(":security-provider"))
 
     api(libs.spring.boot.starter.web)
     api(libs.spring.boot.starter.data.jpa)

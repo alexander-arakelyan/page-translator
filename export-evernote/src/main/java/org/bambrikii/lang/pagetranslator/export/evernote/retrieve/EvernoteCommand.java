@@ -1,4 +1,4 @@
-package org.bambrikii.lang.pagetranslator.export.evernote;
+package org.bambrikii.lang.pagetranslator.export.evernote.retrieve;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

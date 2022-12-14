@@ -76,8 +76,8 @@ app:
 #
 logging:
   level:
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.hibernate: ERROR
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE
+    org.springframework.web: info
+    org.springframework.security: info
+    org.hibernate: info
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE

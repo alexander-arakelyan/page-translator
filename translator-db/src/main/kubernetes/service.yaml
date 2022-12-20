@@ -5,9 +5,11 @@ metadata:
     app: postgres
   name: postgres
 spec:
+  type: LoadBalancer
   ports:
     - name: postgres
       port: 5432
       targetPort: 5432
   selector:
+    statefulset.kubernetes.io/pod-name: postgres-0
     app: postgres

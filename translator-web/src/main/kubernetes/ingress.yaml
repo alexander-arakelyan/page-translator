@@ -2,11 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: translator-web-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - host: translator-web.page-translator.local
+    - host: translator-web.page-translator.com
       http:
         paths:
           - path: /
@@ -15,4 +13,4 @@ spec:
               service:
                 name: translator-web
                 port:
-                  number: 8082
+                  number: 80

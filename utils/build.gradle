@@ -1,0 +1,12 @@
+apply plugin: "com.github.bambrikii.gradle.virtualization.plugin"
+
+apply from: "${rootDir}/gradle/ext.gradle"
+
+if (project.hasProperty("dockerRepo")) {
+    kubernetes {
+        namespace = "${kubernetesNamespace}"
+        resources = [
+                "${projectDir.path}/src/main/kubernetes/busybox-deployment.yaml",
+        ]
+    }
+}

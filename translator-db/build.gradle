@@ -8,7 +8,13 @@ if (project.hasProperty("dockerRepo")) {
         repo = "${dockerRepo}" // repository to push images in
         username = "${dockerUsername}"
         password = "${dockerPassword}"
-        repositories {}
+        repositories {
+            repository {
+                url = "localhost"
+                username = "${dockerUsername}"
+                password = "${dockerPassword}"
+            }
+        }
         dockerBuildDir = buildDir
         tagName = "${project.name}"
         containerName = "${project.name}"

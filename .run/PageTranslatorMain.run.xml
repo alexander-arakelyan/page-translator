@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PageTranslatorMain" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="org.bambrikii.lang.pagetranslator.PageTranslatorMain" />
-    <module name="page-translator.translator-web.main" />
+    <module name="org.bambrikii.lang.translator.page-translator.translator-web.main" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.bambrikii.lang.pagetranslator.*" />
@@ -15,9 +15,14 @@
       <option name="IS_IGNORE_MISSING_FILES" value="true" />
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
-        <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        <ENTRY IS_ENABLED="true" PARSER="env" PATH=".local.env" />
+        <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH=".local.env" />
       </ENTRIES>
+    </extension>
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
     </extension>
     <method v="2">
       <option name="Make" enabled="true" />

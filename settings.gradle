@@ -21,3 +21,6 @@ include("export-evernote")
 
 include("translator-db")
 include("utils")
+
+include("oauth2-authorization-server")
+include("oauth2-resource-server")
